@@ -1,0 +1,5 @@
+#import <Foundation/Foundation.h>
+@interface PodsDummy_Pods_PacMan_Coronatrainer_PacMan_CoronatrainerUITests : NSObject
+@end
+@implementation PodsDummy_Pods_PacMan_Coronatrainer_PacMan_CoronatrainerUITests
+@end
