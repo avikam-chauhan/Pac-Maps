@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		043DFDA8247F07030032B5D5 /* BluetoothHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043DFDA7247F07030032B5D5 /* BluetoothHandler.swift */; };
 		7979CB7469525F13375B9EF6 /* libPods-PacMan CoronatrainerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AD56D9E086A8A91A8D719F93 /* libPods-PacMan CoronatrainerTests.a */; };
 		9F108371245521F90024AE5B /* maps.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9F108370245521F90024AE5B /* maps.gpx */; };
 		9F1083732455244E0024AE5B /* maps2.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9F1083722455244E0024AE5B /* maps2.gpx */; };
@@ -47,6 +48,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		043DFDA7247F07030032B5D5 /* BluetoothHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothHandler.swift; sourceTree = "<group>"; };
 		185F03EC0C74B2AFD5273F29 /* Pods-PacMan CoronatrainerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PacMan CoronatrainerTests.release.xcconfig"; path = "Target Support Files/Pods-PacMan CoronatrainerTests/Pods-PacMan CoronatrainerTests.release.xcconfig"; sourceTree = "<group>"; };
 		3D1FBF8D421047DE8E4BD672 /* Pods-PacMan Coronatrainer-PacMan CoronatrainerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PacMan Coronatrainer-PacMan CoronatrainerUITests.release.xcconfig"; path = "Target Support Files/Pods-PacMan Coronatrainer-PacMan CoronatrainerUITests/Pods-PacMan Coronatrainer-PacMan CoronatrainerUITests.release.xcconfig"; sourceTree = "<group>"; };
 		4D942D6DFC84C0AF7A1AAC46 /* libPods-PacMan Coronatrainer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PacMan Coronatrainer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -151,6 +153,7 @@
 				9F363E9B2453B4EE0023084D /* AppDelegate.swift */,
 				9F363ECB2453CE990023084D /* SceneDelegate.swift */,
 				9F363ED2245414D70023084D /* ViewController.swift */,
+				043DFDA7247F07030032B5D5 /* BluetoothHandler.swift */,
 				9F363ED4245419150023084D /* LeaderboardViewController.swift */,
 				9F363EA12453B4EE0023084D /* Main.storyboard */,
 				9F363EA42453B4F50023084D /* Assets.xcassets */,
@@ -408,6 +411,7 @@
 				9F363ED72454C8490023084D /* User.swift in Sources */,
 				9F363ED5245419150023084D /* LeaderboardViewController.swift in Sources */,
 				9F363E9C2453B4EE0023084D /* AppDelegate.swift in Sources */,
+				043DFDA8247F07030032B5D5 /* BluetoothHandler.swift in Sources */,
 				9F363ECC2453CE990023084D /* SceneDelegate.swift in Sources */,
 				9F363EDB2454D0510023084D /* FirebaseInterface.swift in Sources */,
 			);
@@ -584,14 +588,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B2278J6LL2;
+				DEVELOPMENT_TEAM = ANNU8439FD;
 				INFOPLIST_FILE = "PacMan Coronatrainer/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ipaycheck.PacMan-Coronatrainer";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.mihir.PacMan-Coronatrainer";
 				PRODUCT_NAME = "Pac-Maps";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -604,14 +608,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B2278J6LL2;
+				DEVELOPMENT_TEAM = ANNU8439FD;
 				INFOPLIST_FILE = "PacMan Coronatrainer/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ipaycheck.PacMan-Coronatrainer";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.mihir.PacMan-Coronatrainer";
 				PRODUCT_NAME = "Pac-Maps";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
