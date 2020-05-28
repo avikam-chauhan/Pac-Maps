@@ -12,6 +12,7 @@ import Firebase
 import UIKit
 
 class FirebaseInterface {
+    static var dict: NSDictionary?
     static let ref = Database.database().reference()
     static var username: String?
     static var location: CLLocationCoordinate2D?

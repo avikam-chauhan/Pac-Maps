@@ -72,14 +72,14 @@ class MapHandler: NSObject, LocationHandlerDelegate {
     
     func didUpdateCurrentLocation(currentLocation: CLLocation?) {
         if activeRouteTracking {
-            if (currentLocation?.distance(from: CLLocation(latitude: (waypoints[currentWaypointIndex].coordinate.latitude), longitude: (waypoints[currentWaypointIndex].coordinate.longitude))))! < 5.0 {
-                getDistance(fromStartingLocation: waypoints[currentWaypointIndex - 1]), toEndingLocation: <#T##CLLocation#>, handler: { (distance) in
-                    User.points += Int(50 * distance) / 1609.34
+            if (currentLocation?.distance(from: CLLocation(latitude: (waypoints[currentWaypointIndex - 1].coordinate.latitude), longitude: (waypoints[currentWaypointIndex].coordinate.longitude))))! < 5.0 {
+                getDistance(fromStartingLocation: waypoints[currentWaypointIndex - 1], toEndingLocation: waypoints[currentWaypointIndex], handler: { (distance) in
+//                    User.points += Int(50 * distance) / 1609.34
                 })
                 currentWaypointIndex += 1
             }
             getDirections(toDestinations: Array(waypoints[currentWaypointIndex..<waypoints.count])) { (routes) in
-                delegate?.mapHandler(didUpdateRoutes: routes)
+                self.delegate?.mapHandler(didUpdateRoutes: routes)
             }
         }
     }
