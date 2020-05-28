@@ -25,6 +25,8 @@
 		9F363ED72454C8490023084D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F363ED62454C8480023084D /* User.swift */; };
 		9F363ED92454C89F0023084D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9F363ED82454C89F0023084D /* GoogleService-Info.plist */; };
 		9F363EDB2454D0510023084D /* FirebaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F363EDA2454D0500023084D /* FirebaseInterface.swift */; };
+		9FF15CC4247F0C5400328C96 /* LocationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF15CC3247F0C5400328C96 /* LocationHandler.swift */; };
+		9FF15CC6247F123100328C96 /* MapHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF15CC5247F123100328C96 /* MapHandler.swift */; };
 		B44A863FF0769B53208F3E68 /* libPods-PacMan Coronatrainer-PacMan CoronatrainerUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B076C33D5297C1F9608BA61E /* libPods-PacMan Coronatrainer-PacMan CoronatrainerUITests.a */; };
 		E3CA15F14D0D6BD52CAF8862 /* libPods-PacMan Coronatrainer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D942D6DFC84C0AF7A1AAC46 /* libPods-PacMan Coronatrainer.a */; };
 /* End PBXBuildFile section */
@@ -74,6 +76,8 @@
 		9F363ED62454C8480023084D /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		9F363ED82454C89F0023084D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9F363EDA2454D0500023084D /* FirebaseInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseInterface.swift; sourceTree = "<group>"; };
+		9FF15CC3247F0C5400328C96 /* LocationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationHandler.swift; sourceTree = "<group>"; };
+		9FF15CC5247F123100328C96 /* MapHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapHandler.swift; sourceTree = "<group>"; };
 		AD56D9E086A8A91A8D719F93 /* libPods-PacMan CoronatrainerTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PacMan CoronatrainerTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B076C33D5297C1F9608BA61E /* libPods-PacMan Coronatrainer-PacMan CoronatrainerUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PacMan Coronatrainer-PacMan CoronatrainerUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7EE3042A5D792F28DCA0808 /* Pods-PacMan Coronatrainer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PacMan Coronatrainer.release.xcconfig"; path = "Target Support Files/Pods-PacMan Coronatrainer/Pods-PacMan Coronatrainer.release.xcconfig"; sourceTree = "<group>"; };
@@ -160,6 +164,8 @@
 				9F363ED02454090F0023084D /* CustomAnnotation.swift */,
 				9F363ED62454C8480023084D /* User.swift */,
 				9F363EDA2454D0500023084D /* FirebaseInterface.swift */,
+				9FF15CC3247F0C5400328C96 /* LocationHandler.swift */,
+				9FF15CC5247F123100328C96 /* MapHandler.swift */,
 				9F108370245521F90024AE5B /* maps.gpx */,
 				9F1083722455244E0024AE5B /* maps2.gpx */,
 				9F108374245524C30024AE5B /* maps3.gpx */,
@@ -410,6 +416,8 @@
 				9F363E9C2453B4EE0023084D /* AppDelegate.swift in Sources */,
 				9F363ECC2453CE990023084D /* SceneDelegate.swift in Sources */,
 				9F363EDB2454D0510023084D /* FirebaseInterface.swift in Sources */,
+				9FF15CC6247F123100328C96 /* MapHandler.swift in Sources */,
+				9FF15CC4247F0C5400328C96 /* LocationHandler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
