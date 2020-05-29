@@ -19,9 +19,12 @@ class FirebaseInterface {
     static var familyMembers: [Int] = []
     static var minorKey: Int?
     static var numberOfUsers: Int = 0
+    static var dict: NSDictionary?
         
 //        ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).setValue(["username":username ?? UIDevice.current.identifierForVendor!.uuidString, "location":["latitude": location?.latitude ?? 0, "longitude": location?.longitude ?? 0], "score":score ?? 0, "minorKey": minorKey ?? 0, "familyMembers": familyMembers])
-    
+    static func createUser() {
+         ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).setValue(["username":"" , "location":["latitude": 0, "longitude": 0], "score": 0])
+     }
         
     public static func updateUsername(username: String) { //only set at beginning of app install
         ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).child("username").setValue(username)
@@ -82,6 +85,13 @@ class FirebaseInterface {
             }
         })
     }
+    
+    public static func getScore(database: NSDictionary?) -> Int? {
+        if database != nil {
+            return database!["score"] as? Int
+        }
+        return 0
+    }
 
     public static func getCurrentMinorkey(handler: @escaping (Int) -> ()) {
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
@@ -94,6 +104,7 @@ class FirebaseInterface {
     public static func getUserDatabase(handler: @escaping (NSDictionary) -> ()) {
         ref.observeSingleEvent(of: .value, with: { (snapshot) in
             if let dictionary = snapshot.value as? NSDictionary {
+                self.dict = dictionary
                 handler(dictionary)
             }
         })

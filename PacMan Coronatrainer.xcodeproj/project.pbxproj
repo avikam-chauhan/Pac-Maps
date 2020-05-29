@@ -26,11 +26,11 @@
 		9F363ED72454C8490023084D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F363ED62454C8480023084D /* User.swift */; };
 		9F363ED92454C89F0023084D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9F363ED82454C89F0023084D /* GoogleService-Info.plist */; };
 		9F363EDB2454D0510023084D /* FirebaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F363EDA2454D0500023084D /* FirebaseInterface.swift */; };
+		9FF15CC4247F0C5400328C96 /* LocationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF15CC3247F0C5400328C96 /* LocationHandler.swift */; };
+		9FF15CC6247F123100328C96 /* MapHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF15CC5247F123100328C96 /* MapHandler.swift */; };
 		B08821A2247F070700CABF4D /* FirebaseDatabaseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08821A1247F070700CABF4D /* FirebaseDatabaseHandler.swift */; };
 		B08821A4247F1A5400CABF4D /* NewUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08821A3247F1A5400CABF4D /* NewUser.swift */; };
 		B08821A624805D6300CABF4D /* GenericUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08821A524805D6300CABF4D /* GenericUser.swift */; };
-		9FF15CC4247F0C5400328C96 /* LocationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF15CC3247F0C5400328C96 /* LocationHandler.swift */; };
-		9FF15CC6247F123100328C96 /* MapHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF15CC5247F123100328C96 /* MapHandler.swift */; };
 		B44A863FF0769B53208F3E68 /* libPods-PacMan Coronatrainer-PacMan CoronatrainerUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B076C33D5297C1F9608BA61E /* libPods-PacMan Coronatrainer-PacMan CoronatrainerUITests.a */; };
 		E3CA15F14D0D6BD52CAF8862 /* libPods-PacMan Coronatrainer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D942D6DFC84C0AF7A1AAC46 /* libPods-PacMan Coronatrainer.a */; };
 /* End PBXBuildFile section */
@@ -608,7 +608,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = GFRU5V45MW;
+				DEVELOPMENT_TEAM = ANNU8439FD;
 				INFOPLIST_FILE = "PacMan Coronatrainer/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -628,7 +628,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = GFRU5V45MW;
+				DEVELOPMENT_TEAM = ANNU8439FD;
 				INFOPLIST_FILE = "PacMan Coronatrainer/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (

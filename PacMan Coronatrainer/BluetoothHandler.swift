@@ -11,7 +11,9 @@ import CoreLocation
 import CoreBluetooth
 import UIKit
 
-class BluetoothHandler: NSObject, CLLocationManagerDelegate, CBPeripheralManagerDelegate {
+class BluetoothHandler: NSObject, CLLocationManagerDelegate, CBPeripheralManagerDelegate, CBCentralManagerDelegate, CBPeripheralDelegate {
+    
+    
     var locationManager: CLLocationManager?
     var localBeacon: CLBeaconRegion!
     var beaconPeripheralData: NSDictionary!
@@ -27,6 +29,11 @@ class BluetoothHandler: NSObject, CLLocationManagerDelegate, CBPeripheralManager
             initLocalBeacon()
         }
     }
+    var centralManager: CBCentralManager!
+    let BLE_UUID = "5DE63112-432E-4D11-AFDF-F6F091689061"
+    var WR_UUID = CBUUID(string: "5DE63112-432E-4D11-AFDF-F6F091689061")
+    let WR_PROPERTIES: CBCharacteristicProperties = .write
+    let WR_PERMISSIONS: CBAttributePermissions = .writeable
     
     @IBOutlet weak var topToolbar: UIView!
     @IBOutlet weak var distanceReading: UILabel!
@@ -75,6 +82,7 @@ class BluetoothHandler: NSObject, CLLocationManagerDelegate, CBPeripheralManager
         //self.present(alert, animated: true, completion: nil)
         
         //print("Closest Beacon Minor Key: \(closestBeaconMinorKey)")
+        
         FirebaseInterface.getUserDatabase { (dict) in
             self.familyMemberUUID = FirebaseInterface.searchUUID(dictionary: dict, minorKey: self.closestBeaconMinorKey) ?? ""
         }
@@ -92,14 +100,14 @@ class BluetoothHandler: NSObject, CLLocationManagerDelegate, CBPeripheralManager
         if localBeacon != nil {
             stopLocalBeacon()
         }
-        let localBeaconUUID = "5A4BCFCE-174E-4BAC-A814-092E77F6B7E5"
         let localBeaconMajor: CLBeaconMajorValue = 1237
         
-        let uuid = UUID(uuidString: localBeaconUUID)
+        let uuid = UUID(uuidString: BLE_UUID)
         print("minor of phone \(localBeaconMinor)")
         localBeacon = CLBeaconRegion(uuid: uuid!, major: localBeaconMajor, minor: localBeaconMinor, identifier: "Your private identifer here")
         beaconPeripheralData = localBeacon.peripheralData(withMeasuredPower: nil)
         peripheralManager = CBPeripheralManager(delegate: self, queue: nil, options: nil)
+        centralManager = CBCentralManager(delegate: self, queue: nil, options: nil)
     }
     
     func stopLocalBeacon() {
@@ -111,7 +119,18 @@ class BluetoothHandler: NSObject, CLLocationManagerDelegate, CBPeripheralManager
     
     func peripheralManagerDidUpdateState(_ peripheral: CBPeripheralManager) {
         if peripheral.state == .poweredOn {
+            
+            let serialService = CBMutableService(type: CBUUID(string: BLE_UUID), primary: true)
+            let writeCharacteristics = CBMutableCharacteristic(type: WR_UUID,
+                                             properties: WR_PROPERTIES, value: nil,
+                                             permissions: WR_PERMISSIONS)
+            serialService.characteristics = [writeCharacteristics]
+            peripheralManager.add(serialService)
+
             peripheralManager.startAdvertising(beaconPeripheralData as? [String: Any])
+            let advertisementData = String(format: "%@", UIDevice.current.identifierForVendor!.uuidString)
+            peripheralManager.startAdvertising([CBAdvertisementDataServiceUUIDsKey: BLE_UUID,
+                                                CBAdvertisementDataLocalNameKey: advertisementData])
         } else if peripheral.state == .poweredOff {
             peripheralManager.stopAdvertising()
         }
@@ -130,8 +149,7 @@ class BluetoothHandler: NSObject, CLLocationManagerDelegate, CBPeripheralManager
     }
     
     func startScanning() {
-        let localBeaconUUID = "5A4BCFCE-174E-4BAC-A814-092E77F6B7E5"
-        let beaconRegion = CLBeaconRegion(proximityUUID: UUID(uuidString: localBeaconUUID)!, major: CLBeaconMajorValue(1237), identifier: "MyBeacon")
+        let beaconRegion = CLBeaconRegion(proximityUUID: UUID(uuidString: BLE_UUID)!, major: CLBeaconMajorValue(1237), identifier: "MyBeacon")
         
         locationManager?.startMonitoring(for: beaconRegion)
         locationManager?.startRangingBeacons(in: beaconRegion)
@@ -212,38 +230,55 @@ class BluetoothHandler: NSObject, CLLocationManagerDelegate, CBPeripheralManager
         
     }
     
-    func extract() -> Data? {
-        guard uuidAsData.count > 0 else {
-            return nil
-        }
-        var range:Range<Data.Index>
-        // Create a range based on the length of data to return
-        if (uuidAsData.count) >= 180{
-            range = (0..<180)
-        }
-        else{
-            range = (0..<(uuidAsData.count))
-        }
-        // Get a new copy of data
-        let subData = uuidAsData.subdata(in: range)
-        // Mutate data
-        uuidAsData.removeSubrange(range)
-        // Return the new copy of data
-        return subData
-    }
-    
-    func sendData() {
-        var characteristic: CBMutableCharacteristic?
-        var sentDataPacket = extract()
-        if sentDataPacket != nil {
-            CBPeripheral?.writeValue(sentDataPacket!, for: characteristic!, type: .withoutResponse)
-        }
-        else{
-            peripheralManager?.writeValue(kEndFileFlag.data(using: String.Encoding.utf8)!, for: characteristic!, type: .withoutResponse)
+    func peripheralManager(_ peripheral: CBPeripheralManager, didReceiveWrite requests: [CBATTRequest]) {
+        for request in requests {
+            if let value = request.value {
+                
+                //here is the message text that we receive, use it as you wish.
+                let messageText = String(data: value, encoding: String.Encoding.utf8) as! String
+                print("MESSAGE TEXT RECEIVED: \(messageText)")
+            }
+            self.peripheralManager.respond(to: request, withResult: .success)
         }
     }
     
+    func centralManagerDidUpdateState(_ central: CBCentralManager) {
+        if (central.state == .poweredOn) {
+            
+          //here we scan for the devices with a UUID that is specific to our app, which filters out other BLE devices.
+            self.centralManager?.scanForPeripherals(withServices: [CBUUID(string: BLE_UUID)], options: nil)
+        }
+    }
     
+    func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
+        
+        // Here we can read peripheral.identifier as UUID, and read our advertisement data by the key CBAdvertisementDataLocalNameKey.
+    }
+    
+    func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
+        
+        peripheral.delegate = self
+        peripheral.discoverServices(nil)
+        
+    }
+    
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
+        for service in peripheral.services! {
+            peripheral.discoverCharacteristics(nil, for: service)
+        }
+    }
+    
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
+        for characteristic in service.characteristics! {
+            let characteristic = characteristic as CBCharacteristic
+            
+            if characteristic.uuid.isEqual(WR_UUID) {
+                let data = BLE_UUID.data(using: .utf8)
+                peripheral.writeValue(data!, for: characteristic, type: CBCharacteristicWriteType.withResponse)
+                print("Sending Value \(data)")
+            }
+        }
+    }
     
 }
 
