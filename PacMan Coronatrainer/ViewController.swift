@@ -183,7 +183,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             FirebaseInterface.updateScore(score: newValue)
         }
         get {
-            return FirebaseInterface.getScore(database: FirebaseInterface.dict) ?? 0
+            return 0
+//            return FirebaseInterface.getScore(database: FirebaseInterface.dict) ?? 0
         }
     }
     
@@ -276,7 +277,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             let alert = UIAlertController(title: "Welcome", message: "Please enter your username!", preferredStyle: UIAlertController.Style.alert)
             alert.addTextField(configurationHandler: nil)
             alert.addAction(UIAlertAction(title: "Let's play!", style: UIAlertAction.Style.default, handler:{ (UIAlertAction)in
-                FirebaseInterface.createUser()
+//                FirebaseInterface.createUser()
                 FirebaseInterface.updateUsername(username: (alert.textFields?.first?.text!)!)
                 FirebaseInterface.updateScore(score: 0)
             }))
@@ -317,7 +318,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             self.users = self.parseUsers(dictionary: postDict!)
         })
         FirebaseInterface.getUserDatabase { (dict) in
-            self.points = FirebaseInterface.getScore(database: FirebaseInterface.dict!) ?? 0
+//            self.points = FirebaseInterface.getScore(database: FirebaseInterface.dict!) ?? 0
         }
         
         self.getAllUsers { (myUsers) in
