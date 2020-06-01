@@ -1,10 +1,10 @@
-//
-//  MapHandler.swift
-//  PacMan Coronatrainer
-//
-//  Created by Avikam on 5/27/20.
-//  Copyright © 2020 Avikam Chauhan. All rights reserved.
-//
+////
+////  MapHandler.swift
+////  PacMan Coronatrainer
+////
+////  Created by Avikam on 5/27/20.
+////  Copyright © 2020 Avikam Chauhan. All rights reserved.
+////
 
 import Foundation
 import MapKit

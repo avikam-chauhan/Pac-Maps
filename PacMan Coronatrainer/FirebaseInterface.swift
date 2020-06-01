@@ -20,6 +20,8 @@ class FirebaseInterface {
     static var familyMembers: [Int] = []
     static var minorKey: Int?
     static var numberOfUsers: Int = 0
+    
+    static var dict: NSDictionary?
         
 //        ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).setValue(["username":username ?? UIDevice.current.identifierForVendor!.uuidString, "location":["latitude": location?.latitude ?? 0, "longitude": location?.longitude ?? 0], "score":score ?? 0, "minorKey": minorKey ?? 0, "familyMembers": familyMembers])
     
@@ -111,5 +113,12 @@ class FirebaseInterface {
             }
         }
         return nil;
+    }
+    
+    public static func getScore(database: NSDictionary?) -> Int? {
+        if database != nil {
+            return database!["score"] as? Int
+        }
+        return 0
     }
 }
