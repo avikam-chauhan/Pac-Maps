@@ -275,7 +275,7 @@ class BluetoothHandler: NSObject, CLLocationManagerDelegate, CBPeripheralManager
             if characteristic.uuid.isEqual(WR_UUID) {
                 let data = BLE_UUID.data(using: .utf8)
                 peripheral.writeValue(data!, for: characteristic, type: CBCharacteristicWriteType.withResponse)
-                print("Sending Value \(data)")
+                print("Sending Value \(data!)")
             }
         }
     }
