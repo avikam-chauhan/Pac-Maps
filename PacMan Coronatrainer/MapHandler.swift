@@ -13,6 +13,11 @@ class MapHandler: NSObject, LocationHandlerDelegate {
     
     var delegate: MapHandlerDelegate?
     
+    var pacManAnnotation: CustomAnnotation
+    var ghostAnnotations: [CustomAnnotation] = []
+    var pinAnnotations: [CustomAnnotation] = []
+    var pinAnnotationView: MKPinAnnotationView!
+    
     var currentWaypointIndex = 0
     var startingPoint = CLLocation()
     var waypoints = [CLLocation]()
@@ -23,6 +28,41 @@ class MapHandler: NSObject, LocationHandlerDelegate {
         super.init()
         locationHandler.delegate = self
     }
+    
+    // MARK: Custom Map Annotation Functions
+    
+    enum AnnotationType {
+        case Pin
+        case PacMan
+        case Ghost
+    }
+    
+    func createAnnotation(ofType annotationType: AnnotationType, atCoordinate coordinate: CLLocationCoordinate2D) -> MKAnnotation {
+        if annotationType == .PacMan {
+            pacManAnnotation = CustomAnnotation()
+            pacManAnnotation.pinCustomImageName = "pac-man"
+            pacManAnnotation.coordinate = coordinate
+            
+            pinAnnotationView = MKPinAnnotationView(annotation: pacManAnnotation, reuseIdentifier: "pac-man")
+            return pinAnnotationView.annotation!
+        } else {
+            var id = ""
+            let annotation = CustomAnnotation()
+            annotation.coordinate = coordinate
+            if annotationType == .Pin {
+                id = "flag"
+                pinAnnotations.append(annotation)
+            } else {
+                id = "ghost-red"
+                ghostAnnotations.append(annotation)
+            }
+            annotation.pinCustomImageName = id
+            let pinAnnotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: id)
+            return pinAnnotationView.annotation!
+        }
+    }
+    
+    // MARK: Maps Routing and Tracking Functions
     
     func addWaypoint(atLocation location: CLLocation) {
         waypoints.append(location)
@@ -70,11 +110,13 @@ class MapHandler: NSObject, LocationHandlerDelegate {
         activeRouteTracking = true
     }
     
-    func didUpdateCurrentLocation(currentLocation: CLLocation?) {
+    // MARK: LocationHandler Protocol Implementation
+    
+    func locationHandler(didUpdateCurrentLocation currentLocation: CLLocation?) {
         if activeRouteTracking {
             if (currentLocation?.distance(from: CLLocation(latitude: (waypoints[currentWaypointIndex - 1].coordinate.latitude), longitude: (waypoints[currentWaypointIndex].coordinate.longitude))))! < 5.0 {
                 getDistance(fromStartingLocation: waypoints[currentWaypointIndex - 1], toEndingLocation: waypoints[currentWaypointIndex], handler: { (distance) in
-//                    User.points += Int(50 * distance) / 1609.34
+                    //                    User.points += Int(50 * distance) / 1609.34
                 })
                 currentWaypointIndex += 1
             }
@@ -84,10 +126,9 @@ class MapHandler: NSObject, LocationHandlerDelegate {
         }
     }
     
-    func didUpdateCurrentHeading(currentHeading: CLHeading) {
+    func locationHandler(didUpdateCurrentHeading currentHeading: CLHeading) {
         // do nothing
     }
-    
 }
 
 protocol MapHandlerDelegate {

@@ -13,61 +13,13 @@ import CoreBluetooth
 import AudioToolbox
 import Firebase
 
-class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, CBPeripheralManagerDelegate {
+class ViewController: UIViewController, LocationHandlerDelegate, MapHandlerDelegate, MKMapViewDelegate, CBPeripheralManagerDelegate {
     
     var ref: DatabaseReference!
     var users = [User]()
-    
-    var vibrate = false
-    
-    func vibrateTimer(time: Double) {
-        for i in 0...13 {
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(Double(i) * time * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: {
-                if self.vibrate {
-                    AudioServicesPlayAlertSound(kSystemSoundID_Vibrate)
-                }
-            })
-        }
-    }
-    
-    //
-    
+
     var removePointsTimer = Timer()
     var addPointsTimer = Timer()
-
-    var pacManAnnotation: CustomAnnotation!
-    var ghostAnnotation: [CustomAnnotation] = []
-    var pinAnnotationView: MKPinAnnotationView!
-    
-    
-    func showGhost(coordinate: CLLocationCoordinate2D) {
-        var annotation = CustomAnnotation()
-        annotation.pinCustomImageName = "ghost-red"
-        annotation.coordinate = coordinate
-        ghostAnnotation.append(annotation)
-        
-        var pinAnnotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "ghost")
-        mapView.addAnnotation(pinAnnotationView.annotation!)
-    }
-    
-    func showFlag(coordinate: CLLocationCoordinate2D) {
-        var annotation = CustomAnnotation()
-        annotation.pinCustomImageName = "flag"
-        annotation.coordinate = coordinate
-        ghostAnnotation.append(annotation)
-        
-        var pinAnnotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "flag")
-        mapView.addAnnotation(pinAnnotationView.annotation!)
-    }
-    
-    func showPacMan(coordinate: CLLocationCoordinate2D) {
-        pacManAnnotation = CustomAnnotation()
-        pacManAnnotation.pinCustomImageName = "pac-man"
-        pacManAnnotation.coordinate = coordinate
-        
-        pinAnnotationView = MKPinAnnotationView(annotation: pacManAnnotation, reuseIdentifier: "pac-man")
-        mapView.addAnnotation(pinAnnotationView.annotation!)
-    }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         let reuseIdentifier = "ghost"
@@ -90,11 +42,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     // MARK: iBeacon Stuff
     
-    
     var beaconRegion: CLBeaconRegion! = nil
     var beaconPeripheralData: NSDictionary = NSDictionary()
     var peripheralManager: CBPeripheralManager = CBPeripheralManager()
-    
     
     func initBeaconRegion() {
         beaconRegion = CLBeaconRegion(proximityUUID: UUID(uuidString: "E06F95E4-FCFC-42C6-B4F8-F6BAE87EA1A0")!, major: 1233, minor: 45, identifier: "PacMan")
@@ -119,18 +69,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     }
     
     
-    @objc func subtract1() {
-        if vibrate {
-            points = points - 1
-        }
-    }
-    
-    @objc func add1() {
-        if !vibrate {
-            points = points + 1
-        }
-    }
-    
     func locationManager(_ manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], in region: CLBeaconRegion) {
         var minProximity = CLProximity.far
         if beacons.count > 0 {
@@ -144,32 +82,25 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                     self.safetyLabel.text = "SAFE"
                     self.topView.backgroundColor = UIColor.systemGreen
                     self.bottomView.backgroundColor = UIColor.systemGreen
-                    self.vibrate = false
+                    Util.stopVibration()
                     self.removePointsTimer.invalidate()
                 } else if minProximity == CLProximity.immediate {
                     self.safetyLabel.text = "TOO CLOSE"
                     self.topView.backgroundColor = UIColor.systemRed
                     self.bottomView.backgroundColor = UIColor.systemRed
-                    self.vibrate = true
-                    self.vibrateTimer(time: 0.1)
+                    Util.startVibration(atFrequency: .FAST)
                                         
-                    self.removePointsTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(ViewController.subtract1), userInfo: nil, repeats: true)
-                    self.removePointsTimer.fire()
                 } else if minProximity == CLProximity.near {
                     self.safetyLabel.text = "NEAR"
                     self.topView.backgroundColor = UIColor.systemOrange
                     self.bottomView.backgroundColor = UIColor.systemOrange
-                    self.vibrate = true
-                    self.vibrateTimer(time: 1)
+                    Util.startVibration(atFrequency: .REGULAR)
 
-                    self.removePointsTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(ViewController.subtract1), userInfo: nil, repeats: true)
-                    self.removePointsTimer.fire()
                 } else if minProximity == CLProximity.far {
                     self.safetyLabel.text = "CAUTION"
                     self.topView.backgroundColor = UIColor.systemYellow
                     self.bottomView.backgroundColor = UIColor.systemYellow
-                    self.vibrate = false
-                    self.removePointsTimer.invalidate()
+                    Util.stopVibration()
                 }
             })
         }
@@ -288,19 +219,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             UserDefaults.standard.set(true, forKey: "89aaa7987")
         }
         
-        locationManager.delegate = self
-        locationManager.requestAlwaysAuthorization()
-        locationManager.startUpdatingLocation();
-        locationManager.startUpdatingHeading();
-        
         self.mapView.setUserTrackingMode(.followWithHeading, animated: true)
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tap))
         mapView.addGestureRecognizer(tapGesture)
         mapView.delegate = self
         
-        self.addPointsTimer = Timer.scheduledTimer(timeInterval: 4, target: self, selector: #selector(ViewController.add1), userInfo: nil, repeats: true)
-        self.addPointsTimer.fire()
 
         
         //
@@ -499,18 +423,29 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             }
         }
     }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-        //        mapView.setCamera(MKMapCamera(lookingAtCenter: currentLocation!.coordinate, fromDistance: 500, pitch: 0, heading: newHeading.trueHeading), animated: true)
-        currentHeading = newHeading
-    }
-    
+
     @IBAction func tappedBottom1(_ sender: UITapGestureRecognizer) {
         self.performSegue(withIdentifier: "toLeaderboard", sender: self)
     }
     
     @IBAction func tappedBottom2(_ sender: UITapGestureRecognizer) {
         self.performSegue(withIdentifier: "toLeaderboard", sender: self)
+    }
+    
+    // MARK: LocationHandler Implementation
+    
+    func locationHandler(didUpdateCurrentLocation currentLocation: CLLocation?) {
+        <#code#>
+    }
+    
+    func locationHandler(didUpdateCurrentHeading currentHeading: CLHeading) {
+        self.currentHeading = currentHeading
+    }
+    
+    // MARK: MapHandler Implementation
+    
+    func mapHandler(didUpdateRoutes routes: [MKDirections.Response]) {
+        <#code#>
     }
     
 }

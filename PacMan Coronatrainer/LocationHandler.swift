@@ -32,12 +32,12 @@ class LocationHandler: NSObject, CLLocationManagerDelegate {
     
     internal func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
         LocationHandler.lastUpdatedHeading = newHeading
-        delegate?.didUpdateCurrentHeading(currentHeading: newHeading)
+        delegate?.locationHandler(didUpdateCurrentHeading: newHeading)
     }
     
     internal func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         LocationHandler.lastUpdatedLocation = locations.first
-        delegate?.didUpdateCurrentLocation(currentLocation: locations.first)
+        delegate?.locationHandler(didUpdateCurrentLocation: locations.first)
     }
     
     static func getCurrentLocation() -> CLLocation? {
@@ -52,9 +52,9 @@ class LocationHandler: NSObject, CLLocationManagerDelegate {
 
 protocol LocationHandlerDelegate {
     
-    func didUpdateCurrentLocation(currentLocation: CLLocation?)
+    func locationHandler(didUpdateCurrentLocation currentLocation: CLLocation?)
     
-    func didUpdateCurrentHeading(currentHeading: CLHeading)
+    func locationHandler(didUpdateCurrentHeading currentHeading: CLHeading)
     
 }
 
