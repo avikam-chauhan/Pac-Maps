@@ -9,6 +9,8 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://quarantraining-377bb.firebaseio.com"
 });
+
+
 // admin.initializeApp(functions.config().database)
 
 // // Create and Deploy Your First Cloud Functions
@@ -39,12 +41,12 @@ admin.initializeApp({
 //       return snapshot.ref.parent.child('uppercase').set(uppercase);
 //     });
 
-exports.helloWorld = functions.https.onRequest((req, res) => {
-  res.send("Hello from Firebase!");
-  exports.newUserCreated = functions.database.ref('/users').onCreate(event => {
-    res.send("user created")
-  })
-});
+// exports.helloWorld = functions.https.onRequest((req, res) => {
+//   res.send("Hello from Firebase!");
+//   exports.newUserCreated = functions.database.ref('/users').onCreate(event => {
+//     res.send("user created")
+//   })
+// });
 
 // exports.insertIntoDB = functions.https.onRequest((req, res) => {
 //   const text = "SAMPLE"; //req.query.text
@@ -53,29 +55,31 @@ exports.helloWorld = functions.https.onRequest((req, res) => {
 //   })
 // });
 
-exports.makeUppercase = functions.database.ref('/users/{UUID}/positiveResult')
+exports.positiveResult = functions.database.ref('/users/{UUID}/positiveResult')
     .onWrite((snapshot, context) => {
       // Grab the current value of what was written to the Realtime Database.
       const radius = 10; //MILES
       console.log('UUID:', context.params["UUID"]);
       const userUUID = context.params["UUID"];
       
+      
+
       const userLocation = admin.database().ref('/users/' + userUUID + '/location').once("value", function(locationSnapshot) {
+            //POSITIVE USER LOCATION
             var userLatitude = 0;
             var userLongitude = 0;
             userLatitude = locationSnapshot.val()["latitude"];
             userLongitude = locationSnapshot.val()["longitude"];
             console.log("latitude: " + userLatitude + " longitude: " + userLongitude);
-            admin.database().ref('/users').once("value", function(snapshot1){
-              // console.log("ENTERED", snapshot1.val());
-              snapshot1.forEach(function(childSnapshot){
-                var location =  childSnapshot.child("location").val();
-                if(location["latitude"] < userLatitude + radius && location["longitude"] < userLatitude + radius && childSnapshot.key != userUUID){
-                  console.log("NEARBY POSITIVE RESULT");
-                }
+            
+            const reference = snapshot.after.ref.parent.parent;
+            let latitudeQuery  = admin.database().ref('users').orderByChild("location/latitude").startAt(userLatitude - radius).endAt(userLatitude + radius).once("value", function(snapshot){
+              snapshot.forEach(function(childSnapshot){
+                console.log(childSnapshot.child("location/latitude").val());
+                console.log(childSnapshot.key);
               });
+              
             });
-            // console.log(snapshot);
 
           });      
       console.log('positiveResult VALUE:', snapshot.after.val()); //after.child('score').val()
