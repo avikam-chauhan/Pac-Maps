@@ -13,10 +13,10 @@ class MapHandler: NSObject, LocationHandlerDelegate {
     
     var delegate: MapHandlerDelegate?
     
-    var pacManAnnotation: CustomAnnotation
-    var ghostAnnotations: [CustomAnnotation] = []
-    var pinAnnotations: [CustomAnnotation] = []
-    var pinAnnotationView: MKPinAnnotationView!
+    static var pacManAnnotation: CustomAnnotation!
+    static var ghostAnnotations: [CustomAnnotation] = []
+    static var pinAnnotations: [CustomAnnotation] = []
+    static var pinAnnotationView: MKPinAnnotationView!
     
     var currentWaypointIndex = 0
     var startingPoint = CLLocation()
@@ -37,7 +37,7 @@ class MapHandler: NSObject, LocationHandlerDelegate {
         case Ghost
     }
     
-    func createAnnotation(ofType annotationType: AnnotationType, atCoordinate coordinate: CLLocationCoordinate2D) -> MKAnnotation {
+    static func createAnnotation(ofType annotationType: AnnotationType, atCoordinate coordinate: CLLocationCoordinate2D) -> MKAnnotation {
         if annotationType == .PacMan {
             pacManAnnotation = CustomAnnotation()
             pacManAnnotation.pinCustomImageName = "pac-man"

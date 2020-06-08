@@ -183,7 +183,7 @@ class ViewController: UIViewController, LocationHandlerDelegate, MapHandlerDeleg
             if let subDictionary = userDictionary!.value(forKey: key as! String) as? NSDictionary {
                 let locationDictionary = subDictionary.value(forKey: "location") as? NSDictionary
                 //            print(userDictionary!["score"]!)
-                var tempUser = User(UUID: key as? String ?? "", score: subDictionary["score"] as? Int ?? 0, location: CLLocationCoordinate2D(latitude: CLLocationDegrees(locationDictionary!["latitude"] as? Double ?? 0), longitude: CLLocationDegrees(locationDictionary!["longitude"] as? Double ?? 0)), username: subDictionary["username"] as? String ?? "")
+                var tempUser = User(UUID: key as? String ?? "", score: subDictionary["score"] as? Int ?? 0, location: CLLocationCoordinate2D(latitude: CLLocationDegrees(locationDictionary?["latitude"] as? Double ?? 0), longitude: CLLocationDegrees(locationDictionary?["longitude"] as? Double ?? 0)), username: subDictionary["username"] as? String ?? "")
                 
                 outputArray.append(tempUser)
             }
@@ -366,10 +366,10 @@ class ViewController: UIViewController, LocationHandlerDelegate, MapHandlerDeleg
 //            points += Int(50 * delta / 1609.34)
 //        }
         self.mapView.removeAnnotations(mapView.annotations)
-        showPacMan(coordinate: self.currentLocation!.coordinate)
+        self.mapView.addAnnotation(MapHandler.createAnnotation(ofType: .PacMan, atCoordinate: LocationHandler.getCurrentLocation()!.coordinate))
         for user in self.users {
             if user.UUID != UIDevice.current.identifierForVendor!.uuidString {
-                self.showGhost(coordinate: user.location!)
+                self.mapView.addAnnotation(MapHandler.createAnnotation(ofType: .Ghost, atCoordinate: user.location!))
             }
         }
         FirebaseInterface.updateLocation(currentLocation: currentLocation!.coordinate)
@@ -435,7 +435,7 @@ class ViewController: UIViewController, LocationHandlerDelegate, MapHandlerDeleg
     // MARK: LocationHandler Implementation
     
     func locationHandler(didUpdateCurrentLocation currentLocation: CLLocation?) {
-        <#code#>
+        // do something
     }
     
     func locationHandler(didUpdateCurrentHeading currentHeading: CLHeading) {
@@ -445,7 +445,7 @@ class ViewController: UIViewController, LocationHandlerDelegate, MapHandlerDeleg
     // MARK: MapHandler Implementation
     
     func mapHandler(didUpdateRoutes routes: [MKDirections.Response]) {
-        <#code#>
+        // do something
     }
     
 }

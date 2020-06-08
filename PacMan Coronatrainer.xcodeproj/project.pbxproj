@@ -26,6 +26,7 @@
 		9F363ED72454C8490023084D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F363ED62454C8480023084D /* User.swift */; };
 		9F363ED92454C89F0023084D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9F363ED82454C89F0023084D /* GoogleService-Info.plist */; };
 		9F363EDB2454D0510023084D /* FirebaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F363EDA2454D0500023084D /* FirebaseInterface.swift */; };
+		9F864912248EE84600BFA803 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F864911248EE84600BFA803 /* Util.swift */; };
 		9FF15CC4247F0C5400328C96 /* LocationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF15CC3247F0C5400328C96 /* LocationHandler.swift */; };
 		9FF15CC6247F123100328C96 /* MapHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF15CC5247F123100328C96 /* MapHandler.swift */; };
 		B08821A2247F070700CABF4D /* FirebaseDatabaseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08821A1247F070700CABF4D /* FirebaseDatabaseHandler.swift */; };
@@ -81,6 +82,7 @@
 		9F363ED62454C8480023084D /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		9F363ED82454C89F0023084D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9F363EDA2454D0500023084D /* FirebaseInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseInterface.swift; sourceTree = "<group>"; };
+		9F864911248EE84600BFA803 /* Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		9FF15CC3247F0C5400328C96 /* LocationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationHandler.swift; sourceTree = "<group>"; };
 		9FF15CC5247F123100328C96 /* MapHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapHandler.swift; sourceTree = "<group>"; };
 		AD56D9E086A8A91A8D719F93 /* libPods-PacMan CoronatrainerTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PacMan CoronatrainerTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -181,6 +183,7 @@
 				9F1083722455244E0024AE5B /* maps2.gpx */,
 				9F108374245524C30024AE5B /* maps3.gpx */,
 				B08821A1247F070700CABF4D /* FirebaseDatabaseHandler.swift */,
+				9F864911248EE84600BFA803 /* Util.swift */,
 			);
 			path = "PacMan Coronatrainer";
 			sourceTree = "<group>";
@@ -432,6 +435,7 @@
 				9F363ECC2453CE990023084D /* SceneDelegate.swift in Sources */,
 				B08821A624805D6300CABF4D /* GenericUser.swift in Sources */,
 				9F363EDB2454D0510023084D /* FirebaseInterface.swift in Sources */,
+				9F864912248EE84600BFA803 /* Util.swift in Sources */,
 				9FF15CC6247F123100328C96 /* MapHandler.swift in Sources */,
 				9FF15CC4247F0C5400328C96 /* LocationHandler.swift in Sources */,
 			);
