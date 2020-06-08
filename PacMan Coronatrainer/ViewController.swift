@@ -13,22 +13,18 @@ import CoreBluetooth
 import AudioToolbox
 import Firebase
 
-class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, CBPeripheralManagerDelegate {
+class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
+    
+    
+    var bluetoothHandler: BluetoothHandler!
+    var BeaconHandler: iBeaconHandler!
     
     var ref: DatabaseReference!
     var users = [User]()
     
     var vibrate = false
     
-    func vibrateTimer(time: Double) {
-        for i in 0...13 {
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(Double(i) * time * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: {
-                if self.vibrate {
-                    AudioServicesPlayAlertSound(kSystemSoundID_Vibrate)
-                }
-            })
-        }
-    }
+    
     
     //
     
@@ -88,36 +84,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         return annotationView
     }
     
-    // MARK: iBeacon Stuff
-    
-    
-    var beaconRegion: CLBeaconRegion! = nil
-    var beaconPeripheralData: NSDictionary = NSDictionary()
-    var peripheralManager: CBPeripheralManager = CBPeripheralManager()
-    
-    
-    func initBeaconRegion() {
-        beaconRegion = CLBeaconRegion(proximityUUID: UUID(uuidString: "E06F95E4-FCFC-42C6-B4F8-F6BAE87EA1A0")!, major: 1233, minor: 45, identifier: "PacMan")
-        beaconPeripheralData = beaconRegion .peripheralData(withMeasuredPower: nil)
-        peripheralManager = CBPeripheralManager.init(delegate: self, queue: nil)
-    }
-    
-    func peripheralManagerDidUpdateState(_ peripheral: CBPeripheralManager) {
-        if (peripheral.state == .poweredOn) {
-            peripheralManager .startAdvertising(beaconPeripheralData as? [String : Any])
-            print("Powered On")
-        } else {
-            peripheralManager .stopAdvertising()
-            print("Not Powered On, or some other error")
-        }
-    }
-    
-    func startScanningForBeaconRegion(beaconRegion: CLBeaconRegion) {
-        print(beaconRegion)
-        locationManager.startMonitoring(for: beaconRegion)
-        locationManager.startRangingBeacons(in: beaconRegion)
-    }
-    
     
     @objc func subtract1() {
         if vibrate {
@@ -131,49 +97,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         }
     }
     
-    func locationManager(_ manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], in region: CLBeaconRegion) {
-        var minProximity = CLProximity.far
-        if beacons.count > 0 {
-            for beacon in beacons {
-                if beacon.proximity.rawValue < minProximity.rawValue {
-                    minProximity = beacon.proximity
-                }
-            }
-            UIView.animate(withDuration: 0.5, animations: {
-                if minProximity == CLProximity.unknown {
-                    self.safetyLabel.text = "SAFE"
-                    self.topView.backgroundColor = UIColor.systemGreen
-                    self.bottomView.backgroundColor = UIColor.systemGreen
-                    self.vibrate = false
-                    self.removePointsTimer.invalidate()
-                } else if minProximity == CLProximity.immediate {
-                    self.safetyLabel.text = "TOO CLOSE"
-                    self.topView.backgroundColor = UIColor.systemRed
-                    self.bottomView.backgroundColor = UIColor.systemRed
-                    self.vibrate = true
-                    self.vibrateTimer(time: 0.1)
-                                        
-                    self.removePointsTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(ViewController.subtract1), userInfo: nil, repeats: true)
-                    self.removePointsTimer.fire()
-                } else if minProximity == CLProximity.near {
-                    self.safetyLabel.text = "NEAR"
-                    self.topView.backgroundColor = UIColor.systemOrange
-                    self.bottomView.backgroundColor = UIColor.systemOrange
-                    self.vibrate = true
-                    self.vibrateTimer(time: 1)
-
-                    self.removePointsTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(ViewController.subtract1), userInfo: nil, repeats: true)
-                    self.removePointsTimer.fire()
-                } else if minProximity == CLProximity.far {
-                    self.safetyLabel.text = "CAUTION"
-                    self.topView.backgroundColor = UIColor.systemYellow
-                    self.bottomView.backgroundColor = UIColor.systemYellow
-                    self.vibrate = false
-                    self.removePointsTimer.invalidate()
-                }
-            })
-        }
-    }
+   
     
     //
     
@@ -261,9 +185,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         //        })
     }
     
-    
-    
-    
+        
     
     
     
@@ -302,10 +224,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         self.addPointsTimer.fire()
 
         
-        //
-        initBeaconRegion()
-        startScanningForBeaconRegion(beaconRegion: CLBeaconRegion.init(proximityUUID: UUID.init(uuidString: "E06F95E4-FCFC-42C6-B4F8-F6BAE87EA1A0")!,
-                                                                       identifier: "PacMan"))
+//        //
+//        initBeaconRegion()
+//        startScanningForBeaconRegion(beaconRegion: CLBeaconRegion.init(proximityUUID: UUID.init(uuidString: "E06F95E4-FCFC-42C6-B4F8-F6BAE87EA1A0")!,
+//                                                                       identifier: "PacMan"))
         
         ref = Database.database().reference()
         getAllUsers { (users) in
@@ -332,6 +254,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             }
         }
         
+        //MARK: Init iBeacon and Bluetooth
+        
+        bluetoothHandler = BluetoothHandler()
+        BeaconHandler = iBeaconHandler(topBar: topView, bottomBar: bottomView, distanceReading: safetyLabel)
+        
+        bluetoothHandler.startSendReceivingBluetoothData()
+        BeaconHandler.startBeacon()
     }
     
     
