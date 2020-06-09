@@ -162,7 +162,7 @@ class ViewController: UIViewController, LocationHandlerDelegate, MapHandlerDeleg
                 if let userDictionary = value?.value(forKey: key as! String) as? NSDictionary {
                     let locationDictionary = userDictionary.value(forKey: "location") as? NSDictionary
                     //            print(userDictionary!["score"]!)
-                    var tempUser = User(UUID: key as? String ?? "", score: userDictionary["score"] as? Int ?? 0, location: CLLocationCoordinate2D(latitude: CLLocationDegrees(locationDictionary!["latitude"] as? Double ?? 0), longitude: CLLocationDegrees(locationDictionary!["longitude"] as? Double ?? 0)), username: userDictionary["username"] as? String ?? "")
+                    var tempUser = User(UUID: key as? String ?? "", score: userDictionary["score"] as? Int ?? 0, location: CLLocationCoordinate2D(latitude: CLLocationDegrees(locationDictionary?["latitude"] as? Double ?? 0), longitude: CLLocationDegrees(locationDictionary?["longitude"] as? Double ?? 0)), username: userDictionary["username"] as? String ?? "")
                     
                     outputArray.append(tempUser)
                 }
