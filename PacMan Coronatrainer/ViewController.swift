@@ -13,11 +13,8 @@ import CoreBluetooth
 import AudioToolbox
 import Firebase
 
-class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
-    
-    
+class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, BluetoothHandlerDelegate {
     var bluetoothHandler: BluetoothHandler!
-    var BeaconHandler: iBeaconHandler!
     
     var ref: DatabaseReference!
     var users = [User]()
@@ -154,7 +151,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 if let userDictionary = value?.value(forKey: key as! String) as? NSDictionary {
                     let locationDictionary = userDictionary.value(forKey: "location") as? NSDictionary
                     //            print(userDictionary!["score"]!)
-                    let tempUser = User(UUID: key as? String ?? "", score: userDictionary["score"] as? Int ?? 0, location: CLLocationCoordinate2D(latitude: CLLocationDegrees(locationDictionary!["latitude"] as? Double ?? 0), longitude: CLLocationDegrees(locationDictionary!["longitude"] as? Double ?? 0)), username: userDictionary["username"] as? String ?? "")
+                    let tempUser = User(UUID: key as? String ?? "", score: userDictionary["score"] as? Int ?? 0, location: CLLocationCoordinate2D(latitude: CLLocationDegrees(locationDictionary?["latitude"] as? Double ?? 0), longitude: CLLocationDegrees(locationDictionary?["longitude"] as? Double ?? 0)), username: userDictionary["username"] as? String ?? "")
                     
                     outputArray.append(tempUser)
                 }
@@ -175,7 +172,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             if let subDictionary = userDictionary!.value(forKey: key as! String) as? NSDictionary {
                 let locationDictionary = subDictionary.value(forKey: "location") as? NSDictionary
                 //            print(userDictionary!["score"]!)
-                var tempUser = User(UUID: key as? String ?? "", score: subDictionary["score"] as? Int ?? 0, location: CLLocationCoordinate2D(latitude: CLLocationDegrees(locationDictionary!["latitude"] as? Double ?? 0), longitude: CLLocationDegrees(locationDictionary!["longitude"] as? Double ?? 0)), username: subDictionary["username"] as? String ?? "")
+                var tempUser = User(UUID: key as? String ?? "", score: subDictionary["score"] as? Int ?? 0, location: CLLocationCoordinate2D(latitude: CLLocationDegrees(locationDictionary?["latitude"] as? Double ?? 0), longitude: CLLocationDegrees(locationDictionary?["longitude"] as? Double ?? 0)), username: subDictionary["username"] as? String ?? "")
                 
                 outputArray.append(tempUser)
             }
@@ -257,10 +254,36 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         //MARK: Init iBeacon and Bluetooth
         
         bluetoothHandler = BluetoothHandler()
-        BeaconHandler = iBeaconHandler(topBar: topView, bottomBar: bottomView, distanceReading: safetyLabel)
-        
+        bluetoothHandler.bluetoothHandlerDelegate = self
         bluetoothHandler.startSendReceivingBluetoothData()
-        BeaconHandler.startBeacon()
+    }
+    
+    func didUpdateBluetooth(distance: CLProximity) {
+        UIView.animate(withDuration: 1) {
+            switch distance {
+            case .immediate:
+                self.topView.backgroundColor = .systemRed
+                self.safetyLabel.text = "DANGER"
+                self.bottomView.backgroundColor = .systemRed
+            case .near:
+                self.topView.backgroundColor = .systemYellow
+                self.safetyLabel.text = "CAUTION"
+                self.bottomView.backgroundColor = .systemYellow
+            case .far:
+                self.topView.backgroundColor = .systemGreen
+                self.safetyLabel.text = "SAFE"
+                self.bottomView.backgroundColor = .systemGreen
+            case .unknown:
+                self.topView.backgroundColor = .systemGreen
+                self.safetyLabel.text = "SAFE"
+                self.bottomView.backgroundColor = .systemGreen
+            default: return
+            }
+        }
+    }
+    
+    func didUpdateBluetooth(otherUserUUID: String) {
+        
     }
     
     
