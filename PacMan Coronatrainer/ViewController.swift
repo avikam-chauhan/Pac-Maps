@@ -283,7 +283,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     }
     
     func didUpdateBluetooth(otherUserUUID: String) {
-        
+        FirebaseInterface.addContacteduserUUID(UUID: otherUserUUID)
     }
     
     
