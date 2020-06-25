@@ -130,85 +130,95 @@ exports.contactTracing = functions.database.ref('/users/{UUID}/positiveResult').
 
   updatingAllContactedUsers(currentUserUUID);
 
-  if(snapshot.after.val()) {
-  //task list: get allContactedUsers array, get each UUID, get their registrationToken, sendNotification, repeat two more times
+  if (snapshot.after.val()) {
+    //task list: get allContactedUsers array, get each UUID, get their registrationToken, sendNotification, repeat two more times
 
-  admin.database().ref('/users/' + currentUserUUID + '/allContactedUsers').once("value", function (positiveUserSnapshot) {
-    var allContactedUsers = positiveUserSnapshot.val();
+    admin.database().ref('/users/' + currentUserUUID + '/allContactedUsers').once("value", function (positiveUserSnapshot) {
+      var allContactedUsers = positiveUserSnapshot.val();
 
-    console.log("allContactedUsers", allContactedUsers);
+      console.log("allContactedUsers", allContactedUsers);
 
-    for (var i = 0; i < Object.keys(allContactedUsers).length; i++) {
-      var contactUserUUID = allContactedUsers[i]["uuid"];
-      var contactUserDistance = allContactedUsers[i]["distance"];
-      var contactUserTimeStampMS = allContactedUsers[i]["timeStampMS"];
-      // console.log("contactUserUUID", contactUserUUID);
-      // console.log("contactUserTimeStampMS", contactUserTimeStampMS);
+      for (var i = 0; i < Object.keys(allContactedUsers).length; i++) {
+        var contactUserUUID = allContactedUsers[i]["uuid"];
 
-      var deltaMS = Date.now() - contactUserTimeStampMS;
-      var deltaDay = Math.floor((deltaMS / 1000) / 60 / 60 / 24);
-      // console.log("deltaDay", deltaDay); 
-      // console.log("contactUserDistance", contactUserDistance);
+        if (contactUserUUID !== currentUserUUID) {
+          var contactUserDistance = allContactedUsers[i]["distance"];
+          var contactUserTimeStampMS = allContactedUsers[i]["timeStampMS"];
+          // console.log("contactUserUUID", contactUserUUID);
+          // console.log("contactUserTimeStampMS", contactUserTimeStampMS);
 
-
-      admin.database().ref('/users/' + contactUserUUID + '/registrationToken').once("value", function (contactUserSnapshot) {
-        var contactUserRegistrationToken = contactUserSnapshot.val();
-        console.log("contactUserRegistrationToken", contactUserRegistrationToken);
-        sendNotification(contactUserRegistrationToken, contactUserDistance, deltaDay, 1);
+          var deltaMS = Date.now() - contactUserTimeStampMS;
+          var deltaDay = Math.floor((deltaMS / 1000) / 60 / 60 / 24);
+          // console.log("deltaDay", deltaDay); 
+          // console.log("contactUserDistance", contactUserDistance);
+          var contactUserPositiveResult = false;
 
 
-      })
+          admin.database().ref('/users/' + contactUserUUID + '/registrationToken').once("value", function (contactUserSnapshot) {
+            var contactUserRegistrationToken = contactUserSnapshot.val();
+            // console.log("contactUserRegistrationToken", contactUserRegistrationToken);
 
-      indivContactUser = new contactUser(contactUserUUID, 1);
-      extendedContactTracing(indivContactUser);
-    }
-  })
+            admin.database().ref('/users/' + contactUserUUID + '/positiveResult').once("value", function (positiveResultSnapshot) {
+              if (!positiveResultSnapshot.val()) {
+                sendNotification(contactUserRegistrationToken, contactUserDistance, deltaDay, 1);
+                indivContactUser = new contactUser(contactUserUUID, 1);
+                extendedContactTracing(indivContactUser);
+              }
+              // contactUserPositiveResult = positiveResultSnapshot.val();
+            })
+          })
+
+        }
+      }
+    })
   }
 })
 
 var edited = false;
-function updatingAllContactedUsers(userUUID){
-  if (!edited) {
-    edited = true
-    const weekMS = 4 * 7 * 24 * 60 * 60 * 1000;
+function updatingAllContactedUsers(userUUID) {
+  admin.database().ref('/users/' + userUUID + '/allContactedUsers').once("value", function (snapshot) {
+    if (!edited) {
+      edited = true
+      const weekMS = 4 * 7 * 24 * 60 * 60 * 1000;
 
-    var currentUserUUID = userUUID;
-    console.log(currentUserUUID);
+      var currentUserUUID = userUUID;
+      // console.log(currentUserUUID);
 
 
-    // console.log("original snapshot", Object.keys(snapshot.after.val()).length); //snapshot.after.val()[0]['timeStampMS'])
+      // console.log("original snapshot", Object.keys(snapshot.after.val()).length); //snapshot.after.val()[0]['timeStampMS'])
 
-    var currentTimeMS = new Date().getTime();
-    console.log("currentTimeMS", currentTimeMS);
+      var currentTimeMS = new Date().getTime();
+      // console.log("currentTimeMS", currentTimeMS);
 
-    var recentContactedUsers = [];
+      var recentContactedUsers = [];
 
-    for (var i = 0; i < Object.keys(snapshot.after.val()).length; i++) {
-      if (currentTimeMS - snapshot.after.val()[i]['timeStampMS'] <= weekMS) {
-        recentContactedUsers.push(snapshot.after.val()[i]);
+      for (var i = 0; i < Object.keys(snapshot.val()).length; i++) {
+        if (currentTimeMS - snapshot.val()[i]['timeStampMS'] <= weekMS) {
+          recentContactedUsers.push(snapshot.val()[i]);
+        }
       }
+
+      // console.log(recentContactedUsers);
+
+
+
+      admin.database().ref('/users/' + currentUserUUID + '/allContactedUsers').set(recentContactedUsers);
+
+
+      // admin.database().ref('/users/' + currentUserUUID + '/allContactedUsers').orderByChild("timeStampMS").startAt(currentTimeMS - weekMS).endAt(currentTimeMS).once("value", function(userSnapshot) {
+      //   console.log(userSnapshot.val());
+      // })
+    } else if (edited) {
+      edited = false;
     }
-
-    console.log(recentContactedUsers);
-
-
-
-    admin.database().ref('/users/' + currentUserUUID + '/allContactedUsers').set(recentContactedUsers);
-
-
-    // admin.database().ref('/users/' + currentUserUUID + '/allContactedUsers').orderByChild("timeStampMS").startAt(currentTimeMS - weekMS).endAt(currentTimeMS).once("value", function(userSnapshot) {
-    //   console.log(userSnapshot.val());
-    // })
-  } else if (edited) {
-    edited = false;
-  }
+  })
 }
 
 //rather than having a counter, make a class called contactTracingUser that contains userUUID and the counter inside it. So when it get passed on to the extended contact tracing again, it will only continue if the contactTracingUser counter is less than 2. If the counter is 2, then that is the last person on the chain and should not send notification. 
 
 function extendedContactTracing(user) {
-
-  if (user.position < 3) {
+  console.log("USER POSITION", user.position);
+  if (user.position < 2) {
     var currentUserUUID = user.UUID;
     console.log(currentUserUUID);
 
@@ -237,11 +247,14 @@ function extendedContactTracing(user) {
 
         admin.database().ref('/users/' + contactUserUUID + '/registrationToken').once("value", function (contactUserSnapshot) {
           var contactUserRegistrationToken = contactUserSnapshot.val();
-          console.log("contactUserRegistrationToken", contactUserRegistrationToken);
-          sendNotification(contactUserRegistrationToken, contactUserDistance, deltaDay, indivContactUser.position);
-        })
+          admin.database().ref('/users/' + contactUserUUID + '/positiveResult').once("value", function (positiveResultSnapshot) {
+            if (!positiveResultSnapshot.val()) {
+              sendNotification(contactUserRegistrationToken, contactUserDistance, deltaDay, indivContactUser.position);
+              extendedContactTracing(indivContactUser);
 
-        extendedContactTracing(indivContactUser);
+            }
+          })
+        })
       }
     })
   }
@@ -319,6 +332,7 @@ function extendedContactTracing(user) {
 
 
 function sendNotification(registrationToken, distance, timeStampDay, position) {
+  console.log('-------------------------------------SENDING NOTIFICATION-------------------------------------');
   //   var host = 'https://api.sandbox.push.apple.com';
   //   var path = `/3/device/${key}`
 
