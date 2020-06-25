@@ -16,7 +16,6 @@ class FirebaseInterface {
     static var username: String?
     static var location: CLLocationCoordinate2D?
     static var score: Int?
-    static var contactedUsers: Array<String>?
     static var numberOfUsers: Int = 0
     static var dict: NSDictionary?
         
@@ -37,28 +36,31 @@ class FirebaseInterface {
         ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).child("score").setValue(score)
     }
     
-    public static func addContacteduserUUID(UUID: String) {
-        ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).child("allContactedUsers").setValue([])
+    static var contactedUsersDictionary = [[String: Any]]()
+    
+    public static func addContacteduserUUID(UUID: String, Distance distance: String) {
+        
         getContactedUsers { (contactedUsers) in
-            var arrayOfContactedUsers: Array<String> = []
-            arrayOfContactedUsers = contactedUsers
-            print("ACUB: \(arrayOfContactedUsers)")
-
-            arrayOfContactedUsers.append(UUID)
-            
-            print("ACUA: \(arrayOfContactedUsers)")
-
-            
-            ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).child("allContactedUsers").setValue(arrayOfContactedUsers)
+            contactedUsersDictionary = [[String: Any]]()
+            for contactedusers in 0..<contactedUsers.count {
+                contactedUsersDictionary.append(contactedUsers[contactedusers] as! [String : Any])
+            }
+            var arrayOfSingleContactedUser = [String: Any]()
+            arrayOfSingleContactedUser = ["uuid":UUID, "distance":distance, "timeStampMS":Date().timeIntervalSince1970 * 1000]
+            contactedUsersDictionary.append(arrayOfSingleContactedUser)
+            ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).child("allContactedUsers").setValue(contactedUsersDictionary)
         }
+    
+        
     }
     
-    public static func getContactedUsers(handler: @escaping (Array<Array<String>>) -> ()) {
+    public static func getContactedUsers(handler: @escaping (Array<NSDictionary>) -> ()) {
         ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).child("allContactedUsers").observeSingleEvent(of: .value) { (snapshot) in
-            if let arrayOfContactedUsers = snapshot.value as? Array<Array<String>> {
+            print("SNPST:: \(snapshot.value!)")
+            if let arrayOfContactedUsers = snapshot.value as? Array<NSDictionary> {
                 print("SNPST: \(snapshot)")
-                self.contactedUsers = arrayOfContactedUsers
                 handler(arrayOfContactedUsers)
+                
             }
         }
     }

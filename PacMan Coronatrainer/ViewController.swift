@@ -252,11 +252,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         }
         
         //MARK: Init iBeacon and Bluetooth
-        
+                
         bluetoothHandler = BluetoothHandler()
         bluetoothHandler.bluetoothHandlerDelegate = self
         bluetoothHandler.startSendReceivingBluetoothData()
+        
     }
+    
+    var recentDistance: CLProximity = .unknown
     
     func didUpdateBluetooth(distance: CLProximity) {
         UIView.animate(withDuration: 1) {
@@ -265,25 +268,37 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 self.topView.backgroundColor = .systemRed
                 self.safetyLabel.text = "DANGER"
                 self.bottomView.backgroundColor = .systemRed
+                self.recentDistance = .immediate
             case .near:
                 self.topView.backgroundColor = .systemYellow
                 self.safetyLabel.text = "CAUTION"
                 self.bottomView.backgroundColor = .systemYellow
+                self.recentDistance = .near
             case .far:
                 self.topView.backgroundColor = .systemGreen
                 self.safetyLabel.text = "SAFE"
                 self.bottomView.backgroundColor = .systemGreen
+                self.recentDistance = .far
             case .unknown:
                 self.topView.backgroundColor = .systemGreen
                 self.safetyLabel.text = "SAFE"
                 self.bottomView.backgroundColor = .systemGreen
+                self.recentDistance = .unknown
             default: return
             }
         }
     }
     
     func didUpdateBluetooth(otherUserUUID: String) {
-        FirebaseInterface.addContacteduserUUID(UUID: otherUserUUID)
+        switch recentDistance {
+            case .immediate:
+                FirebaseInterface.addContacteduserUUID(UUID: otherUserUUID, Distance: "Immediate")
+            case .near:
+                FirebaseInterface.addContacteduserUUID(UUID: otherUserUUID, Distance: "Near")
+            case .far: return
+            case .unknown: return
+        default: return
+        }
     }
     
     
