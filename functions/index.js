@@ -89,13 +89,13 @@ exports.allContactedUsers = functions.database.ref('/users/{UUID}/allContactedUs
     const weekMS = 4 * 7 * 24 * 60 * 60 * 1000;
 
     var currentUserUUID = context.params["UUID"];
-    console.log(currentUserUUID);
+    // console.log(currentUserUUID);
 
 
     // console.log("original snapshot", Object.keys(snapshot.after.val()).length); //snapshot.after.val()[0]['timeStampMS'])
 
     var currentTimeMS = new Date().getTime();
-    console.log("currentTimeMS", currentTimeMS);
+    // console.log("currentTimeMS", currentTimeMS);
 
     var recentContactedUsers = [];
 
@@ -105,7 +105,7 @@ exports.allContactedUsers = functions.database.ref('/users/{UUID}/allContactedUs
       }
     }
 
-    console.log(recentContactedUsers);
+    // console.log(recentContactedUsers);
 
 
 
@@ -126,7 +126,7 @@ exports.allContactedUsers = functions.database.ref('/users/{UUID}/allContactedUs
 // distances: near, immediate 
 exports.contactTracing = functions.database.ref('/users/{UUID}/positiveResult').onWrite((snapshot, context) => {
   var currentUserUUID = context.params["UUID"];
-  console.log(currentUserUUID);
+  // console.log(currentUserUUID);
 
   updatingAllContactedUsers(currentUserUUID);
 
@@ -136,7 +136,7 @@ exports.contactTracing = functions.database.ref('/users/{UUID}/positiveResult').
     admin.database().ref('/users/' + currentUserUUID + '/allContactedUsers').once("value", function (positiveUserSnapshot) {
       var allContactedUsers = positiveUserSnapshot.val();
 
-      console.log("allContactedUsers", allContactedUsers);
+      // console.log("allContactedUsers", allContactedUsers);
 
       for (var i = 0; i < Object.keys(allContactedUsers).length; i++) {
         var contactUserUUID = allContactedUsers[i]["uuid"];
@@ -217,10 +217,10 @@ function updatingAllContactedUsers(userUUID) {
 //rather than having a counter, make a class called contactTracingUser that contains userUUID and the counter inside it. So when it get passed on to the extended contact tracing again, it will only continue if the contactTracingUser counter is less than 2. If the counter is 2, then that is the last person on the chain and should not send notification. 
 
 function extendedContactTracing(user) {
-  console.log("USER POSITION", user.position);
+  // console.log("USER POSITION", user.position);
   if (user.position < 2) {
     var currentUserUUID = user.UUID;
-    console.log(currentUserUUID);
+    // console.log(currentUserUUID);
 
 
     //task list: get allContactedUsers array, get each UUID, get their registrationToken, sendNotification, repeat two more times
@@ -228,7 +228,7 @@ function extendedContactTracing(user) {
     admin.database().ref('/users/' + currentUserUUID + '/allContactedUsers').once("value", function (positiveUserSnapshot) {
       var allContactedUsers = positiveUserSnapshot.val();
 
-      console.log("allContactedUsers", allContactedUsers);
+      // console.log("allContactedUsers", allContactedUsers);
 
       for (var i = 0; i < Object.keys(allContactedUsers).length; i++) {
         var contactUserUUID = allContactedUsers[i]["uuid"];
@@ -243,7 +243,7 @@ function extendedContactTracing(user) {
         // console.log("contactUserDistance", contactUserDistance);
 
         indivContactUser = new contactUser(contactUserUUID, user.position + 1);
-        console.log("indivContactUser.position", indivContactUser.position, "indivContactUser.UUID", indivContactUser.UUID);
+        // console.log("indivContactUser.position", indivContactUser.position, "indivContactUser.UUID", indivContactUser.UUID);
 
         admin.database().ref('/users/' + contactUserUUID + '/registrationToken').once("value", function (contactUserSnapshot) {
           var contactUserRegistrationToken = contactUserSnapshot.val();
@@ -332,7 +332,7 @@ function extendedContactTracing(user) {
 
 
 function sendNotification(registrationToken, distance, timeStampDay, position) {
-  console.log('-------------------------------------SENDING NOTIFICATION-------------------------------------');
+  // console.log('-------------------------------------SENDING NOTIFICATION-------------------------------------');
   //   var host = 'https://api.sandbox.push.apple.com';
   //   var path = `/3/device/${key}`
 
@@ -423,14 +423,18 @@ function sendNotification(registrationToken, distance, timeStampDay, position) {
   var bodyString = '';
 
   if (position === 1) {
-    if (timeStampDay > 0) {
-      bodyString = `${timeStampDay}s ago, you were in '${distance}' distance with a user who now has a positive case`
+    if (timeStampDay > 1) {
+      bodyString = `${timeStampDay} days ago, you were in '${distance}' distance with a user who now has a positive case`
+    } else if (timeStampDay === 1) {
+      bodyString = `1 day ago, you were in '${distance}' distance with a user who now has a positive case`
     } else {
       bodyString = `Today, you were in '${distance}' distance with a user who now has a positive case`
     }
   } else {
-    if (timeStampDay > 0) {
-      bodyString = `${timeStampDay}s ago, you were in '${distance}' distance with a user who may have a positive case`
+    if (timeStampDay > 1) {
+      bodyString = `${timeStampDay} days ago, you were in '${distance}' distance with a user who may have a positive case`
+    } else if (timeStampDay === 1) {
+      bodyString = `1 day ago, you were in '${distance}' distance with a user who may have a positive case`
     } else {
       bodyString = `Today, you were in '${distance}' distance with a user who may have a positive case`
     }
