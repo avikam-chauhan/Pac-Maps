@@ -17,8 +17,14 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     var data: NSMutableData! = NSMutableData()
     let BLE_UUID = "5DE63112-432E-4D11-AFDF-F6F091689061"
     var peripheralManager: CBPeripheralManager!
-    
     var bluetoothHandlerDelegate: BluetoothHandlerDelegate?
+    
+    var isLookingForFamilyMember = false
+    
+    public func lookForFamilyMember(isLooking: Bool) {
+        isLookingForFamilyMember = isLooking
+    }
+    
         
     //MARK: Send UUID over Bluetooth
     

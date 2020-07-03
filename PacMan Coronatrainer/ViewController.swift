@@ -293,13 +293,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 self.topView.backgroundColor = .systemGreen
                 self.safetyLabel.text = "SAFE"
                 self.bottomView.backgroundColor = .systemGreen
-                self.recentDistance = .unknown
+//                self.recentDistance = .unknown
             default: return
             }
         }
     }
     
     func didUpdateBluetooth(otherUserUUID: String) {
+        contactedUserUUID = otherUserUUID
         isWaitingForRecentDistanceToBeSet = true
         addContactedUserToFirebase(otherUserUUID: otherUserUUID)
     }
@@ -309,8 +310,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             switch recentDistance {
                 case .immediate:
                     FirebaseInterface.addContacteduserUUID(UUID: otherUserUUID!, Distance: "Immediate")
+                    isWaitingForRecentDistanceToBeSet = false
+                    recentDistance = .unknown
+                    contactedUserUUID = ""
                 case .near:
                     FirebaseInterface.addContacteduserUUID(UUID: otherUserUUID!, Distance: "Near")
+                    isWaitingForRecentDistanceToBeSet = false
+                    recentDistance = .unknown
+                    contactedUserUUID = ""
             case .far: print("Recent distance is far"); return
             case .unknown:
                 print("Recent distance is unknwon");
