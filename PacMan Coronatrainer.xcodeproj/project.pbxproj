@@ -74,6 +74,7 @@
 		9F363ED62454C8480023084D /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		9F363ED82454C89F0023084D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9F363EDA2454D0500023084D /* FirebaseInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseInterface.swift; sourceTree = "<group>"; };
+		9FE2FA94249D748200C68C51 /* Pac-Maps.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Pac-Maps.entitlements"; sourceTree = "<group>"; };
 		AD56D9E086A8A91A8D719F93 /* libPods-PacMan CoronatrainerTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PacMan CoronatrainerTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B076C33D5297C1F9608BA61E /* libPods-PacMan Coronatrainer-PacMan CoronatrainerUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PacMan Coronatrainer-PacMan CoronatrainerUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7EE3042A5D792F28DCA0808 /* Pods-PacMan Coronatrainer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PacMan Coronatrainer.release.xcconfig"; path = "Target Support Files/Pods-PacMan Coronatrainer/Pods-PacMan Coronatrainer.release.xcconfig"; sourceTree = "<group>"; };
@@ -148,6 +149,7 @@
 		9F363E9A2453B4ED0023084D /* PacMan Coronatrainer */ = {
 			isa = PBXGroup;
 			children = (
+				9FE2FA94249D748200C68C51 /* Pac-Maps.entitlements */,
 				9F363E9B2453B4EE0023084D /* AppDelegate.swift */,
 				9F363ECB2453CE990023084D /* SceneDelegate.swift */,
 				9F363ED2245414D70023084D /* ViewController.swift */,
@@ -583,6 +585,7 @@
 			baseConfigurationReference = F5BA87FC3C1754AFFDE95190 /* Pods-PacMan Coronatrainer.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "PacMan Coronatrainer/Pac-Maps.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = B2278J6LL2;
 				INFOPLIST_FILE = "PacMan Coronatrainer/Info.plist";
@@ -603,6 +606,7 @@
 			baseConfigurationReference = C7EE3042A5D792F28DCA0808 /* Pods-PacMan Coronatrainer.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "PacMan Coronatrainer/Pac-Maps.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = B2278J6LL2;
 				INFOPLIST_FILE = "PacMan Coronatrainer/Info.plist";

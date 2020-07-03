@@ -21,43 +21,23 @@ class FirebaseInterface {
     
     //Setting all of the user info
     
-    static func updateUserInfo() {
-        getUserDatabase { (dict) in
-            ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).setValue(["username":username ?? getUsername(database: dict) , "location":["latitude": location?.latitude ?? 0, "longitude": location?.longitude ?? 0], "score":score ?? getScore(database: dict)])
-        }
-    }
-    
     static func createUser() {
-        ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).setValue(["username":"" , "location":["latitude": 0, "longitude": 0], "score": 0])
+        ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).setValue([])
     }
     
     public static func updateUsername(username: String) { //only set at beginning of app install
-        self.username = username
-        updateUserInfo()
+        ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).child("username").setValue(username)
     }
     public static func updateLocation(currentLocation coordinate: CLLocationCoordinate2D) {
-        self.location = coordinate
-        updateUserInfo()
+        ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).child("location").child("latitude").setValue(coordinate.latitude)
+        ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).child("location").child("longitude").setValue(coordinate.longitude)
     }
     public static func updateScore(score: Int) {
-        self.score = score
-        updateUserInfo()
+        ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).child("score").setValue(score)
     }
     
-    public static func getUserDatabase(handler: @escaping (NSDictionary) -> ()) {
-        ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).observeSingleEvent(of: .value, with: { (snapshot) in
-            if let dictionary = snapshot.value as? NSDictionary {
-                self.dict = dictionary
-                handler(dictionary)
-            }
-        })
-    }
-    
-    public static func getScore(database: NSDictionary?) -> Int? {
-        if database != nil {
-            return database!["score"] as? Int
-        }
-        return 0
+    public static func getScore() -> Int {
+        return 0 // ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).value(forKeyPath: "score") as? Int ?? 0 //  (forKey: "score") as? Int ?? 0
     }
     
     public static func getUsername(database: NSDictionary?) -> String {

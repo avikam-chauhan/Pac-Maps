@@ -183,7 +183,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             FirebaseInterface.updateScore(score: newValue)
         }
         get {
-            return FirebaseInterface.getScore(database: FirebaseInterface.dict) ?? 0
+            return FirebaseInterface.getScore()
         }
     }
     
@@ -230,7 +230,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 if let userDictionary = value?.value(forKey: key as! String) as? NSDictionary {
                     let locationDictionary = userDictionary.value(forKey: "location") as? NSDictionary
                     //            print(userDictionary!["score"]!)
-                    var tempUser = User(UUID: key as? String ?? "", score: userDictionary["score"] as? Int ?? 0, location: CLLocationCoordinate2D(latitude: CLLocationDegrees(locationDictionary!["latitude"] as? Double ?? 0), longitude: CLLocationDegrees(locationDictionary!["longitude"] as? Double ?? 0)), username: userDictionary["username"] as? String ?? "")
+                    var tempUser = User(UUID: key as? String ?? "", score: userDictionary["score"] as? Int ?? 0, location: CLLocationCoordinate2D(latitude: CLLocationDegrees(locationDictionary?["latitude"] as? Double ?? 0), longitude: CLLocationDegrees(locationDictionary?["longitude"] as? Double ?? 0)), username: userDictionary["username"] as? String ?? "")
                     
                     outputArray.append(tempUser)
                 }
@@ -251,7 +251,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             if let subDictionary = userDictionary!.value(forKey: key as! String) as? NSDictionary {
                 let locationDictionary = subDictionary.value(forKey: "location") as? NSDictionary
                 //            print(userDictionary!["score"]!)
-                var tempUser = User(UUID: key as? String ?? "", score: subDictionary["score"] as? Int ?? 0, location: CLLocationCoordinate2D(latitude: CLLocationDegrees(locationDictionary!["latitude"] as? Double ?? 0), longitude: CLLocationDegrees(locationDictionary!["longitude"] as? Double ?? 0)), username: subDictionary["username"] as? String ?? "")
+                var tempUser = User(UUID: key as? String ?? "", score: subDictionary["score"] as? Int ?? 0, location: CLLocationCoordinate2D(latitude: CLLocationDegrees(locationDictionary?["latitude"] as? Double ?? 0), longitude: CLLocationDegrees(locationDictionary?["longitude"] as? Double ?? 0)), username: subDictionary["username"] as? String ?? "")
                 
                 outputArray.append(tempUser)
             }
@@ -316,9 +316,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             let postDict = snapshot.value as? NSDictionary
             self.users = self.parseUsers(dictionary: postDict!)
         })
-        FirebaseInterface.getUserDatabase { (dict) in
-            self.points = FirebaseInterface.getScore(database: FirebaseInterface.dict!) ?? 0
-        }
+        self.points = FirebaseInterface.getScore()
         
         self.getAllUsers { (myUsers) in
             var sortedUsers = myUsers.sorted(by: { (a, b) -> Bool in
