@@ -42,9 +42,12 @@ class FirebaseInterface {
         
         getContactedUsers { (contactedUsers) in
             contactedUsersDictionary = [[String: Any]]()
-            for contactedusers in 0..<contactedUsers.count {
-                contactedUsersDictionary.append(contactedUsers[contactedusers] as! [String : Any])
+            if contactedUsers != nil {
+                for contactedusers in 0..<(contactedUsers?.count)! {
+                    contactedUsersDictionary.append(contactedUsers?[contactedusers] as! [String : Any])
+                }
             }
+            
             var arrayOfSingleContactedUser = [String: Any]()
             arrayOfSingleContactedUser = ["uuid":UUID, "distance":distance, "timeStampMS":Date().timeIntervalSince1970 * 1000]
             contactedUsersDictionary.append(arrayOfSingleContactedUser)
@@ -54,13 +57,15 @@ class FirebaseInterface {
         
     }
     
-    public static func getContactedUsers(handler: @escaping (Array<NSDictionary>) -> ()) {
+    public static func getContactedUsers(handler: @escaping (Array<NSDictionary>?) -> ()) {
         ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).child("allContactedUsers").observeSingleEvent(of: .value) { (snapshot) in
             print("SNPST:: \(snapshot.value!)")
             if let arrayOfContactedUsers = snapshot.value as? Array<NSDictionary> {
                 print("SNPST: \(snapshot)")
                 handler(arrayOfContactedUsers)
                 
+            } else {
+                handler(nil)
             }
         }
     }

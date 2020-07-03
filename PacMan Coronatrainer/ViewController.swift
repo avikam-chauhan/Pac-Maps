@@ -259,7 +259,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
     }
     
-    var recentDistance: CLProximity = .unknown
+    var recentDistance: CLProximity = .unknown {
+        didSet {
+            if isWaitingForRecentDistanceToBeSet {
+                addContactedUserToFirebase(otherUserUUID: contactedUserUUID == "" ? nil : contactedUserUUID)
+                isWaitingForRecentDistanceToBeSet = false
+            }
+        }
+    }
+    
+    var contactedUserUUID: String = ""
+    var isWaitingForRecentDistanceToBeSet: Bool = false
     
     func didUpdateBluetooth(distance: CLProximity) {
         UIView.animate(withDuration: 1) {
@@ -290,14 +300,24 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     }
     
     func didUpdateBluetooth(otherUserUUID: String) {
-        switch recentDistance {
-            case .immediate:
-                FirebaseInterface.addContacteduserUUID(UUID: otherUserUUID, Distance: "Immediate")
-            case .near:
-                FirebaseInterface.addContacteduserUUID(UUID: otherUserUUID, Distance: "Near")
-            case .far: return
-            case .unknown: return
-        default: return
+        isWaitingForRecentDistanceToBeSet = true
+        addContactedUserToFirebase(otherUserUUID: otherUserUUID)
+    }
+    
+    func addContactedUserToFirebase(otherUserUUID: String?) {
+        if otherUserUUID != nil {
+            switch recentDistance {
+                case .immediate:
+                    FirebaseInterface.addContacteduserUUID(UUID: otherUserUUID!, Distance: "Immediate")
+                case .near:
+                    FirebaseInterface.addContacteduserUUID(UUID: otherUserUUID!, Distance: "Near")
+            case .far: print("Recent distance is far"); return
+            case .unknown:
+                print("Recent distance is unknwon");
+                
+                return
+            default: print("RecentDistance Not set"); return
+            }
         }
     }
     
