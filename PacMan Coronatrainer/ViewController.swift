@@ -21,8 +21,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     var vibrate = false
     
-    
-    
     //
     
     var removePointsTimer = Timer()
@@ -305,6 +303,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         addContactedUserToFirebase(otherUserUUID: otherUserUUID)
     }
     
+    func didUpdateBluetooth(familyMemberUUID: String) {
+        FirebaseInterface.addFamilyMember(UUID: familyMemberUUID)
+    }
+    
     func addContactedUserToFirebase(otherUserUUID: String?) {
         if otherUserUUID != nil {
             switch recentDistance {
@@ -327,6 +329,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             }
         }
     }
+    
+    @IBAction func settings(_ sender: UIButton) {
+//        bluetoothHandler.lookForFamilyMember(isLooking: true)
+//        self.topView.backgroundColor = .systemBlue
+//        self.safetyLabel.text = "SEARCHING FOR FAMILY MEMBERS"
+//        self.bottomView.backgroundColor = .systemBlue
+    }
+    
     
     
     

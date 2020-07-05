@@ -16,7 +16,6 @@ class FirebaseInterface {
     static var username: String?
     static var location: CLLocationCoordinate2D?
     static var score: Int?
-    static var numberOfUsers: Int = 0
     static var dict: NSDictionary?
         
 //        ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).setValue(["username":username ?? UIDevice.current.identifierForVendor!.uuidString, "location":["latitude": location?.latitude ?? 0, "longitude": location?.longitude ?? 0], "score":score ?? 0, "minorKey": minorKey ?? 0, "familyMembers": familyMembers])
@@ -69,6 +68,40 @@ class FirebaseInterface {
             }
         }
     }
+    
+    
+    
+    
+    static var familyMembersArrayList = Array<String>()
+    
+    public static func addFamilyMember(UUID: String) {
+        getFamilyMembers { (familyMembers) in
+            familyMembersArrayList = Array<String>()
+            if familyMembers != nil {
+                for familyMember in 0..<(familyMembers?.count)! {
+                    familyMembersArrayList.append((familyMembers?[familyMember])!)
+                }
+            }
+            
+            let arrayOfSingleContactedUser = UUID
+            familyMembersArrayList.append(arrayOfSingleContactedUser)
+            ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).child("familyMembers").setValue(familyMembersArrayList)
+        }
+    }
+    
+    public static func getFamilyMembers(handler: @escaping (Array<String>?) -> ()) {
+        ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).child("familyMembers").observeSingleEvent(of: .value) { (snapshot) in
+            print("SNPST:: \(snapshot.value!)")
+            if let arrayOfContactedUsers = snapshot.value as? Array<String> {
+                print("SNPST: \(snapshot)")
+                handler(arrayOfContactedUsers)
+                
+            } else {
+                handler(nil)
+            }
+        }
+    }
+    
 
     
     public static func getScore(database: NSDictionary?) -> Int? {

@@ -198,7 +198,11 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         }
         
         print("BLE:    Received Data: \(stringFromData ?? "")")
-        bluetoothHandlerDelegate?.didUpdateBluetooth(otherUserUUID: stringFromData ?? "")
+        if isLookingForFamilyMember {
+            bluetoothHandlerDelegate?.didUpdateBluetooth(familyMemberUUID: stringFromData ?? "")
+        } else {
+            bluetoothHandlerDelegate?.didUpdateBluetooth(otherUserUUID: stringFromData ?? "")
+        }
         centralManager.cancelPeripheralConnection(peripheral)
     }
     
@@ -361,4 +365,5 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
 protocol BluetoothHandlerDelegate {
     func didUpdateBluetooth(distance: CLProximity)
     func didUpdateBluetooth(otherUserUUID: String)
+    func didUpdateBluetooth(familyMemberUUID: String)
 }
