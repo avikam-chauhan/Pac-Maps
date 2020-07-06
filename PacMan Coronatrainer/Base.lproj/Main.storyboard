@@ -38,7 +38,6 @@
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" backgroundImage="person.2" catalog="system"/>
                                         <connections>
-                                            <action selector="settings:" destination="BYZ-38-t0r" eventType="touchUpInside" id="U6w-8J-ZU7"/>
                                             <segue destination="2K7-gW-BXx" kind="show" id="Uyh-eW-pch"/>
                                         </connections>
                                     </button>
@@ -109,9 +108,6 @@
                                     <constraint firstItem="TDj-Z9-fw5" firstAttribute="centerY" secondItem="0Rv-KS-IEi" secondAttribute="centerY" id="hfK-5w-API"/>
                                 </constraints>
                             </view>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" pitchEnabled="NO" showsUserLocation="YES" showsBuildings="NO" showsCompass="NO" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h0f-fg-aqP">
-                                <rect key="frame" x="0.0" y="80" width="375" height="652"/>
-                            </mapView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ars-0Y-BHk">
                                 <rect key="frame" x="325" y="95" width="35" height="35"/>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -148,6 +144,9 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </label>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" pitchEnabled="NO" showsUserLocation="YES" showsBuildings="NO" showsCompass="NO" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h0f-fg-aqP">
+                                <rect key="frame" x="0.0" y="80" width="375" height="652"/>
+                            </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -352,11 +351,13 @@
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="previewView" destination="Ge6-P6-uva" id="sXb-m8-kU7"/>
+                        <segue destination="frz-uw-8EH" kind="unwind" identifier="unwindToDefaultViewController" unwindAction="closeBySegue:" id="kpZ-dR-IFE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3dK-bw-qic" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="frz-uw-8EH" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1079" y="1631"/>
+            <point key="canvasLocation" x="1077.5999999999999" y="1630.7881773399015"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="QfN-7l-WWp">

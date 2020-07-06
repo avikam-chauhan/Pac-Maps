@@ -83,24 +83,48 @@ class FirebaseInterface {
                 }
             }
             
-            let arrayOfSingleContactedUser = UUID
-            familyMembersArrayList.append(arrayOfSingleContactedUser)
+            let arrayOfFamilyMember = UUID
+            familyMembersArrayList.append(arrayOfFamilyMember)
             ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).child("familyMembers").setValue(familyMembersArrayList)
         }
     }
     
+    public static func addFamilyMemberToPlayer(withUUID uuid: UUID) {
+        getFamilyMembers(withUUID: uuid) { (familyMembers) in
+            var familyMembersArrayList = Array<String>()
+            if familyMembers != nil {
+                for familyMember in 0..<(familyMembers?.count)! {
+                    familyMembersArrayList.append((familyMembers?[familyMember])!)
+                }
+            }
+            
+            let arrayOfFamilyMember = UIDevice.current.identifierForVendor!.uuidString
+            familyMembersArrayList.append(arrayOfFamilyMember)
+            ref.child("users").child(uuid.uuidString).child("familyMembers").setValue(familyMembersArrayList)
+        }
+    }
+    
+    
     public static func getFamilyMembers(handler: @escaping (Array<String>?) -> ()) {
         ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).child("familyMembers").observeSingleEvent(of: .value) { (snapshot) in
-            print("SNPST:: \(snapshot.value!)")
             if let arrayOfContactedUsers = snapshot.value as? Array<String> {
-                print("SNPST: \(snapshot)")
                 handler(arrayOfContactedUsers)
-                
             } else {
                 handler(nil)
             }
         }
     }
+    
+    public static func getFamilyMembers(withUUID uuid: UUID, handler: @escaping (Array<String>?) -> ()) {
+        ref.child("users").child(uuid.uuidString).child("familyMembers").observeSingleEvent(of: .value) { (snapshot) in
+            if let arrayOfContactedUsers = snapshot.value as? Array<String> {
+                handler(arrayOfContactedUsers)
+            } else {
+                handler(nil)
+            }
+        }
+    }
+    
     
 
     

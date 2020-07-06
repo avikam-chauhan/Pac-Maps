@@ -14,10 +14,12 @@ import AudioToolbox
 import Firebase
 
 class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, BluetoothHandlerDelegate {
-    var bluetoothHandler: BluetoothHandler!
     
+    var bluetoothHandler: BluetoothHandler!
+    var qrCodeScanner: ScanQRCodeViewController!
     var ref: DatabaseReference!
     var users = [User]()
+    var familyMemberUUIDs = Array<String>()
     
     var vibrate = false
     
@@ -25,7 +27,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     var removePointsTimer = Timer()
     var addPointsTimer = Timer()
-
+    
     var pacManAnnotation: CustomAnnotation!
     var ghostAnnotation: [CustomAnnotation] = []
     var pinAnnotationView: MKPinAnnotationView!
@@ -92,7 +94,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         }
     }
     
-   
+    
     
     //
     
@@ -180,7 +182,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         //        })
     }
     
-        
+    
     
     
     
@@ -217,12 +219,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
         self.addPointsTimer = Timer.scheduledTimer(timeInterval: 4, target: self, selector: #selector(ViewController.add1), userInfo: nil, repeats: true)
         self.addPointsTimer.fire()
-
         
-//        //
-//        initBeaconRegion()
-//        startScanningForBeaconRegion(beaconRegion: CLBeaconRegion.init(proximityUUID: UUID.init(uuidString: "E06F95E4-FCFC-42C6-B4F8-F6BAE87EA1A0")!,
-//                                                                       identifier: "PacMan"))
+        
+        //        //
+        //        initBeaconRegion()
+        //        startScanningForBeaconRegion(beaconRegion: CLBeaconRegion.init(proximityUUID: UUID.init(uuidString: "E06F95E4-FCFC-42C6-B4F8-F6BAE87EA1A0")!,
+        //                                                                       identifier: "PacMan"))
         
         ref = Database.database().reference()
         getAllUsers { (users) in
@@ -249,12 +251,31 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             }
         }
         
+        FirebaseInterface.getFamilyMembers { (familyMembers) in
+            if familyMembers != nil {
+                for familyMember in 0..<(familyMembers?.count)! {
+                    self.familyMemberUUIDs.append((familyMembers?[familyMember])!)
+                }
+            }
+        }
+        
         //MARK: Init iBeacon and Bluetooth
-                
+        
         bluetoothHandler = BluetoothHandler()
         bluetoothHandler.bluetoothHandlerDelegate = self
         bluetoothHandler.startSendReceivingBluetoothData()
-        
+    }
+    
+    var uuid: UUID? = nil
+    
+    @IBAction func close(bySegue: UIStoryboardSegue) {
+        let mvcUnwoundFrom = bySegue.source as? ScanQRCodeViewController
+        if let uuid = (mvcUnwoundFrom?.uuid) {
+            FirebaseInterface.addFamilyMember(UUID: uuid.uuidString)
+            FirebaseInterface.addFamilyMemberToPlayer(withUUID: uuid)
+            familyMemberUUIDs.append(uuid.uuidString)
+            print("fmuuids: \(familyMemberUUIDs)")
+        }
     }
     
     var recentDistance: CLProximity = .unknown {
@@ -291,7 +312,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 self.topView.backgroundColor = .systemGreen
                 self.safetyLabel.text = "SAFE"
                 self.bottomView.backgroundColor = .systemGreen
-//                self.recentDistance = .unknown
+            //                self.recentDistance = .unknown
             default: return
             }
         }
@@ -310,16 +331,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     func addContactedUserToFirebase(otherUserUUID: String?) {
         if otherUserUUID != nil {
             switch recentDistance {
-                case .immediate:
-                    FirebaseInterface.addContacteduserUUID(UUID: otherUserUUID!, Distance: "Immediate")
-                    isWaitingForRecentDistanceToBeSet = false
-                    recentDistance = .unknown
-                    contactedUserUUID = ""
-                case .near:
-                    FirebaseInterface.addContacteduserUUID(UUID: otherUserUUID!, Distance: "Near")
-                    isWaitingForRecentDistanceToBeSet = false
-                    recentDistance = .unknown
-                    contactedUserUUID = ""
+            case .immediate:
+                FirebaseInterface.addContacteduserUUID(UUID: otherUserUUID!, Distance: "Immediate")
+                isWaitingForRecentDistanceToBeSet = false
+                recentDistance = .unknown
+                contactedUserUUID = ""
+            case .near:
+                FirebaseInterface.addContacteduserUUID(UUID: otherUserUUID!, Distance: "Near")
+                isWaitingForRecentDistanceToBeSet = false
+                recentDistance = .unknown
+                contactedUserUUID = ""
             case .far: print("Recent distance is far"); return
             case .unknown:
                 print("Recent distance is unknwon");
@@ -329,15 +350,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             }
         }
     }
-    
-    @IBAction func settings(_ sender: UIButton) {
-//        bluetoothHandler.lookForFamilyMember(isLooking: true)
-//        self.topView.backgroundColor = .systemBlue
-//        self.safetyLabel.text = "SEARCHING FOR FAMILY MEMBERS"
-//        self.bottomView.backgroundColor = .systemBlue
-    }
-    
-    
     
     
     @objc func tap(sender: UITapGestureRecognizer) {
@@ -438,12 +450,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 currentWaypointIndex += 1
             }
         }
-//        previousLocation = currentLocation
+        //        previousLocation = currentLocation
         currentLocation = locations.first!
-//        if previousLocation != nil && currentLocation != nil {
-//            var delta = previousLocation!.distance(from: currentLocation!)
-//            points += Int(50 * delta / 1609.34)
-//        }
+        //        if previousLocation != nil && currentLocation != nil {
+        //            var delta = previousLocation!.distance(from: currentLocation!)
+        //            points += Int(50 * delta / 1609.34)
+        //        }
         self.mapView.removeAnnotations(mapView.annotations)
         showPacMan(coordinate: self.currentLocation!.coordinate)
         for user in self.users {
@@ -531,3 +543,5 @@ extension Double {
         return (self * divisor).rounded() / divisor
     }
 }
+
+

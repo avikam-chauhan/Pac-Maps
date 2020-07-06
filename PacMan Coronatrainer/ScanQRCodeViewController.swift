@@ -13,10 +13,12 @@ class ScanQRCodeViewController: UIViewController, AVCaptureMetadataOutputObjects
     @IBOutlet weak var previewView: UIView!
     var captureSession: AVCaptureSession!
     var previewLayer: AVCaptureVideoPreviewLayer!
-
+    var uuid: UUID? = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        uuid = nil
         view.backgroundColor = UIColor.black
         captureSession = AVCaptureSession()
 
@@ -80,23 +82,42 @@ class ScanQRCodeViewController: UIViewController, AVCaptureMetadataOutputObjects
     }
 
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
-        captureSession.stopRunning()
 
         if let metadataObject = metadataObjects.first {
             guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
             guard let stringValue = readableObject.stringValue else { return }
-            AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-            found(code: stringValue)
+            if UUID(uuidString: stringValue) != nil {
+                found(uuid: UUID(uuidString: stringValue)!)
+            } else {
+                return
+            }
         }
-
-        dismiss(animated: true)
+        
     }
 
-    func found(code: String) {
-        if let uuid = UUID(uuidString: code) {
-            
+    func found(uuid: UUID) {
+        print(uuid)
+        self.uuid = uuid
+        FirebaseInterface.getFamilyMembers { (familyMemberUUIDs) in
+            var doesExist: Bool = false
+            for familyMember in 0..<(familyMemberUUIDs?.count ?? 0) {
+                if (familyMemberUUIDs?[familyMember]) == uuid.uuidString {
+                    let alert = UIAlertController(title: "Existing Family Member", message: "You have already added this player as a family member.", preferredStyle: .alert)
+                    
+                    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+                    
+                    self.present(alert, animated: true)
+                    self.uuid = nil
+                    doesExist = true
+                }
+            }
+            if !doesExist {
+                self.captureSession.stopRunning()
+                AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+                self.performSegue(withIdentifier: "unwindToDefaultViewController", sender: self)
+            }
         }
-        print(code)
+
     }
 
     override var prefersStatusBarHidden: Bool {
@@ -112,7 +133,13 @@ class ScanQRCodeViewController: UIViewController, AVCaptureMetadataOutputObjects
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+//        // Pass the selected object to the new view controller.
+//        if let dvc = segue.destination as? ViewController {
+//            if uuid != nil {
+//                print("addnewfamiylemme")
+//                dvc.addNewFamilyMember(uuid: uuid!)
+//            }
+//        }
     }
     
 
