@@ -21,7 +21,6 @@ class FirebaseInterface {
     static var minorKey: Int?
     static var numberOfUsers: Int = 0
     
-    static var dict: NSDictionary?
         
 //        ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).setValue(["username":username ?? UIDevice.current.identifierForVendor!.uuidString, "location":["latitude": location?.latitude ?? 0, "longitude": location?.longitude ?? 0], "score":score ?? 0, "minorKey": minorKey ?? 0, "familyMembers": familyMembers])
     

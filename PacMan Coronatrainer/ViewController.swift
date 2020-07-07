@@ -212,7 +212,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     var totalDistance = 0.0 {
         didSet {
             if totalDistance != 0.0 {
-                routeLabel.text = " \((totalDistance / 1609.34).rounded(toPlaces: 1)) miles — \(Int(50 * totalDistance / 1609.34)) • "
+                routeLabel.text = " \((totalDistance / 1609.34).rounded(toPlaces: 1)) miles — \(Int(1000 * totalDistance / 1609.34)) • "
             }
         }
     }
@@ -231,7 +231,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 if let userDictionary = value?.value(forKey: key as! String) as? NSDictionary {
                     let locationDictionary = userDictionary.value(forKey: "location") as? NSDictionary
                     //            print(userDictionary!["score"]!)
-                    var tempUser = User(UUID: key as? String ?? "", score: userDictionary["score"] as? Int ?? 0, location: CLLocationCoordinate2D(latitude: CLLocationDegrees(locationDictionary!["latitude"] as? Double ?? 0), longitude: CLLocationDegrees(locationDictionary!["longitude"] as? Double ?? 0)), username: userDictionary["username"] as? String ?? "")
+                    var tempUser = User(UUID: key as? String ?? "", score: userDictionary["score"] as? Int ?? 0, location: CLLocationCoordinate2D(latitude: CLLocationDegrees(locationDictionary?["latitude"] as? Double ?? 0), longitude: CLLocationDegrees(locationDictionary?["longitude"] as? Double ?? 0)), username: userDictionary["username"] as? String ?? "")
                     
                     outputArray.append(tempUser)
                 }
@@ -345,7 +345,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             let coordinate = mapView.convert(sender.location(in: sender.view), toCoordinateFrom: sender.view)
             let annotation = MKPointAnnotation()
             annotation.coordinate = coordinate
-            mapView.addAnnotation(annotation)
+//            mapView.addAnnotation(annotation)
             
             waypoints.append(coordinate)
             //            showFlag(coordinate: coordinate)
@@ -361,10 +361,22 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             let directions = MKDirections(request: request)
             
             directions.calculate { [unowned self] response, error in
-                guard let unwrappedResponse = response else { return }
+                guard let unwrappedResponse = response else {
+                    DispatchQueue.main.async {
+                        let alert = UIAlertController(title: "Walking Directions Not Available", message: "Walking directions are not available for this location.", preferredStyle: UIAlertController.Style.alert)
+                        alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                    self.waypoints.remove(at: 0)
+                    return
+                }
                 
                 for route in unwrappedResponse.routes {
-                    self.mapView.addOverlay(route.polyline)
+                    let overlay = route.polyline
+                    overlay.title = "coins"
+                    self.mapView.addOverlay(overlay)
+                    overlay.title = "not"
+                    self.mapView.addOverlay(overlay)
                     self.totalDistance += route.distance
                     self.distances.append(route.distance)
                 }
@@ -380,10 +392,21 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 let directions = MKDirections(request: request)
                 
                 directions.calculate { [unowned self] response, error in
-                    guard let unwrappedResponse = response else { return }
+                    guard let unwrappedResponse = response else {
+                        DispatchQueue.main.async {
+                            let alert = UIAlertController(title: "Walking Directions Not Available", message: "Walking directions are not available for this location.", preferredStyle: UIAlertController.Style.alert)
+                            alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+                            self.present(alert, animated: true, completion: nil)
+                        }
+                        self.waypoints.remove(at: x+1)
+                        return
+                    }
                     
                     for route in unwrappedResponse.routes {
                         self.mapView.addOverlay(route.polyline)
+                        let overlay = route.polyline
+                        overlay.title = "coins"
+                        self.mapView.addOverlay(overlay)
                         self.totalDistance += route.distance
                         self.distances.append(route.distance)
                     }
@@ -400,12 +423,46 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     }
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
-        renderer.strokeColor = UIColor.yellow
-        renderer.lineWidth = 8
-        renderer.lineDashPattern = [0, 20]
-        return renderer
+        print(overlay.title, overlay.title == "coins")
+        if overlay.title == "coins" {
+            let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
+            renderer.strokeColor = UIColor.yellow
+            renderer.lineWidth = 8
+            renderer.lineDashPattern = [0, 20]
+            return renderer
+        } else {
+            let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
+            renderer.strokeColor = UIColor.green
+            renderer.lineWidth = 15
+            return renderer
+        }
     }
+    
+    
+//    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+//        var renderer: MKPolygonRenderer? = nil
+//        if let overlay = overlay as? MKPolygon {
+//            renderer = MKPolygonRenderer(polygon: overlay)
+//        }
+//
+//        renderer?.fillColor = UIColor.cyan.withAlphaComponent(0.2)
+//        renderer?.strokeColor = UIColor.blue.withAlphaCompo nent(0.7)
+//        renderer?.lineWidth = 3
+//
+//        return renderer!
+//    }
+//
+//    func mapView(_ mapView: MKMapView, viewFor overlay: MKOverlay) -> MKOverlayView {
+//        let overlayView = MKPolygonRenderer(polygon: overlay as! MKPolygon)
+//
+//        overlayView.fillColor = UIColor.cyan.withAlphaComponent(0.2)
+//        overlayView.strokeColor = UIColor.blue.withAlphaComponent(0.7)
+//
+//        return overlayView as MKOverlayRenderer
+//
+//    }
+        
+    
     
     @IBAction func addButtonPressed(_ sender: Any) {
         if listeningForMapTap {
@@ -431,7 +488,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         } else if waypoints.count > 0 {
             print((currentLocation?.distance(from: CLLocation(latitude: waypoints[currentWaypointIndex].latitude, longitude: waypoints[currentWaypointIndex].longitude)))!)
             if (currentLocation?.distance(from: CLLocation(latitude: waypoints[currentWaypointIndex].latitude, longitude: waypoints[currentWaypointIndex].longitude)))! < 5.0 {
-                points += Int(50 * distances[currentWaypointIndex] / 1609.34)
+                points += Int(1000 * distances[currentWaypointIndex] / 1609.34)
                 currentWaypointIndex += 1
             }
         }
@@ -455,49 +512,49 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
         
         
-        if self.waypoints.count > 0 {
-            mapView.removeOverlays(mapView.overlays)
-            
-            totalDistance = 0.0
-            
-            let request = MKDirections.Request()
-            request.source = MKMapItem(placemark: MKPlacemark(coordinate: currentLocation!.coordinate, addressDictionary: nil))
-            request.destination = MKMapItem(placemark: MKPlacemark(coordinate: waypoints[0], addressDictionary: nil))
-            request.requestsAlternateRoutes = false
-            request.transportType = .walking
-            
-            let directions = MKDirections(request: request)
-            
-            directions.calculate { [unowned self] response, error in
-                guard let unwrappedResponse = response else { return }
-                
-                for route in unwrappedResponse.routes {
-                    self.mapView.addOverlay(route.polyline)
-                    self.totalDistance += route.distance
-                    self.distances.append(route.distance)
-                }
-            }
-            
-            for x in 0..<waypoints.count-1 {
-                let request = MKDirections.Request()
-                request.source = MKMapItem(placemark: MKPlacemark(coordinate: waypoints[x], addressDictionary: nil))
-                request.destination = MKMapItem(placemark: MKPlacemark(coordinate: waypoints[x+1], addressDictionary: nil))
-                request.requestsAlternateRoutes = false
-                request.transportType = .walking
-                
-                let directions = MKDirections(request: request)
-                
-                directions.calculate { [unowned self] response, error in
-                    guard let unwrappedResponse = response else { return }
-                    
-                    for route in unwrappedResponse.routes {
-                        self.mapView.addOverlay(route.polyline)
-                        self.totalDistance += route.distance
-                        self.distances.append(route.distance)
-                    }
-                }
-            }
-        }
+//        if self.waypoints.count > 0 {
+//            mapView.removeOverlays(mapView.overlays)
+//
+//            totalDistance = 0.0
+//
+//            let request = MKDirections.Request()
+//            request.source = MKMapItem(placemark: MKPlacemark(coordinate: currentLocation!.coordinate, addressDictionary: nil))
+//            request.destination = MKMapItem(placemark: MKPlacemark(coordinate: waypoints[0], addressDictionary: nil))
+//            request.requestsAlternateRoutes = false
+//            request.transportType = .walking
+//
+//            let directions = MKDirections(request: request)
+//
+//            directions.calculate { [unowned self] response, error in
+//                guard let unwrappedResponse = response else { return }
+//
+//                for route in unwrappedResponse.routes {
+//                    self.mapView.addOverlay(route.polyline)
+//                    self.totalDistance += route.distance
+//                    self.distances.append(route.distance)
+//                }
+//            }
+//
+//            for x in 0..<waypoints.count-1 {
+//                let request = MKDirections.Request()
+//                request.source = MKMapItem(placemark: MKPlacemark(coordinate: waypoints[x], addressDictionary: nil))
+//                request.destination = MKMapItem(placemark: MKPlacemark(coordinate: waypoints[x+1], addressDictionary: nil))
+//                request.requestsAlternateRoutes = false
+//                request.transportType = .walking
+//
+//                let directions = MKDirections(request: request)
+//
+//                directions.calculate { [unowned self] response, error in
+//                    guard let unwrappedResponse = response else { return }
+//
+//                    for route in unwrappedResponse.routes {
+//                        self.mapView.addOverlay(route.polyline)
+//                        self.totalDistance += route.distance
+//                        self.distances.append(route.distance)
+//                    }
+//                }
+//            }
+//        }
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
