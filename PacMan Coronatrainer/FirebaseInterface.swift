@@ -56,11 +56,26 @@ class FirebaseInterface {
         
     }
     
+    public static func addTimeInContactToLastContactedUser(timeInContact: Int) {
+        getContactedUsers { (contactedUsers) in
+            contactedUsersDictionary = [[String: Any]]()
+            if contactedUsers != nil {
+                for contactedusers in 0..<(contactedUsers?.count)! {
+                    contactedUsersDictionary.append(contactedUsers?[contactedusers] as! [String : Any])
+                }
+            }
+            
+            var arrayOfSingleContactedUser = contactedUsersDictionary[contactedUsersDictionary.count - 1]
+            arrayOfSingleContactedUser["timeInContact"] = timeInContact
+            contactedUsersDictionary.remove(at: contactedUsersDictionary.count - 1)
+            contactedUsersDictionary.append(arrayOfSingleContactedUser)
+            ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).child("allContactedUsers").setValue(contactedUsersDictionary)
+        }
+    }
+    
     public static func getContactedUsers(handler: @escaping (Array<NSDictionary>?) -> ()) {
         ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).child("allContactedUsers").observeSingleEvent(of: .value) { (snapshot) in
-            print("SNPST:: \(snapshot.value!)")
             if let arrayOfContactedUsers = snapshot.value as? Array<NSDictionary> {
-                print("SNPST: \(snapshot)")
                 handler(arrayOfContactedUsers)
                 
             } else {

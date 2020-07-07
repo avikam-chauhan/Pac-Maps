@@ -318,14 +318,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         }
     }
     
+    func didUpdateBluetooth(timeInContact: Int) {
+        print("You were in contact for \(timeInContact) seconds!")
+        FirebaseInterface.addTimeInContactToLastContactedUser(timeInContact: timeInContact)
+    }
+    
     func didUpdateBluetooth(otherUserUUID: String) {
         contactedUserUUID = otherUserUUID
         isWaitingForRecentDistanceToBeSet = true
         addContactedUserToFirebase(otherUserUUID: otherUserUUID)
-    }
-    
-    func didUpdateBluetooth(familyMemberUUID: String) {
-        FirebaseInterface.addFamilyMember(UUID: familyMemberUUID)
     }
     
     func addContactedUserToFirebase(otherUserUUID: String?) {

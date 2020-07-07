@@ -22,7 +22,7 @@ class ShowQRCodeViewController: UIViewController {
 
         if let filter = CIFilter(name: "CIQRCodeGenerator") {
             filter.setValue(data, forKey: "inputMessage")
-            let transform = CGAffineTransform(scaleX: 3, y: 3)
+            let transform = CGAffineTransform(scaleX: 100, y: 100)
 
             if let output = filter.outputImage?.transformed(by: transform) {
                 return UIImage(ciImage: output)

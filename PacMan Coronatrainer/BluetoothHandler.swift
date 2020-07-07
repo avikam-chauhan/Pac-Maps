@@ -18,6 +18,8 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     let BLE_UUID = "5DE63112-432E-4D11-AFDF-F6F091689061"
     var peripheralManager: CBPeripheralManager!
     var bluetoothHandlerDelegate: BluetoothHandlerDelegate?
+    var timeSinceContact: Date? = nil
+    var timeInContact: Double!
     
     var isLookingForFamilyMember = false
     
@@ -138,9 +140,6 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         print("BLE:    Connected to Peripheral")
-        
-//        centralManager.stopScan()
-        
         data.length = 0
         peripheral.delegate = self
         peripheral.discoverServices([CBUUID(string: BLE_UUID)])
@@ -198,11 +197,9 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         }
         
         print("BLE:    Received Data: \(stringFromData ?? "")")
-        if isLookingForFamilyMember {
-            bluetoothHandlerDelegate?.didUpdateBluetooth(familyMemberUUID: stringFromData ?? "")
-        } else {
-            bluetoothHandlerDelegate?.didUpdateBluetooth(otherUserUUID: stringFromData ?? "")
-        }
+        timeSinceContact = Date()
+        bluetoothHandlerDelegate?.didUpdateBluetooth(otherUserUUID: stringFromData ?? "")
+        
         centralManager.cancelPeripheralConnection(peripheral)
     }
     
@@ -359,11 +356,17 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     func peripheral(_ peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
         print("BLE:    Peripheral Services Changed")
         bluetoothHandlerDelegate?.didUpdateBluetooth(distance: CLProximity.unknown)
+        if timeSinceContact != nil {
+            timeInContact = Date().distance(to: timeSinceContact!)
+            bluetoothHandlerDelegate?.didUpdateBluetooth(timeInContact: abs(Int(timeInContact)))
+            timeSinceContact = nil
+        }
+
     }
 }
 
 protocol BluetoothHandlerDelegate {
     func didUpdateBluetooth(distance: CLProximity)
     func didUpdateBluetooth(otherUserUUID: String)
-    func didUpdateBluetooth(familyMemberUUID: String)
+    func didUpdateBluetooth(timeInContact: Int)
 }
