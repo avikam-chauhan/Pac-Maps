@@ -4,8 +4,6 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
-	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>We use Bluetooth to detect people around you.</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -48,6 +46,10 @@
 		<string>MKDirectionsModeTaxi</string>
 		<string>MKDirectionsModeTrain</string>
 	</array>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>We use Bluetooth to detect people around you.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Camera is needed to detect QR codes</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>We use your location to display your map interface and the people around you.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
@@ -82,15 +84,10 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 </dict>
 </plist>
