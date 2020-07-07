@@ -56,6 +56,7 @@ class FirebaseInterface {
         
     }
     
+
     public static func addTimeInContactToLastContactedUser(timeInContact: Int) {
         getContactedUsers { (contactedUsers) in
             contactedUsersDictionary = [[String: Any]]()
@@ -84,12 +85,21 @@ class FirebaseInterface {
         }
     }
     
+    public static func getContactedUsers(uuid: UUID, handler: @escaping (Array<NSDictionary>?) -> ()) {
+        ref.child("users").child(uuid.uuidString).child("allContactedUsers").observeSingleEvent(of: .value) { (snapshot) in
+            if let arrayOfContactedUsers = snapshot.value as? Array<NSDictionary> {
+                handler(arrayOfContactedUsers)
+            } else {
+                handler(nil)
+            }
+        }
+    }
     
     
     
     static var familyMembersArrayList = Array<String>()
     
-    public static func addFamilyMember(UUID: String) {
+    public static func addFamilyMember(uuid: String) {
         getFamilyMembers { (familyMembers) in
             familyMembersArrayList = Array<String>()
             if familyMembers != nil {
@@ -98,9 +108,35 @@ class FirebaseInterface {
                 }
             }
             
-            let arrayOfFamilyMember = UUID
+            let arrayOfFamilyMember = uuid
             familyMembersArrayList.append(arrayOfFamilyMember)
             ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).child("familyMembers").setValue(familyMembersArrayList)
+        }
+        
+        
+        getContactedUsers { (contactedUsers) in
+            contactedUsersDictionary = [[String: Any]]()
+            if contactedUsers != nil {
+                for contactedusers in 0..<(contactedUsers?.count)! {
+                    contactedUsersDictionary.append(contactedUsers?[contactedusers] as! [String : Any])
+                }
+            }
+            var arrayOfRemovalItems: Array<Int> = []
+            for contactedUserInfo in 0..<contactedUsersDictionary.count {
+                let a = contactedUsersDictionary[contactedUserInfo]
+                for value in a.values {
+                    if UUID(uuidString: (value as? String) ?? "") != nil && UUID(uuidString: value as! String)?.uuidString == uuid {
+                        arrayOfRemovalItems.append(contactedUserInfo)
+                    }
+                }
+            }
+            print("arrayOfremoval \(arrayOfRemovalItems)")
+            for removalIndex in 0..<arrayOfRemovalItems.count {
+                print("removal index \(arrayOfRemovalItems.count - removalIndex) and  \(arrayOfRemovalItems[arrayOfRemovalItems.count - 1 - removalIndex])")
+                contactedUsersDictionary.remove(at: arrayOfRemovalItems[arrayOfRemovalItems.count - 1 - removalIndex])
+            }
+            
+            ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).child("allContactedUsers").setValue(contactedUsersDictionary)
         }
     }
     
@@ -117,8 +153,49 @@ class FirebaseInterface {
             familyMembersArrayList.append(arrayOfFamilyMember)
             ref.child("users").child(uuid.uuidString).child("familyMembers").setValue(familyMembersArrayList)
         }
+        
+        
+        getContactedUsers(uuid: uuid) { (contactedUsers) in
+            var contactedUsersDictionary = [[String: Any]]()
+            if contactedUsers != nil {
+                for contactedusers in 0..<(contactedUsers?.count)! {
+                    contactedUsersDictionary.append(contactedUsers?[contactedusers] as! [String : Any])
+                }
+            }
+            var arrayOfRemovalItems: Array<Int> = []
+            for contactedUserInfo in 0..<contactedUsersDictionary.count {
+                let a = contactedUsersDictionary[contactedUserInfo]
+                for value in a.values {
+                    if UUID(uuidString: (value as? String) ?? "") != nil && UUID(uuidString: value as! String)?.uuidString == UIDevice.current.identifierForVendor?.uuidString {
+                        arrayOfRemovalItems.append(contactedUserInfo)
+                    }
+                }
+            }
+            print("arrayOfremoval \(arrayOfRemovalItems)")
+            for removalIndex in 0..<arrayOfRemovalItems.count {
+                print("removal index \(arrayOfRemovalItems.count - removalIndex) and  \(arrayOfRemovalItems[arrayOfRemovalItems.count - 1 - removalIndex])")
+                contactedUsersDictionary.remove(at: arrayOfRemovalItems[arrayOfRemovalItems.count - 1 - removalIndex])
+            }
+            
+            ref.child("users").child(uuid.uuidString).child("allContactedUsers").setValue(contactedUsersDictionary)
+        }
     }
     
+    public static var isAFamilyMember: Bool = false
+    
+    public static func checkIfIsAFamilyMember(withUUID uuid: UUID?) {
+        ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).child("familyMembers").observeSingleEvent(of: .value) { (snapshot) in
+            if let arrayOfContactedUsers = snapshot.value as? Array<String> {
+                if arrayOfContactedUsers.firstIndex(of: uuid!.uuidString) != nil {
+                    self.isAFamilyMember = true
+                }
+            } else {
+                self.isAFamilyMember = false
+            }
+        }
+        
+    }
+       
     
     public static func getFamilyMembers(handler: @escaping (Array<String>?) -> ()) {
         ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).child("familyMembers").observeSingleEvent(of: .value) { (snapshot) in

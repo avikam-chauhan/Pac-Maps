@@ -20,6 +20,7 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     var bluetoothHandlerDelegate: BluetoothHandlerDelegate?
     var timeSinceContact: Date? = nil
     var timeInContact: Double!
+    var contactedPlayerUUID: UUID? = nil
     
     var isLookingForFamilyMember = false
     
@@ -62,30 +63,38 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     var counter: Int = 0
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
-        if(currentTime + 2000 <= NSDate().timeIntervalSince1970 * 1000) {
-            currentTime = NSDate().timeIntervalSince1970 * 1000
-            var averageRSSI: Double = 0
-            for signalStrenths in 0..<runningArrayOfRSSI.count {
-                averageRSSI += runningArrayOfRSSI[signalStrenths]
-            }
-            let distanceReading: Double = averageRSSI/Double(runningArrayOfRSSI.count)
-            runningArrayOfRSSI.removeAll()
-            if distanceReading < -80 {
-                //less than -80
-                bluetoothHandlerDelegate?.didUpdateBluetooth(distance: CLProximity.far)
-            } else if distanceReading > -50 {
-                //more than -50
-                bluetoothHandlerDelegate?.didUpdateBluetooth(distance: CLProximity.immediate)
-            } else if distanceReading <= -50 && distanceReading >= -80 {
-                //in between
-                bluetoothHandlerDelegate?.didUpdateBluetooth(distance: CLProximity.near)
-            } else {
-                //none
+        if contactedPlayerUUID != nil {
+            FirebaseInterface.checkIfIsAFamilyMember(withUUID: contactedPlayerUUID)
+            if FirebaseInterface.isAFamilyMember {
                 bluetoothHandlerDelegate?.didUpdateBluetooth(distance: CLProximity.unknown)
+            } else {
+                if(currentTime + 2000 <= NSDate().timeIntervalSince1970 * 1000) {
+                    currentTime = NSDate().timeIntervalSince1970 * 1000
+                    var averageRSSI: Double = 0
+                    for signalStrenths in 0..<runningArrayOfRSSI.count {
+                        averageRSSI += runningArrayOfRSSI[signalStrenths]
+                    }
+                    let distanceReading: Double = averageRSSI/Double(runningArrayOfRSSI.count)
+                    runningArrayOfRSSI.removeAll()
+                    if distanceReading < -80 {
+                        //less than -80
+                        bluetoothHandlerDelegate?.didUpdateBluetooth(distance: CLProximity.far)
+                    } else if distanceReading > -50 {
+                        //more than -50
+                        bluetoothHandlerDelegate?.didUpdateBluetooth(distance: CLProximity.immediate)
+                    } else if distanceReading <= -50 && distanceReading >= -80 {
+                        //in between
+                        bluetoothHandlerDelegate?.didUpdateBluetooth(distance: CLProximity.near)
+                    } else {
+                        //none
+                        bluetoothHandlerDelegate?.didUpdateBluetooth(distance: CLProximity.unknown)
+                    }
+                } else {
+                    runningArrayOfRSSI.append(RSSI.doubleValue)
+                }
             }
-        } else {
-            runningArrayOfRSSI.append(Double(RSSI))
         }
+        
         
         
         if RSSI.intValue > -15, RSSI.intValue < -35 {
@@ -199,7 +208,7 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         print("BLE:    Received Data: \(stringFromData ?? "")")
         timeSinceContact = Date()
         bluetoothHandlerDelegate?.didUpdateBluetooth(otherUserUUID: stringFromData ?? "")
-        
+        contactedPlayerUUID = UUID(uuidString: stringFromData ?? "")
         centralManager.cancelPeripheralConnection(peripheral)
     }
     
@@ -357,6 +366,7 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         print("BLE:    Peripheral Services Changed")
         bluetoothHandlerDelegate?.didUpdateBluetooth(distance: CLProximity.unknown)
         if timeSinceContact != nil {
+            contactedPlayerUUID = nil
             timeInContact = Date().distance(to: timeSinceContact!)
             bluetoothHandlerDelegate?.didUpdateBluetooth(timeInContact: abs(Int(timeInContact)))
             timeSinceContact = nil

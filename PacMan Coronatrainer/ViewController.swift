@@ -271,7 +271,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     @IBAction func close(bySegue: UIStoryboardSegue) {
         let mvcUnwoundFrom = bySegue.source as? ScanQRCodeViewController
         if let uuid = (mvcUnwoundFrom?.uuid) {
-            FirebaseInterface.addFamilyMember(UUID: uuid.uuidString)
+            FirebaseInterface.addFamilyMember(uuid: uuid.uuidString)
             FirebaseInterface.addFamilyMemberToPlayer(withUUID: uuid)
             familyMemberUUIDs.append(uuid.uuidString)
             print("fmuuids: \(familyMemberUUIDs)")
