@@ -16,7 +16,8 @@ class FirebaseInterface {
     static var username: String?
     static var location: CLLocationCoordinate2D?
     static var score: Int?
-    static var dict: NSDictionary?
+    static var dict = [String: Any]()
+    public var firebaseInterfaceDelegate: FirebaseInterfaceDelegate?
         
 //        ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).setValue(["username":username ?? UIDevice.current.identifierForVendor!.uuidString, "location":["latitude": location?.latitude ?? 0, "longitude": location?.longitude ?? 0], "score":score ?? 0, "minorKey": minorKey ?? 0, "familyMembers": familyMembers])
     static func createUser() {
@@ -32,6 +33,7 @@ class FirebaseInterface {
     }
     
     public static func updateScore(score: Int) {
+        dict["score"] = score
         ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).child("score").setValue(score)
     }
     
@@ -173,11 +175,45 @@ class FirebaseInterface {
             }
             print("arrayOfremoval \(arrayOfRemovalItems)")
             for removalIndex in 0..<arrayOfRemovalItems.count {
-                print("removal index \(arrayOfRemovalItems.count - removalIndex) and  \(arrayOfRemovalItems[arrayOfRemovalItems.count - 1 - removalIndex])")
                 contactedUsersDictionary.remove(at: arrayOfRemovalItems[arrayOfRemovalItems.count - 1 - removalIndex])
             }
             
             ref.child("users").child(uuid.uuidString).child("allContactedUsers").setValue(contactedUsersDictionary)
+        }
+    }
+    
+    public func restorePoints(forUUID uuid: UUID, withContactUUID contactedUUID: UUID) {
+        FirebaseInterface.getContactedUsers(uuid: uuid) { (contactedUsers) in
+            var contactedUsersDictionary = [[String: Any]]()
+            if contactedUsers != nil {
+                for contactedusers in 0..<(contactedUsers?.count)! {
+                    contactedUsersDictionary.append(contactedUsers?[contactedusers] as! [String : Any])
+                }
+            }
+            var timeInContactWithFamilyMember: Int = 0
+            
+            for contactedUserInfo in 0..<contactedUsersDictionary.count {
+                let a = contactedUsersDictionary[contactedUserInfo]
+                timeInContactWithFamilyMember += a["timeInContact"] as? Int ?? 0
+                                
+            }
+            
+            FirebaseInterface.getScore(forUUID: uuid) { (currentScore) in
+                self.firebaseInterfaceDelegate?.didUpdate(points: currentScore + (timeInContactWithFamilyMember * 50))
+            }
+            
+        }
+    }
+    
+    public static func getScore(forUUID uuid: UUID, handler: @escaping (Int) -> ()) {
+        ref.child("users").child(uuid.uuidString).child("score").observeSingleEvent(of: .value) { (snapshot) in
+            if let currentScore = snapshot.value as? Int {
+                userScore = currentScore
+                handler(currentScore)
+            } else {
+                userScore = 0
+                handler(0)
+            }
         }
     }
     
@@ -220,18 +256,31 @@ class FirebaseInterface {
     
 
     
-    public static func getScore(database: NSDictionary?) -> Int? {
-        if database != nil {
-            return database!["score"] as? Int
+    public static func getScore(database: [String: Any]) -> Int {
+        print("database score \(database["score"])")
+        return database["score"] as! Int
+    }
+    
+    public static var userScore: Int = 0
+    
+    public static func getScore() {
+        ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).child("score").observeSingleEvent(of: .value) { (snapshot) in
+            print("snapshot: \(snapshot.value)")
+            if let score = snapshot.value as? Int {
+                userScore = score
+            } else {
+                userScore = 0
+            }
         }
-        return 0
     }
     
     public static func getUserDatabase(handler: @escaping (NSDictionary) -> ()) {
-        ref.observeSingleEvent(of: .value, with: { (snapshot) in
-            if let dictionary = snapshot.value as? NSDictionary {
+        ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).observeSingleEvent(of: .value, with: { (snapshot) in
+            if let dictionary = snapshot.value as? [String : Any] {
                 self.dict = dictionary
-                handler(dictionary)
+                handler(dictionary as NSDictionary)
+            } else {
+                print("a;dsfnansadlsf")
             }
         })
     }
@@ -248,4 +297,8 @@ class FirebaseInterface {
         }
         return nil;
     }
+}
+
+protocol FirebaseInterfaceDelegate {
+    func didUpdate(points: Int)
 }

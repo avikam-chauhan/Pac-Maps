@@ -13,10 +13,12 @@ import CoreBluetooth
 import AudioToolbox
 import Firebase
 
-class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, BluetoothHandlerDelegate {
+class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, BluetoothHandlerDelegate, FirebaseInterfaceDelegate {
+    
+    
     
     var bluetoothHandler: BluetoothHandler!
-    var qrCodeScanner: ScanQRCodeViewController!
+    var firebaseInterface: FirebaseInterface!
     var ref: DatabaseReference!
     var users = [User]()
     var familyMemberUUIDs = Array<String>()
@@ -96,7 +98,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     
     
-    //
+    //MARK: points setting
     
     var points: Int {
         set {
@@ -104,7 +106,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             FirebaseInterface.updateScore(score: newValue)
         }
         get {
-            return FirebaseInterface.getScore(database: FirebaseInterface.dict) ?? 0
+            return FirebaseInterface.getScore(database: FirebaseInterface.dict)
         }
     }
     
@@ -136,10 +138,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             }
         }
     }
-    
-    
-    
-    
     
     func getAllUsers(handler: @escaping ([User]) -> ()) {
         var outputArray = [User]()
@@ -217,10 +215,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         mapView.addGestureRecognizer(tapGesture)
         mapView.delegate = self
         
-        self.addPointsTimer = Timer.scheduledTimer(timeInterval: 4, target: self, selector: #selector(ViewController.add1), userInfo: nil, repeats: true)
-        self.addPointsTimer.fire()
-        
-        
         //        //
         //        initBeaconRegion()
         //        startScanningForBeaconRegion(beaconRegion: CLBeaconRegion.init(proximityUUID: UUID.init(uuidString: "E06F95E4-FCFC-42C6-B4F8-F6BAE87EA1A0")!,
@@ -235,8 +229,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             let postDict = snapshot.value as? NSDictionary
             self.users = self.parseUsers(dictionary: postDict!)
         })
+        
         FirebaseInterface.getUserDatabase { (dict) in
-            self.points = FirebaseInterface.getScore(database: FirebaseInterface.dict!) ?? 0
+            self.points = FirebaseInterface.getScore(database: FirebaseInterface.dict)
+            print("dsfnpaksfnadsnfkladsnfnkasdnf")
         }
         
         self.getAllUsers { (myUsers) in
@@ -258,12 +254,19 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 }
             }
         }
+
         
         //MARK: Init iBeacon and Bluetooth
+        firebaseInterface = FirebaseInterface()
+        firebaseInterface.firebaseInterfaceDelegate = self
         
         bluetoothHandler = BluetoothHandler()
         bluetoothHandler.bluetoothHandlerDelegate = self
         bluetoothHandler.startSendReceivingBluetoothData()
+    }
+    
+    func didUpdate(points: Int) {
+        self.points = points + self.points
     }
     
     var uuid: UUID? = nil
@@ -275,6 +278,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             FirebaseInterface.addFamilyMemberToPlayer(withUUID: uuid)
             familyMemberUUIDs.append(uuid.uuidString)
             print("fmuuids: \(familyMemberUUIDs)")
+            firebaseInterface.restorePoints(forUUID: uuid, withContactUUID: UUID(uuidString: UIDevice.current.identifierForVendor!.uuidString)!)
+            firebaseInterface.restorePoints(forUUID: UUID(uuidString: UIDevice.current.identifierForVendor!.uuidString)!, withContactUUID: uuid)
         }
     }
     
