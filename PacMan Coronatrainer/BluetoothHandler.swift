@@ -61,13 +61,19 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     
     var runningArrayOfRSSI: [Double] = []
     var counter: Int = 0
+//    var canRemoveFromAllContactedUsers: Int = 0
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         if contactedPlayerUUID != nil {
             FirebaseInterface.checkIfIsAFamilyMember(withUUID: contactedPlayerUUID)
             if FirebaseInterface.isAFamilyMember {
                 bluetoothHandlerDelegate?.didUpdateBluetooth(distance: CLProximity.unknown)
+//                if canRemoveFromAllContactedUsers < 2 {
+                    FirebaseInterface.removeAllInstancesOfAllContactedUsers(yourUUID: UIDevice.current.identifierForVendor!, familyMemberUUID: contactedPlayerUUID)
+//                    canRemoveFromAllContactedUsers += 1
+//                }
             } else {
+//                canRemoveFromAllContactedUsers = 0
                 if(currentTime + 2000 <= NSDate().timeIntervalSince1970 * 1000) {
                     currentTime = NSDate().timeIntervalSince1970 * 1000
                     var averageRSSI: Double = 0
@@ -92,6 +98,8 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
                 } else {
                     runningArrayOfRSSI.append(RSSI.doubleValue)
                 }
+                timeInContact = Date().distance(to: timeSinceContact!)
+                bluetoothHandlerDelegate?.didUpdateBluetooth(timeInContact: abs(Int(timeInContact)))
             }
         }
         
@@ -367,9 +375,8 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         bluetoothHandlerDelegate?.didUpdateBluetooth(distance: CLProximity.unknown)
         if timeSinceContact != nil {
             contactedPlayerUUID = nil
-            timeInContact = Date().distance(to: timeSinceContact!)
-            bluetoothHandlerDelegate?.didUpdateBluetooth(timeInContact: abs(Int(timeInContact)))
-            timeSinceContact = nil
+//            timeInContact = Date().distance(to: timeSinceContact!)
+//            bluetoothHandlerDelegate?.didUpdateBluetooth(timeInContact: abs(Int(timeInContact)))
         }
 
     }

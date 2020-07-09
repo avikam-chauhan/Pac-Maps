@@ -7,7 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		043DFDA8247F07030032B5D5 /* BluetoothHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043DFDA7247F07030032B5D5 /* BluetoothHandler.swift */; };
+		04A05DFA24B0FA6200996E19 /* ShowQRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A05DF924B0FA6200996E19 /* ShowQRCodeViewController.swift */; };
+		04A05DFC24B112E800996E19 /* ScanQRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A05DFB24B112E800996E19 /* ScanQRCodeViewController.swift */; };
+		04A381C8249C2866000A9616 /* BluetoothHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A381C7249C2866000A9616 /* BluetoothHandler.swift */; };
+		04C9FA032486FC4500745E83 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 04C9FA022486FC4500745E83 /* GoogleService-Info.plist */; };
+		04C9FA0524870A7F00745E83 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9FA0424870A7F00745E83 /* Notification.swift */; };
 		7979CB7469525F13375B9EF6 /* libPods-PacMan CoronatrainerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AD56D9E086A8A91A8D719F93 /* libPods-PacMan CoronatrainerTests.a */; };
 		9F108371245521F90024AE5B /* maps.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9F108370245521F90024AE5B /* maps.gpx */; };
 		9F1083732455244E0024AE5B /* maps2.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9F1083722455244E0024AE5B /* maps2.gpx */; };
@@ -24,7 +28,6 @@
 		9F363ED3245414D70023084D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F363ED2245414D70023084D /* ViewController.swift */; };
 		9F363ED5245419150023084D /* LeaderboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F363ED4245419150023084D /* LeaderboardViewController.swift */; };
 		9F363ED72454C8490023084D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F363ED62454C8480023084D /* User.swift */; };
-		9F363ED92454C89F0023084D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9F363ED82454C89F0023084D /* GoogleService-Info.plist */; };
 		9F363EDB2454D0510023084D /* FirebaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F363EDA2454D0500023084D /* FirebaseInterface.swift */; };
 		9FF15CC4247F0C5400328C96 /* LocationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF15CC3247F0C5400328C96 /* LocationHandler.swift */; };
 		9FF15CC6247F123100328C96 /* MapHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF15CC5247F123100328C96 /* MapHandler.swift */; };
@@ -53,7 +56,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		043DFDA7247F07030032B5D5 /* BluetoothHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothHandler.swift; sourceTree = "<group>"; };
+		04A05DF924B0FA6200996E19 /* ShowQRCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowQRCodeViewController.swift; sourceTree = "<group>"; };
+		04A05DFB24B112E800996E19 /* ScanQRCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanQRCodeViewController.swift; sourceTree = "<group>"; };
+		04A381C7249C2866000A9616 /* BluetoothHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothHandler.swift; sourceTree = "<group>"; };
+		04C9FA022486FC4500745E83 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		04C9FA0424870A7F00745E83 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		185F03EC0C74B2AFD5273F29 /* Pods-PacMan CoronatrainerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PacMan CoronatrainerTests.release.xcconfig"; path = "Target Support Files/Pods-PacMan CoronatrainerTests/Pods-PacMan CoronatrainerTests.release.xcconfig"; sourceTree = "<group>"; };
 		3D1FBF8D421047DE8E4BD672 /* Pods-PacMan Coronatrainer-PacMan CoronatrainerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PacMan Coronatrainer-PacMan CoronatrainerUITests.release.xcconfig"; path = "Target Support Files/Pods-PacMan Coronatrainer-PacMan CoronatrainerUITests/Pods-PacMan Coronatrainer-PacMan CoronatrainerUITests.release.xcconfig"; sourceTree = "<group>"; };
 		4D942D6DFC84C0AF7A1AAC46 /* libPods-PacMan Coronatrainer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PacMan Coronatrainer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -79,7 +86,6 @@
 		9F363ED2245414D70023084D /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		9F363ED4245419150023084D /* LeaderboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardViewController.swift; sourceTree = "<group>"; };
 		9F363ED62454C8480023084D /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		9F363ED82454C89F0023084D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9F363EDA2454D0500023084D /* FirebaseInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseInterface.swift; sourceTree = "<group>"; };
 		9FF15CC3247F0C5400328C96 /* LocationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationHandler.swift; sourceTree = "<group>"; };
 		9FF15CC5247F123100328C96 /* MapHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapHandler.swift; sourceTree = "<group>"; };
@@ -160,16 +166,17 @@
 		9F363E9A2453B4ED0023084D /* PacMan Coronatrainer */ = {
 			isa = PBXGroup;
 			children = (
+				04C9FA022486FC4500745E83 /* GoogleService-Info.plist */,
 				9F363E9B2453B4EE0023084D /* AppDelegate.swift */,
 				9F363ECB2453CE990023084D /* SceneDelegate.swift */,
 				9F363ED2245414D70023084D /* ViewController.swift */,
-				043DFDA7247F07030032B5D5 /* BluetoothHandler.swift */,
+				04A381C7249C2866000A9616 /* BluetoothHandler.swift */,
+				04C9FA0424870A7F00745E83 /* Notification.swift */,
 				9F363ED4245419150023084D /* LeaderboardViewController.swift */,
 				9F363EA12453B4EE0023084D /* Main.storyboard */,
 				9F363EA42453B4F50023084D /* Assets.xcassets */,
 				9F363EA62453B4F50023084D /* LaunchScreen.storyboard */,
 				9F363EA92453B4F50023084D /* Info.plist */,
-				9F363ED82454C89F0023084D /* GoogleService-Info.plist */,
 				9F363ED02454090F0023084D /* CustomAnnotation.swift */,
 				9F363ED62454C8480023084D /* User.swift */,
 				B08821A3247F1A5400CABF4D /* NewUser.swift */,
@@ -181,6 +188,8 @@
 				9F1083722455244E0024AE5B /* maps2.gpx */,
 				9F108374245524C30024AE5B /* maps3.gpx */,
 				B08821A1247F070700CABF4D /* FirebaseDatabaseHandler.swift */,
+				04A05DF924B0FA6200996E19 /* ShowQRCodeViewController.swift */,
+				04A05DFB24B112E800996E19 /* ScanQRCodeViewController.swift */,
 			);
 			path = "PacMan Coronatrainer";
 			sourceTree = "<group>";
@@ -322,9 +331,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				9F108375245524C30024AE5B /* maps3.gpx in Resources */,
+				04C9FA032486FC4500745E83 /* GoogleService-Info.plist in Resources */,
 				9F108371245521F90024AE5B /* maps.gpx in Resources */,
 				9F363EA82453B4F50023084D /* LaunchScreen.storyboard in Resources */,
-				9F363ED92454C89F0023084D /* GoogleService-Info.plist in Resources */,
 				9F363EA52453B4F50023084D /* Assets.xcassets in Resources */,
 				9F1083732455244E0024AE5B /* maps2.gpx in Resources */,
 				9F363EA32453B4EE0023084D /* Main.storyboard in Resources */,
@@ -428,9 +437,12 @@
 				B08821A4247F1A5400CABF4D /* NewUser.swift in Sources */,
 				B08821A2247F070700CABF4D /* FirebaseDatabaseHandler.swift in Sources */,
 				9F363E9C2453B4EE0023084D /* AppDelegate.swift in Sources */,
-				043DFDA8247F07030032B5D5 /* BluetoothHandler.swift in Sources */,
 				9F363ECC2453CE990023084D /* SceneDelegate.swift in Sources */,
+				04A05DFA24B0FA6200996E19 /* ShowQRCodeViewController.swift in Sources */,
 				B08821A624805D6300CABF4D /* GenericUser.swift in Sources */,
+				04A381C8249C2866000A9616 /* BluetoothHandler.swift in Sources */,
+				04A05DFC24B112E800996E19 /* ScanQRCodeViewController.swift in Sources */,
+				04C9FA0524870A7F00745E83 /* Notification.swift in Sources */,
 				9F363EDB2454D0510023084D /* FirebaseInterface.swift in Sources */,
 				9FF15CC6247F123100328C96 /* MapHandler.swift in Sources */,
 				9FF15CC4247F0C5400328C96 /* LocationHandler.swift in Sources */,

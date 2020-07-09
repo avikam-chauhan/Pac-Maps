@@ -27,7 +27,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     //
     
-    var removePointsTimer = Timer()
+    var removePointsTimer: Timer?
     var addPointsTimer = Timer()
     
     var pacManAnnotation: CustomAnnotation!
@@ -84,11 +84,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     }
     
     
-    @objc func subtract1() {
-        if vibrate {
-            points = points - 1
-        }
-    }
+//    @objc func subtract1() {
+//        if vibrate {
+//            points = points - 1
+//        }
+//    }
     
     @objc func subtract50() {
         if vibrate {
@@ -96,11 +96,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         }
     }
     
-    @objc func add1() {
-        if !vibrate {
-            points = points + 1
-        }
-    }
+//    @objc func add1() {
+//        if !vibrate {
+//            points = points + 1
+//        }
+//    }
     
     
     
@@ -238,7 +238,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
         FirebaseInterface.getUserDatabase { (dict) in
             self.points = FirebaseInterface.getScore(database: FirebaseInterface.dict)
-            print("dsfnpaksfnadsnfkladsnfnkasdnf")
         }
         
         self.getAllUsers { (myUsers) in
@@ -272,7 +271,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     }
     
     func didUpdate(points: Int) {
-        self.points = points + self.points
+        print("pints \(points)")
+        self.points = self.points + points
     }
     
     var uuid: UUID? = nil
@@ -322,8 +322,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 self.vibrate = true
                 self.vibrateTimer(time: 0.1)
                 
-                self.removePointsTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.subtract50), userInfo: nil, repeats: true)
-                self.removePointsTimer.fire()
+                guard self.removePointsTimer == nil else { return }
+                self.removePointsTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ViewController.subtract50), userInfo: nil, repeats: true)
+                self.removePointsTimer?.fire()
             case .near:
                 self.topView.backgroundColor = .systemYellow
                 self.safetyLabel.text = "CAUTION"
@@ -331,21 +332,29 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 self.recentDistance = .near
                 self.vibrate = true
                 self.vibrateTimer(time: 1.0)
-                self.removePointsTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.subtract50), userInfo: nil, repeats: true)
-                self.removePointsTimer.fire()
+                
+                guard self.removePointsTimer == nil else { return }
+                self.removePointsTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ViewController.subtract50), userInfo: nil, repeats: true)
+                self.removePointsTimer?.fire()
             case .far:
                 self.topView.backgroundColor = .systemGreen
                 self.safetyLabel.text = "SAFE"
                 self.bottomView.backgroundColor = .systemGreen
                 self.recentDistance = .far
                 self.vibrate = false
-                self.removePointsTimer.invalidate()
+                
+                guard self.removePointsTimer == nil else { return }
+                self.removePointsTimer?.invalidate()
+                self.removePointsTimer = nil
             case .unknown:
                 self.topView.backgroundColor = .systemGreen
                 self.safetyLabel.text = "SAFE"
                 self.bottomView.backgroundColor = .systemGreen
                 self.vibrate = false
-                self.removePointsTimer.invalidate()
+                
+                guard self.removePointsTimer == nil else { return }
+                self.removePointsTimer?.invalidate()
+                self.removePointsTimer = nil
             //                self.recentDistance = .unknown
             default: return
             }
@@ -353,7 +362,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     }
     
     func didUpdateBluetooth(timeInContact: Int) {
-        print("You were in contact for \(timeInContact) seconds!")
         FirebaseInterface.addTimeInContactToLastContactedUser(timeInContact: timeInContact)
     }
     
