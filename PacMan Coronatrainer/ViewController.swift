@@ -90,6 +90,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         }
     }
     
+    @objc func subtract50() {
+        if vibrate {
+            points = points - 50
+        }
+    }
+    
     @objc func add1() {
         if !vibrate {
             points = points + 1
@@ -200,7 +206,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             DispatchQueue.main.async {
                 self.present(alert, animated: true, completion: nil)
             }
-            
+        
             UserDefaults.standard.set(true, forKey: "89aaa7987")
         }
         
@@ -295,6 +301,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     var contactedUserUUID: String = ""
     var isWaitingForRecentDistanceToBeSet: Bool = false
     
+    func vibrateTimer(time: Double) {
+        for i in 0...13 {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(Double(i) * time * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: {
+                if self.vibrate {
+                    AudioServicesPlayAlertSound(kSystemSoundID_Vibrate)
+                }
+            })
+        }
+    }
+    
     func didUpdateBluetooth(distance: CLProximity) {
         UIView.animate(withDuration: 1) {
             switch distance {
@@ -303,20 +319,33 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 self.safetyLabel.text = "DANGER"
                 self.bottomView.backgroundColor = .systemRed
                 self.recentDistance = .immediate
+                self.vibrate = true
+                self.vibrateTimer(time: 0.1)
+                
+                self.removePointsTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.subtract50), userInfo: nil, repeats: true)
+                self.removePointsTimer.fire()
             case .near:
                 self.topView.backgroundColor = .systemYellow
                 self.safetyLabel.text = "CAUTION"
                 self.bottomView.backgroundColor = .systemYellow
                 self.recentDistance = .near
+                self.vibrate = true
+                self.vibrateTimer(time: 1.0)
+                self.removePointsTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.subtract50), userInfo: nil, repeats: true)
+                self.removePointsTimer.fire()
             case .far:
                 self.topView.backgroundColor = .systemGreen
                 self.safetyLabel.text = "SAFE"
                 self.bottomView.backgroundColor = .systemGreen
                 self.recentDistance = .far
+                self.vibrate = false
+                self.removePointsTimer.invalidate()
             case .unknown:
                 self.topView.backgroundColor = .systemGreen
                 self.safetyLabel.text = "SAFE"
                 self.bottomView.backgroundColor = .systemGreen
+                self.vibrate = false
+                self.removePointsTimer.invalidate()
             //                self.recentDistance = .unknown
             default: return
             }
