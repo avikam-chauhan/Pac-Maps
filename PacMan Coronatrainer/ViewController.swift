@@ -141,23 +141,29 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             }
             UIView.animate(withDuration: 0.5, animations: {
                 if minProximity == CLProximity.unknown {
-                    self.safetyLabel.text = "SAFE"
-                    self.topView.backgroundColor = UIColor.systemGreen
-                    self.bottomView.backgroundColor = UIColor.systemGreen
+                    self.navigationItem.title = "SAFE"
+//                    self.safetyLabel.text = "SAFE"
+                    self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
+//                    self.topView.backgroundColor = UIColor.systemGreen
+                    UINavigationBar.appearance().barTintColor = UIColor.systemGreen
                     self.vibrate = false
                     self.removePointsTimer.invalidate()
                 } else if minProximity == CLProximity.immediate {
-                    self.safetyLabel.text = "TOO CLOSE"
-                    self.topView.backgroundColor = UIColor.systemRed
-                    self.bottomView.backgroundColor = UIColor.systemRed
+                    self.navigationItem.title = "TOO CLOSE"
+//                    self.safetyLabel.text = "TOO CLOSE"
+                    self.navigationController?.navigationBar.barTintColor = UIColor.systemRed
+//                    self.topView.backgroundColor = UIColor.systemRed
+                    UINavigationBar.appearance().barTintColor = UIColor.systemRed
                     self.vibrate = true
                     self.vibrateTimer(time: 0.1)
                                         
                     self.removePointsTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(ViewController.subtract1), userInfo: nil, repeats: true)
                     self.removePointsTimer.fire()
                 } else if minProximity == CLProximity.near {
-                    self.safetyLabel.text = "NEAR"
-                    self.topView.backgroundColor = UIColor.systemOrange
+                    self.navigationItem.title = "NEAR"
+//                    self.safetyLabel.text = "NEAR"
+                    self.navigationController?.navigationBar.barTintColor = UIColor.systemOrange
+//                    self.topView.backgroundColor = UIColor.systemOrange
                     self.bottomView.backgroundColor = UIColor.systemOrange
                     self.vibrate = true
                     self.vibrateTimer(time: 1)
@@ -252,7 +258,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             if let subDictionary = userDictionary!.value(forKey: key as! String) as? NSDictionary {
                 let locationDictionary = subDictionary.value(forKey: "location") as? NSDictionary
                 //            print(userDictionary!["score"]!)
-                var tempUser = User(UUID: key as? String ?? "", score: subDictionary["score"] as? Int ?? 0, location: CLLocationCoordinate2D(latitude: CLLocationDegrees(locationDictionary!["latitude"] as? Double ?? 0), longitude: CLLocationDegrees(locationDictionary!["longitude"] as? Double ?? 0)), username: subDictionary["username"] as? String ?? "")
+                var tempUser = User(UUID: key as? String ?? "", score: subDictionary["score"] as? Int ?? 0, location: CLLocationCoordinate2D(latitude: CLLocationDegrees(locationDictionary?["latitude"] as? Double ?? 0), longitude: CLLocationDegrees(locationDictionary?["longitude"] as? Double ?? 0)), username: subDictionary["username"] as? String ?? "")
                 
                 outputArray.append(tempUser)
             }
@@ -265,18 +271,22 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     
     
-    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
+        self.navigationController?.navigationBar.tintColor = UIColor.white
+                
         let launchedBefore = UserDefaults.standard.bool(forKey: "89aaa7987")
         if !launchedBefore {
             let alert = UIAlertController(title: "Welcome", message: "Please enter your username!", preferredStyle: UIAlertController.Style.alert)
             alert.addTextField(configurationHandler: nil)
-            alert.addAction(UIAlertAction(title: "Let's play!", style: UIAlertAction.Style.default, handler:{ (UIAlertAction)in
+            alert.addAction(UIAlertAction(title: "Let's play!", style: UIAlertAction.Style.default, handler: { (UIAlertAction) in
 //                FirebaseInterface.createUser()
                 FirebaseInterface.updateUsername(username: (alert.textFields?.first?.text!)!)
                 FirebaseInterface.updateScore(score: 0)
@@ -372,11 +382,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 }
                 
                 for route in unwrappedResponse.routes {
-                    let overlay = route.polyline
-                    overlay.title = "coins"
-                    self.mapView.addOverlay(overlay)
-                    overlay.title = "not"
-                    self.mapView.addOverlay(overlay)
+                    self.mapView.addOverlay(route.polyline)
+//                    self.mapView.addOverlay(ForegroundOverlay(line: route.polyline), level: .aboveRoads)
+//                    self.mapView.addOverlay(BackgroundOverlay(line: route.polyline), level: .aboveRoads)
                     self.totalDistance += route.distance
                     self.distances.append(route.distance)
                 }
@@ -398,15 +406,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                             alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
                             self.present(alert, animated: true, completion: nil)
                         }
-                        self.waypoints.remove(at: x+1)
+//                        self.waypoints.remove(at: x+1)
                         return
                     }
                     
                     for route in unwrappedResponse.routes {
                         self.mapView.addOverlay(route.polyline)
-                        let overlay = route.polyline
-                        overlay.title = "coins"
-                        self.mapView.addOverlay(overlay)
+//                        self.mapView.addOverlay(ForegroundOverlay(line: route.polyline), level: .aboveRoads)
+//                        self.mapView.addOverlay(BackgroundOverlay(line: route.polyline), level: .aboveRoads)
                         self.totalDistance += route.distance
                         self.distances.append(route.distance)
                     }
@@ -423,19 +430,19 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     }
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        print(overlay.title, overlay.title == "coins")
-        if overlay.title == "coins" {
-            let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
-            renderer.strokeColor = UIColor.yellow
-            renderer.lineWidth = 8
-            renderer.lineDashPattern = [0, 20]
-            return renderer
-        } else {
-            let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
-            renderer.strokeColor = UIColor.green
-            renderer.lineWidth = 15
-            return renderer
-        }
+//        print(overlay is ForegroundOverlay)
+//        if overlay is ForegroundOverlay {
+        let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
+        renderer.strokeColor = UIColor.yellow
+        renderer.lineWidth = 8
+//        renderer.lineDashPattern = [0, 20]
+        return renderer
+//        } else {
+//            let renderer = MKPolylineRenderer(polyline: (overlay as! BackgroundOverlay).polyline as! MKPolyline)
+//            renderer.strokeColor = UIColor.green
+//            renderer.lineWidth = 15
+//            return renderer
+//        }
     }
     
     
@@ -446,7 +453,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
 //        }
 //
 //        renderer?.fillColor = UIColor.cyan.withAlphaComponent(0.2)
-//        renderer?.strokeColor = UIColor.blue.withAlphaCompo nent(0.7)
+//        renderer?.strokeColor = UIColor.blue.withAlphaComponent(0.7)
 //        renderer?.lineWidth = 3
 //
 //        return renderer!
@@ -583,5 +590,21 @@ extension Double {
     func rounded(toPlaces places:Int) -> Double {
         let divisor = pow(10.0, Double(places))
         return (self * divisor).rounded() / divisor
+    }
+}
+
+fileprivate class ForegroundOverlay: MKPolyline{
+    var polyline: MKPolyline?
+    
+    init (line: MKPolyline) {
+        self.polyline = line
+    }
+}
+
+fileprivate class BackgroundOverlay: MKPolyline{
+    var polyline: MKPolyline?
+    
+    init (line: MKPolyline) {
+        self.polyline = line
     }
 }

@@ -120,4 +120,11 @@ class FirebaseInterface {
         }
         return 0
     }
+    
+    public static func getUsername(database: NSDictionary?) -> String? {
+       if database != nil {
+           return database!["username"] as? String
+       }
+       return ""
+   }
 }
