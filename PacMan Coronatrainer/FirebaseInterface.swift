@@ -255,16 +255,8 @@ class FirebaseInterface {
                 }
             }
             
-            if uuid.uuidString == UIDevice.current.identifierForVendor!.uuidString {
-                FirebaseInterface.getScore(forUUID: uuid) { (currentScore) in
-                    self.firebaseInterfaceDelegate?.didUpdate(points: (timeInContactWithFamilyMember * 50))
-                }
-            } else {
-                var currentScore: Int? = nil
-                FirebaseInterface.getScore(forUUID: uuid) { (score) in
-                    print("score  \(score) + \(timeInContactWithFamilyMember)")
-                    FirebaseInterface.setScore(forUUID: uuid.uuidString, newScore: score + (timeInContactWithFamilyMember * 50))
-                }
+            FirebaseInterface.getScore(forUUID: uuid) { (currentScore) in
+                self.firebaseInterfaceDelegate?.didUpdate(points: (timeInContactWithFamilyMember * 50), uuid: uuid.uuidString)
             }
             
         }
@@ -412,5 +404,5 @@ class FirebaseInterface {
 }
 
 protocol FirebaseInterfaceDelegate {
-    func didUpdate(points: Int)
+    func didUpdate(points: Int, uuid: String)
 }

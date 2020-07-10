@@ -270,8 +270,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         bluetoothHandler.startSendReceivingBluetoothData()
     }
     
-    func didUpdate(points: Int) {
-        self.points = self.points + points
+    func didUpdate(points: Int, uuid: String) {
+        if uuid == UIDevice.current.identifierForVendor!.uuidString {
+            self.points = self.points + points
+        } else {
+            FirebaseInterface.getScore(forUUID: UUID(uuidString: uuid)!) { (score) in
+                print("score  \(score) + \(points)")
+                FirebaseInterface.setScore(forUUID: uuid, newScore: score + (points))
+            }
+        }
     }
     
     var uuid: UUID? = nil
