@@ -290,8 +290,18 @@ class FirebaseInterface {
                         updatedFamilyMembers.append(familyMember)
                     }
                 }
-                print("pdateajf \(updatedFamilyMembers)")
                 ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).child("familyMembers").setValue(updatedFamilyMembers)
+            }
+        }
+        getFamilyMembers(withUUID: UUID(uuidString: familyMemberUUID)!) { (familyMembers) in
+            if familyMembers != nil {
+                var updatedFamilyMembers: [String] = []
+                for familyMember in familyMembers! {
+                    if familyMember != UIDevice.current.identifierForVendor!.uuidString {
+                        updatedFamilyMembers.append(familyMember)
+                    }
+                }
+                ref.child("users").child(familyMemberUUID).child("familyMembers").setValue(updatedFamilyMembers)
             }
         }
     }
@@ -371,8 +381,9 @@ class FirebaseInterface {
     }
     
     public static func getUserDatabase(handler: @escaping (NSDictionary) -> ()) {
-        ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).observeSingleEvent(of: .value, with: { (snapshot) in
+        ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).observe(DataEventType.value, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String : Any] {
+                print("b;dsfnansadlsf")
                 self.dict = dictionary
                 handler(dictionary as NSDictionary)
             } else {
