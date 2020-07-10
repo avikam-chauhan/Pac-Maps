@@ -275,10 +275,21 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         return .lightContent
     }
     
+    @IBAction func clearRoutePressed(_ sender: Any) {
+        self.waypoints.removeAll()
+        totalDistance = 0
+        mapView.removeOverlays(mapView.overlays)
+        routeLabel.text = " 0 miles — 0 • "
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let warning_alert = UIAlertController(title: "Warning", message: "Pac-Maps is a mobile game designed to help keep people safe and healthy during the COVID-19 pandemic. You may receive notifications that alert you if you came in contact with someone who is/was positive for COVID-19. Your privacy is important to us, and none of your personal information will be shared with other users or companies. The information in this app may not be 100% up to date at all times. For the latest guidelines and information, please visit www.cdc.gov/coronavirus. We are not responsible for any complications or issues due to inaccurate information. Please exercise caution and common sense when you are in public, and help keep yourself and others around you safe and healthy. Stay safe, and have fun!", preferredStyle: UIAlertController.Style.alert)
+        warning_alert.addAction(UIAlertAction(title: "I understand", style: UIAlertAction.Style.cancel
+            , handler: nil))
+        self.present(warning_alert, animated: true, completion: nil)
+            
         self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
         self.navigationController?.navigationBar.tintColor = UIColor.white
                 
@@ -349,9 +360,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     @objc func tap(sender: UITapGestureRecognizer) {
         if listeningForMapTap {
+
             distances.removeAll()
             listeningForMapTap = false
-            addButton.setTitleColor(UIColor.white, for: .normal)
+            addButton.tintColor = UIColor.white
             let coordinate = mapView.convert(sender.location(in: sender.view), toCoordinateFrom: sender.view)
             let annotation = MKPointAnnotation()
             annotation.coordinate = coordinate
@@ -470,14 +482,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
 //    }
         
     
+    @IBOutlet weak var addSelectLabel: UILabel!
     
     @IBAction func addButtonPressed(_ sender: Any) {
         if listeningForMapTap {
             listeningForMapTap = false
-            addButton.setTitleColor(UIColor.white, for: .normal)
+            addButton.tintColor = UIColor.white
         } else {
             listeningForMapTap = true
-            addButton.setTitleColor(UIColor.lightGray, for: .normal)
+            addButton.tintColor = UIColor.lightGray
         }
         
     }
