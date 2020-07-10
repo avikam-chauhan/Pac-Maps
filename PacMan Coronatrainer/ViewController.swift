@@ -271,7 +271,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     }
     
     func didUpdate(points: Int) {
-        print("pints \(points)")
         self.points = self.points + points
     }
     
