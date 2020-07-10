@@ -264,6 +264,38 @@ class FirebaseInterface {
         }
     }
     
+    public static func getAllFamilyMembers(forUUID uuid: String, handler: @escaping ([String]) -> ()) {
+        ref.child("users").child(uuid).child("familyMembers").observeSingleEvent(of: .value) { (snapshot) in
+            if let allFamilyMembers = snapshot.value as? [String] {
+                handler(allFamilyMembers)
+            }
+        }
+    }
+    
+    public static func getFamilyMemberName(fromUUID uuid: String, handler: @escaping (String) -> ()) {
+        
+        ref.child("users").child(uuid).child("username").observeSingleEvent(of: .value) { (snapshot) in
+            if let username = snapshot.value as? String {
+                handler(username)
+            }
+        }
+    }
+    
+    public static func removeFamilyMember(familyMemberUUID: String) {
+        getFamilyMembers(withUUID: UIDevice.current.identifierForVendor!) { (familyMembers) in
+            if familyMembers != nil {
+                var updatedFamilyMembers: [String] = []
+                for familyMember in familyMembers! {
+                    if familyMember != familyMemberUUID {
+                        updatedFamilyMembers.append(familyMember)
+                    }
+                }
+                print("pdateajf \(updatedFamilyMembers)")
+                ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).child("familyMembers").setValue(updatedFamilyMembers)
+            }
+        }
+    }
+    
     public static func getScore(forUUID uuid: UUID, handler: @escaping (Int) -> ()) {
         ref.child("users").child(uuid.uuidString).child("score").observeSingleEvent(of: .value) { (snapshot) in
             if let currentScore = snapshot.value as? Int {
@@ -312,8 +344,13 @@ class FirebaseInterface {
         }
     }
     
-    
-
+    public static func getUserScore(forUUID uuid: String, handler: @escaping (Int) -> ()) {
+        ref.child("users").child(uuid).child("score").observeSingleEvent(of: .value) { (snapshot) in
+            if let userScore = snapshot.value as? Int {
+                handler(userScore)
+            }
+        }
+    }
     
     public static func getScore(database: [String: Any]) -> Int {
         print("database score \(database["score"])")

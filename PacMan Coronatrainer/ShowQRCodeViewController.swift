@@ -9,9 +9,11 @@
 import UIKit
 
 class ShowQRCodeViewController: UIViewController {
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         let image = generateQRCode(from: UIDevice.current.identifierForVendor?.uuidString ?? "")
         qrCodeImageView.image = image
         // Do any additional setup after loading the view.
@@ -31,7 +33,7 @@ class ShowQRCodeViewController: UIViewController {
 
         return nil
     }
-    
+        
 
     @IBOutlet weak var qrCodeImageView: UIImageView!
     

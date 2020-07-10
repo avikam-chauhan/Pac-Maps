@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0448FE3524B7E1F500244F14 /* FamilyMembersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0448FE3424B7E1F500244F14 /* FamilyMembersTableViewController.swift */; };
+		0448FE3724B7FCE700244F14 /* FamilyMemberDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0448FE3624B7FCE700244F14 /* FamilyMemberDetailsViewController.swift */; };
 		04A05DFA24B0FA6200996E19 /* ShowQRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A05DF924B0FA6200996E19 /* ShowQRCodeViewController.swift */; };
 		04A05DFC24B112E800996E19 /* ScanQRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A05DFB24B112E800996E19 /* ScanQRCodeViewController.swift */; };
 		04A381C8249C2866000A9616 /* BluetoothHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A381C7249C2866000A9616 /* BluetoothHandler.swift */; };
@@ -56,6 +58,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0448FE3424B7E1F500244F14 /* FamilyMembersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyMembersTableViewController.swift; sourceTree = "<group>"; };
+		0448FE3624B7FCE700244F14 /* FamilyMemberDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyMemberDetailsViewController.swift; sourceTree = "<group>"; };
 		04A05DF924B0FA6200996E19 /* ShowQRCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowQRCodeViewController.swift; sourceTree = "<group>"; };
 		04A05DFB24B112E800996E19 /* ScanQRCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanQRCodeViewController.swift; sourceTree = "<group>"; };
 		04A381C7249C2866000A9616 /* BluetoothHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothHandler.swift; sourceTree = "<group>"; };
@@ -170,6 +174,8 @@
 				9F363E9B2453B4EE0023084D /* AppDelegate.swift */,
 				9F363ECB2453CE990023084D /* SceneDelegate.swift */,
 				9F363ED2245414D70023084D /* ViewController.swift */,
+				0448FE3624B7FCE700244F14 /* FamilyMemberDetailsViewController.swift */,
+				0448FE3424B7E1F500244F14 /* FamilyMembersTableViewController.swift */,
 				04A381C7249C2866000A9616 /* BluetoothHandler.swift */,
 				04C9FA0424870A7F00745E83 /* Notification.swift */,
 				9F363ED4245419150023084D /* LeaderboardViewController.swift */,
@@ -431,8 +437,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				9F363ED3245414D70023084D /* ViewController.swift in Sources */,
+				0448FE3724B7FCE700244F14 /* FamilyMemberDetailsViewController.swift in Sources */,
 				9F363ED12454090F0023084D /* CustomAnnotation.swift in Sources */,
 				9F363ED72454C8490023084D /* User.swift in Sources */,
+				0448FE3524B7E1F500244F14 /* FamilyMembersTableViewController.swift in Sources */,
 				9F363ED5245419150023084D /* LeaderboardViewController.swift in Sources */,
 				B08821A4247F1A5400CABF4D /* NewUser.swift in Sources */,
 				B08821A2247F070700CABF4D /* FirebaseDatabaseHandler.swift in Sources */,
