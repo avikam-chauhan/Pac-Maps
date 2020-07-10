@@ -260,13 +260,18 @@ class FirebaseInterface {
                     self.firebaseInterfaceDelegate?.didUpdate(points: (timeInContactWithFamilyMember * 50))
                 }
             } else {
+                var currentScore: Int? = nil
                 FirebaseInterface.getScore(forUUID: uuid) { (score) in
                     print("score  \(score) + \(timeInContactWithFamilyMember)")
-                    FirebaseInterface.ref.child("users").child(uuid.uuidString).child("score").setValue(score + timeInContactWithFamilyMember * 50)
+                    FirebaseInterface.setScore(forUUID: uuid.uuidString, newScore: score + (timeInContactWithFamilyMember * 50))
                 }
             }
             
         }
+    }
+    
+    public static func setScore(forUUID uuid: String, newScore: Int) {
+        ref.child("users").child(uuid).child("score").setValue(newScore)
     }
     
     public static func getAllFamilyMembers(forUUID uuid: String, handler: @escaping ([String]) -> ()) {
