@@ -135,7 +135,6 @@ class FirebaseInterface {
                 }
             }
             for removalIndex in 0..<arrayOfRemovalItems.count {
-                print("removal index \(arrayOfRemovalItems.count - removalIndex) and  \(arrayOfRemovalItems[arrayOfRemovalItems.count - 1 - removalIndex])")
                 contactedUsersDictionary.remove(at: arrayOfRemovalItems[arrayOfRemovalItems.count - 1 - removalIndex])
             }
             
@@ -204,7 +203,6 @@ class FirebaseInterface {
                 }
             }
             for removalIndex in 0..<arrayOfRemovalItems.count {
-                print("removal index \(arrayOfRemovalItems.count - removalIndex) and  \(arrayOfRemovalItems[arrayOfRemovalItems.count - 1 - removalIndex])")
                 contactedUsersDictionary.remove(at: arrayOfRemovalItems[arrayOfRemovalItems.count - 1 - removalIndex])
             }
             
@@ -255,6 +253,7 @@ class FirebaseInterface {
             }
             
             FirebaseInterface.getScore(forUUID: uuid) { (currentScore) in
+                print("etsdfkasfsddsfdfasdf \(uuid.uuidString) + newScore \(currentScore + (timeInContactWithFamilyMember * 50))")
                 FirebaseInterface.self.firebaseInterfaceDelegate?.didUpdate(points: currentScore + (timeInContactWithFamilyMember * 50), uuid: uuid.uuidString)
             }
             

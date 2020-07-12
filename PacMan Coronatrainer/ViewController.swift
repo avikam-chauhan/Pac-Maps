@@ -266,9 +266,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         //MARK: Init iBeacon and Bluetooth
         firebaseInterface = FirebaseInterface()
         FirebaseInterface.firebaseInterfaceDelegate = self
-        
-        firebaseInterface.restorePoints(forUUID: UUID(uuidString: "48F045FB-F926-4202-B0F0-EEBDC98AA552")!, withContactUUID: UUID(uuidString: UIDevice.current.identifierForVendor!.uuidString)!)
-        
+                
         bluetoothHandler = BluetoothHandler()
         bluetoothHandler.bluetoothHandlerDelegate = self
         bluetoothHandler.startSendReceivingBluetoothData()
@@ -277,8 +275,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     //MARK: check this
     func didUpdate(points: Int, uuid: String) {
         if uuid == UIDevice.current.identifierForVendor!.uuidString {
+            print("setting your score")
             self.points = points
         } else {
+            print("setting other phone score")
             FirebaseInterface.setScore(forUUID: uuid, newScore: points)
         }
     }
@@ -288,11 +288,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     @IBAction func close(bySegue: UIStoryboardSegue) {
         let mvcUnwoundFrom = bySegue.source as? ScanQRCodeViewController
         if let uuid = (mvcUnwoundFrom?.uuid) {
-            firebaseInterface.restorePoints(forUUID: uuid, withContactUUID: UUID(uuidString: UIDevice.current.identifierForVendor!.uuidString)!)
-            firebaseInterface.restorePoints(forUUID: UUID(uuidString: UIDevice.current.identifierForVendor!.uuidString)!, withContactUUID: uuid)
-            
             FirebaseInterface.addFamilyMember(uuid: uuid.uuidString)
             FirebaseInterface.addFamilyMemberToPlayer(withUUID: uuid)
+            firebaseInterface.restorePoints(forUUID: uuid, withContactUUID: UUID(uuidString: UIDevice.current.identifierForVendor!.uuidString)!)
+            firebaseInterface.restorePoints(forUUID: UUID(uuidString: UIDevice.current.identifierForVendor!.uuidString)!, withContactUUID: uuid)
             familyMemberUUIDs.append(uuid.uuidString)
             print("fmuuids: \(familyMemberUUIDs)")
 
