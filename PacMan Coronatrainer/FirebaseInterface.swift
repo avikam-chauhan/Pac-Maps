@@ -33,7 +33,6 @@ class FirebaseInterface {
     }
     
     public static func updateScore(score: Int) {
-        dict["score"] = score
         ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).child("score").setValue(score)
     }
     
@@ -256,7 +255,7 @@ class FirebaseInterface {
             }
             
             FirebaseInterface.getScore(forUUID: uuid) { (currentScore) in
-                FirebaseInterface.self.firebaseInterfaceDelegate?.didUpdate(points: (timeInContactWithFamilyMember * 50), uuid: uuid.uuidString)
+                FirebaseInterface.self.firebaseInterfaceDelegate?.didUpdate(points: currentScore + (timeInContactWithFamilyMember * 50), uuid: uuid.uuidString)
             }
             
         }
@@ -380,15 +379,12 @@ class FirebaseInterface {
         }
     }
     
-    public static func getUserDatabase(handler: @escaping (NSDictionary) -> ()) {
+    public static func getUserDatabase(handler: @escaping (NSDictionary, Int) -> ()) {
         ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).observe(DataEventType.value, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String : Any] {
                 self.dict = dictionary
-                print("dict: \(dictionary)")
                 let score = dictionary["score"] as! Int
-                print("scoore \(score)")
-                firebaseInterfaceDelegate?.didUpdate(userScore: score)
-                handler(dictionary as NSDictionary)
+                handler(dictionary as NSDictionary, score)
             }
         })
     }
@@ -409,6 +405,5 @@ class FirebaseInterface {
 
 protocol FirebaseInterfaceDelegate {
     func didUpdate(points: Int, uuid: String)
-    func didUpdate(userScore: Int)
 }
 

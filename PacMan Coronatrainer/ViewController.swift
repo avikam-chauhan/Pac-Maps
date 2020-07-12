@@ -110,7 +110,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             FirebaseInterface.updateScore(score: newValue)
         }
         get {
-            print("get \(FirebaseInterface.getScore(database: FirebaseInterface.dict))")
+            
             return FirebaseInterface.getScore(database: FirebaseInterface.dict)
         }
     }
@@ -225,6 +225,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         //        startScanningForBeaconRegion(beaconRegion: CLBeaconRegion.init(proximityUUID: UUID.init(uuidString: "E06F95E4-FCFC-42C6-B4F8-F6BAE87EA1A0")!,
         //                                                                       identifier: "PacMan"))
         
+        FirebaseInterface.getUserDatabase { (dict, score) in
+            self.points = score
+        }
+        
         ref = Database.database().reference()
         getAllUsers { (users) in
             self.users = users
@@ -235,9 +239,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             self.users = self.parseUsers(dictionary: postDict!)
         })
         
-        FirebaseInterface.getUserDatabase { (dict) in
-            self.points = self.points + 0
-        }
+        
         
         self.getAllUsers { (myUsers) in
             var sortedUsers = myUsers.sorted(by: { (a, b) -> Bool in
@@ -275,18 +277,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     //MARK: check this
     func didUpdate(points: Int, uuid: String) {
         if uuid == UIDevice.current.identifierForVendor!.uuidString {
-            self.points = self.points + points
+            self.points = points
         } else {
-            FirebaseInterface.getScore(forUUID: UUID(uuidString: uuid)!) { (score) in
-                print("score  \(score) + \(points)")
-                FirebaseInterface.setScore(forUUID: uuid, newScore: score + (points))
-            }
+            FirebaseInterface.setScore(forUUID: uuid, newScore: points)
         }
-    }
-    
-    func didUpdate(userScore: Int) {
-        print("new score \(userScore)")
-        self.points = self.points + 0
     }
     
     var uuid: UUID? = nil
