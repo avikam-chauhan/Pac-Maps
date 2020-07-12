@@ -25,8 +25,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     var vibrate = false
     
-    //
-    
     var removePointsTimer: Timer?
     var addPointsTimer = Timer()
     
@@ -112,6 +110,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             FirebaseInterface.updateScore(score: newValue)
         }
         get {
+            print("get \(FirebaseInterface.getScore(database: FirebaseInterface.dict))")
             return FirebaseInterface.getScore(database: FirebaseInterface.dict)
         }
     }
@@ -237,7 +236,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         })
         
         FirebaseInterface.getUserDatabase { (dict) in
-            self.points = FirebaseInterface.getScore(database: FirebaseInterface.dict)
+            self.points = self.points + 0
         }
         
         self.getAllUsers { (myUsers) in
@@ -260,16 +259,20 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             }
         }
 
-        
+
+
         //MARK: Init iBeacon and Bluetooth
         firebaseInterface = FirebaseInterface()
-        firebaseInterface.firebaseInterfaceDelegate = self
+        FirebaseInterface.firebaseInterfaceDelegate = self
+        
+        firebaseInterface.restorePoints(forUUID: UUID(uuidString: "48F045FB-F926-4202-B0F0-EEBDC98AA552")!, withContactUUID: UUID(uuidString: UIDevice.current.identifierForVendor!.uuidString)!)
         
         bluetoothHandler = BluetoothHandler()
         bluetoothHandler.bluetoothHandlerDelegate = self
         bluetoothHandler.startSendReceivingBluetoothData()
     }
     
+    //MARK: check this
     func didUpdate(points: Int, uuid: String) {
         if uuid == UIDevice.current.identifierForVendor!.uuidString {
             self.points = self.points + points
@@ -281,17 +284,24 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         }
     }
     
+    func didUpdate(userScore: Int) {
+        print("new score \(userScore)")
+        self.points = self.points + 0
+    }
+    
     var uuid: UUID? = nil
     
     @IBAction func close(bySegue: UIStoryboardSegue) {
         let mvcUnwoundFrom = bySegue.source as? ScanQRCodeViewController
         if let uuid = (mvcUnwoundFrom?.uuid) {
+            firebaseInterface.restorePoints(forUUID: uuid, withContactUUID: UUID(uuidString: UIDevice.current.identifierForVendor!.uuidString)!)
+            firebaseInterface.restorePoints(forUUID: UUID(uuidString: UIDevice.current.identifierForVendor!.uuidString)!, withContactUUID: uuid)
+            
             FirebaseInterface.addFamilyMember(uuid: uuid.uuidString)
             FirebaseInterface.addFamilyMemberToPlayer(withUUID: uuid)
             familyMemberUUIDs.append(uuid.uuidString)
             print("fmuuids: \(familyMemberUUIDs)")
-            firebaseInterface.restorePoints(forUUID: uuid, withContactUUID: UUID(uuidString: UIDevice.current.identifierForVendor!.uuidString)!)
-            firebaseInterface.restorePoints(forUUID: UUID(uuidString: UIDevice.current.identifierForVendor!.uuidString)!, withContactUUID: uuid)
+
         }
     }
     

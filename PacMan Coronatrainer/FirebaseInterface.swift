@@ -15,9 +15,9 @@ class FirebaseInterface {
     static let ref = Database.database().reference()
     static var username: String?
     static var location: CLLocationCoordinate2D?
-    static var score: Int?
+//    static var scor re: Int?
     static var dict = [String: Any]()
-    public var firebaseInterfaceDelegate: FirebaseInterfaceDelegate?
+    public static var firebaseInterfaceDelegate: FirebaseInterfaceDelegate?
     
     //        ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).setValue(["username":username ?? UIDevice.current.identifierForVendor!.uuidString, "location":["latitude": location?.latitude ?? 0, "longitude": location?.longitude ?? 0], "score":score ?? 0, "minorKey": minorKey ?? 0, "familyMembers": familyMembers])
     static func createUser() {
@@ -256,7 +256,7 @@ class FirebaseInterface {
             }
             
             FirebaseInterface.getScore(forUUID: uuid) { (currentScore) in
-                self.firebaseInterfaceDelegate?.didUpdate(points: (timeInContactWithFamilyMember * 50), uuid: uuid.uuidString)
+                FirebaseInterface.self.firebaseInterfaceDelegate?.didUpdate(points: (timeInContactWithFamilyMember * 50), uuid: uuid.uuidString)
             }
             
         }
@@ -384,6 +384,10 @@ class FirebaseInterface {
         ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).observe(DataEventType.value, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String : Any] {
                 self.dict = dictionary
+                print("dict: \(dictionary)")
+                let score = dictionary["score"] as! Int
+                print("scoore \(score)")
+                firebaseInterfaceDelegate?.didUpdate(userScore: score)
                 handler(dictionary as NSDictionary)
             }
         })
@@ -405,4 +409,6 @@ class FirebaseInterface {
 
 protocol FirebaseInterfaceDelegate {
     func didUpdate(points: Int, uuid: String)
+    func didUpdate(userScore: Int)
 }
+

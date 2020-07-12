@@ -16,7 +16,7 @@ class User{
     var username = ""
     var localRadius: Double = 0
     var positiveResult = false
-    
+
     init(UUID: String, score: Int, location: CLLocationCoordinate2D, username: String){
         self.UUID = UUID
         self.score = score
@@ -30,7 +30,7 @@ class User{
         self.username = username
         self.localRadius = localRadius
     }
-    
+
     func getLocalRadius() -> Double{
         return localRadius
     }
