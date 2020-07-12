@@ -141,23 +141,29 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             }
             UIView.animate(withDuration: 0.5, animations: {
                 if minProximity == CLProximity.unknown {
-                    self.safetyLabel.text = "SAFE"
-                    self.topView.backgroundColor = UIColor.systemGreen
-                    self.bottomView.backgroundColor = UIColor.systemGreen
+                    self.navigationItem.title = "SAFE"
+//                    self.safetyLabel.text = "SAFE"
+                    self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
+//                    self.topView.backgroundColor = UIColor.systemGreen
+                    UINavigationBar.appearance().barTintColor = UIColor.systemGreen
                     self.vibrate = false
                     self.removePointsTimer.invalidate()
                 } else if minProximity == CLProximity.immediate {
-                    self.safetyLabel.text = "TOO CLOSE"
-                    self.topView.backgroundColor = UIColor.systemRed
-                    self.bottomView.backgroundColor = UIColor.systemRed
+                    self.navigationItem.title = "TOO CLOSE"
+//                    self.safetyLabel.text = "TOO CLOSE"
+                    self.navigationController?.navigationBar.barTintColor = UIColor.systemRed
+//                    self.topView.backgroundColor = UIColor.systemRed
+                    UINavigationBar.appearance().barTintColor = UIColor.systemRed
                     self.vibrate = true
                     self.vibrateTimer(time: 0.1)
                                         
                     self.removePointsTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(ViewController.subtract1), userInfo: nil, repeats: true)
                     self.removePointsTimer.fire()
                 } else if minProximity == CLProximity.near {
-                    self.safetyLabel.text = "NEAR"
-                    self.topView.backgroundColor = UIColor.systemOrange
+                    self.navigationItem.title = "NEAR"
+//                    self.safetyLabel.text = "NEAR"
+                    self.navigationController?.navigationBar.barTintColor = UIColor.systemOrange
+//                    self.topView.backgroundColor = UIColor.systemOrange
                     self.bottomView.backgroundColor = UIColor.systemOrange
                     self.vibrate = true
                     self.vibrateTimer(time: 1)
@@ -211,7 +217,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     var totalDistance = 0.0 {
         didSet {
             if totalDistance != 0.0 {
-                routeLabel.text = " \((totalDistance / 1609.34).rounded(toPlaces: 1)) miles — \(Int(50 * totalDistance / 1609.34)) • "
+                routeLabel.text = " \((totalDistance / 1609.34).rounded(toPlaces: 1)) miles — \(Int(1000 * totalDistance / 1609.34)) • "
             }
         }
     }
@@ -264,19 +270,34 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
-    
+    @IBAction func clearRoutePressed(_ sender: Any) {
+        self.waypoints.removeAll()
+        totalDistance = 0
+        mapView.removeOverlays(mapView.overlays)
+        routeLabel.text = " 0 miles — 0 • "
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        let warning_alert = UIAlertController(title: "Warning", message: "Pac-Maps is a mobile game designed to help keep people safe and healthy during the COVID-19 pandemic. You may receive notifications that alert you if you came in contact with someone who is/was positive for COVID-19. Your privacy is important to us, and none of your personal information will be shared with other users or companies. The information in this app may not be 100% up to date at all times. For the latest guidelines and information, please visit www.cdc.gov/coronavirus. We are not responsible for any complications or issues due to inaccurate information. Please exercise caution and common sense when you are in public, and help keep yourself and others around you safe and healthy. Stay safe, and have fun!", preferredStyle: UIAlertController.Style.alert)
+        warning_alert.addAction(UIAlertAction(title: "I understand", style: UIAlertAction.Style.cancel
+            , handler: nil))
+        self.present(warning_alert, animated: true, completion: nil)
+            
+        self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
+        self.navigationController?.navigationBar.tintColor = UIColor.white
+                
         let launchedBefore = UserDefaults.standard.bool(forKey: "89aaa7987")
         if !launchedBefore {
             let alert = UIAlertController(title: "Welcome", message: "Please enter your username!", preferredStyle: UIAlertController.Style.alert)
             alert.addTextField(configurationHandler: nil)
-            alert.addAction(UIAlertAction(title: "Let's play!", style: UIAlertAction.Style.default, handler:{ (UIAlertAction)in
-                FirebaseInterface.createUser()
+            alert.addAction(UIAlertAction(title: "Let's play!", style: UIAlertAction.Style.default, handler: { (UIAlertAction) in
+//                FirebaseInterface.createUser()
                 FirebaseInterface.updateUsername(username: (alert.textFields?.first?.text!)!)
                 FirebaseInterface.updateScore(score: 0)
             }))
@@ -336,13 +357,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     @objc func tap(sender: UITapGestureRecognizer) {
         if listeningForMapTap {
+
             distances.removeAll()
             listeningForMapTap = false
-            addButton.setTitleColor(UIColor.white, for: .normal)
+            addButton.tintColor = UIColor.white
             let coordinate = mapView.convert(sender.location(in: sender.view), toCoordinateFrom: sender.view)
             let annotation = MKPointAnnotation()
             annotation.coordinate = coordinate
-            mapView.addAnnotation(annotation)
+//            mapView.addAnnotation(annotation)
             
             waypoints.append(coordinate)
             //            showFlag(coordinate: coordinate)
@@ -358,10 +380,20 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             let directions = MKDirections(request: request)
             
             directions.calculate { [unowned self] response, error in
-                guard let unwrappedResponse = response else { return }
+                guard let unwrappedResponse = response else {
+                    DispatchQueue.main.async {
+                        let alert = UIAlertController(title: "Walking Directions Not Available", message: "Walking directions are not available for this location.", preferredStyle: UIAlertController.Style.alert)
+                        alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                    self.waypoints.remove(at: 0)
+                    return
+                }
                 
                 for route in unwrappedResponse.routes {
                     self.mapView.addOverlay(route.polyline)
+//                    self.mapView.addOverlay(ForegroundOverlay(line: route.polyline), level: .aboveRoads)
+//                    self.mapView.addOverlay(BackgroundOverlay(line: route.polyline), level: .aboveRoads)
                     self.totalDistance += route.distance
                     self.distances.append(route.distance)
                 }
@@ -377,10 +409,20 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 let directions = MKDirections(request: request)
                 
                 directions.calculate { [unowned self] response, error in
-                    guard let unwrappedResponse = response else { return }
+                    guard let unwrappedResponse = response else {
+                        DispatchQueue.main.async {
+                            let alert = UIAlertController(title: "Walking Directions Not Available", message: "Walking directions are not available for this location.", preferredStyle: UIAlertController.Style.alert)
+                            alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+                            self.present(alert, animated: true, completion: nil)
+                        }
+//                        self.waypoints.remove(at: x+1)
+                        return
+                    }
                     
                     for route in unwrappedResponse.routes {
                         self.mapView.addOverlay(route.polyline)
+//                        self.mapView.addOverlay(ForegroundOverlay(line: route.polyline), level: .aboveRoads)
+//                        self.mapView.addOverlay(BackgroundOverlay(line: route.polyline), level: .aboveRoads)
                         self.totalDistance += route.distance
                         self.distances.append(route.distance)
                     }
@@ -397,20 +439,55 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     }
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+//        print(overlay is ForegroundOverlay)
+//        if overlay is ForegroundOverlay {
         let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
         renderer.strokeColor = UIColor.yellow
         renderer.lineWidth = 8
-        renderer.lineDashPattern = [0, 20]
+//        renderer.lineDashPattern = [0, 20]
         return renderer
+//        } else {
+//            let renderer = MKPolylineRenderer(polyline: (overlay as! BackgroundOverlay).polyline as! MKPolyline)
+//            renderer.strokeColor = UIColor.green
+//            renderer.lineWidth = 15
+//            return renderer
+//        }
     }
+    
+    
+//    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+//        var renderer: MKPolygonRenderer? = nil
+//        if let overlay = overlay as? MKPolygon {
+//            renderer = MKPolygonRenderer(polygon: overlay)
+//        }
+//
+//        renderer?.fillColor = UIColor.cyan.withAlphaComponent(0.2)
+//        renderer?.strokeColor = UIColor.blue.withAlphaComponent(0.7)
+//        renderer?.lineWidth = 3
+//
+//        return renderer!
+//    }
+//
+//    func mapView(_ mapView: MKMapView, viewFor overlay: MKOverlay) -> MKOverlayView {
+//        let overlayView = MKPolygonRenderer(polygon: overlay as! MKPolygon)
+//
+//        overlayView.fillColor = UIColor.cyan.withAlphaComponent(0.2)
+//        overlayView.strokeColor = UIColor.blue.withAlphaComponent(0.7)
+//
+//        return overlayView as MKOverlayRenderer
+//
+//    }
+        
+    
+    @IBOutlet weak var addSelectLabel: UILabel!
     
     @IBAction func addButtonPressed(_ sender: Any) {
         if listeningForMapTap {
             listeningForMapTap = false
-            addButton.setTitleColor(UIColor.white, for: .normal)
+            addButton.tintColor = UIColor.white
         } else {
             listeningForMapTap = true
-            addButton.setTitleColor(UIColor.lightGray, for: .normal)
+            addButton.tintColor = UIColor.lightGray
         }
         
     }
@@ -428,7 +505,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         } else if waypoints.count > 0 {
             print((currentLocation?.distance(from: CLLocation(latitude: waypoints[currentWaypointIndex].latitude, longitude: waypoints[currentWaypointIndex].longitude)))!)
             if (currentLocation?.distance(from: CLLocation(latitude: waypoints[currentWaypointIndex].latitude, longitude: waypoints[currentWaypointIndex].longitude)))! < 5.0 {
-                points += Int(50 * distances[currentWaypointIndex] / 1609.34)
+                points += Int(1000 * distances[currentWaypointIndex] / 1609.34)
                 currentWaypointIndex += 1
             }
         }
@@ -452,49 +529,49 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
         
         
-        if self.waypoints.count > 0 {
-            mapView.removeOverlays(mapView.overlays)
-            
-            totalDistance = 0.0
-            
-            let request = MKDirections.Request()
-            request.source = MKMapItem(placemark: MKPlacemark(coordinate: currentLocation!.coordinate, addressDictionary: nil))
-            request.destination = MKMapItem(placemark: MKPlacemark(coordinate: waypoints[0], addressDictionary: nil))
-            request.requestsAlternateRoutes = false
-            request.transportType = .walking
-            
-            let directions = MKDirections(request: request)
-            
-            directions.calculate { [unowned self] response, error in
-                guard let unwrappedResponse = response else { return }
-                
-                for route in unwrappedResponse.routes {
-                    self.mapView.addOverlay(route.polyline)
-                    self.totalDistance += route.distance
-                    self.distances.append(route.distance)
-                }
-            }
-            
-            for x in 0..<waypoints.count-1 {
-                let request = MKDirections.Request()
-                request.source = MKMapItem(placemark: MKPlacemark(coordinate: waypoints[x], addressDictionary: nil))
-                request.destination = MKMapItem(placemark: MKPlacemark(coordinate: waypoints[x+1], addressDictionary: nil))
-                request.requestsAlternateRoutes = false
-                request.transportType = .walking
-                
-                let directions = MKDirections(request: request)
-                
-                directions.calculate { [unowned self] response, error in
-                    guard let unwrappedResponse = response else { return }
-                    
-                    for route in unwrappedResponse.routes {
-                        self.mapView.addOverlay(route.polyline)
-                        self.totalDistance += route.distance
-                        self.distances.append(route.distance)
-                    }
-                }
-            }
-        }
+//        if self.waypoints.count > 0 {
+//            mapView.removeOverlays(mapView.overlays)
+//
+//            totalDistance = 0.0
+//
+//            let request = MKDirections.Request()
+//            request.source = MKMapItem(placemark: MKPlacemark(coordinate: currentLocation!.coordinate, addressDictionary: nil))
+//            request.destination = MKMapItem(placemark: MKPlacemark(coordinate: waypoints[0], addressDictionary: nil))
+//            request.requestsAlternateRoutes = false
+//            request.transportType = .walking
+//
+//            let directions = MKDirections(request: request)
+//
+//            directions.calculate { [unowned self] response, error in
+//                guard let unwrappedResponse = response else { return }
+//
+//                for route in unwrappedResponse.routes {
+//                    self.mapView.addOverlay(route.polyline)
+//                    self.totalDistance += route.distance
+//                    self.distances.append(route.distance)
+//                }
+//            }
+//
+//            for x in 0..<waypoints.count-1 {
+//                let request = MKDirections.Request()
+//                request.source = MKMapItem(placemark: MKPlacemark(coordinate: waypoints[x], addressDictionary: nil))
+//                request.destination = MKMapItem(placemark: MKPlacemark(coordinate: waypoints[x+1], addressDictionary: nil))
+//                request.requestsAlternateRoutes = false
+//                request.transportType = .walking
+//
+//                let directions = MKDirections(request: request)
+//
+//                directions.calculate { [unowned self] response, error in
+//                    guard let unwrappedResponse = response else { return }
+//
+//                    for route in unwrappedResponse.routes {
+//                        self.mapView.addOverlay(route.polyline)
+//                        self.totalDistance += route.distance
+//                        self.distances.append(route.distance)
+//                    }
+//                }
+//            }
+//        }
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
@@ -523,5 +600,21 @@ extension Double {
     func rounded(toPlaces places:Int) -> Double {
         let divisor = pow(10.0, Double(places))
         return (self * divisor).rounded() / divisor
+    }
+}
+
+fileprivate class ForegroundOverlay: MKPolyline{
+    var polyline: MKPolyline?
+    
+    init (line: MKPolyline) {
+        self.polyline = line
+    }
+}
+
+fileprivate class BackgroundOverlay: MKPolyline{
+    var polyline: MKPolyline?
+    
+    init (line: MKPolyline) {
+        self.polyline = line
     }
 }
