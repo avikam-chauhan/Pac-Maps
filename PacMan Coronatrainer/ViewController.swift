@@ -189,7 +189,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             FirebaseInterface.updateScore(score: newValue)
         }
         get {
-            return FirebaseInterface.getScore()
+            return FirebaseInterface.getScore(database: FirebaseInterface.dict) ?? 0
         }
     }
     
@@ -337,7 +337,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             let postDict = snapshot.value as? NSDictionary
             self.users = self.parseUsers(dictionary: postDict!)
         })
-        self.points = FirebaseInterface.getScore()
+        self.points = FirebaseInterface.getScore(database: FirebaseInterface.dict) ?? 0
         
         self.getAllUsers { (myUsers) in
             var sortedUsers = myUsers.sorted(by: { (a, b) -> Bool in
