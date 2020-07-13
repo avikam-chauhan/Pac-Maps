@@ -31,6 +31,8 @@
 		9F363ED5245419150023084D /* LeaderboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F363ED4245419150023084D /* LeaderboardViewController.swift */; };
 		9F363ED72454C8490023084D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F363ED62454C8480023084D /* User.swift */; };
 		9F363EDB2454D0510023084D /* FirebaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F363EDA2454D0500023084D /* FirebaseInterface.swift */; };
+		9F95C48E24B6B47E009DE735 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F95C48D24B6B47E009DE735 /* SettingsTableViewController.swift */; };
+		9FC2834324BBB5F20091405A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9FC2834224BBB5F20091405A /* GoogleService-Info.plist */; };
 		9FF15CC4247F0C5400328C96 /* LocationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF15CC3247F0C5400328C96 /* LocationHandler.swift */; };
 		9FF15CC6247F123100328C96 /* MapHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF15CC5247F123100328C96 /* MapHandler.swift */; };
 		B08821A2247F070700CABF4D /* FirebaseDatabaseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08821A1247F070700CABF4D /* FirebaseDatabaseHandler.swift */; };
@@ -91,6 +93,9 @@
 		9F363ED4245419150023084D /* LeaderboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardViewController.swift; sourceTree = "<group>"; };
 		9F363ED62454C8480023084D /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		9F363EDA2454D0500023084D /* FirebaseInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseInterface.swift; sourceTree = "<group>"; };
+		9F95C48D24B6B47E009DE735 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
+		9FC2834224BBB5F20091405A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		9FC2834424BBB8B80091405A /* Pac-Maps.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Pac-Maps.entitlements"; sourceTree = "<group>"; };
 		9FF15CC3247F0C5400328C96 /* LocationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationHandler.swift; sourceTree = "<group>"; };
 		9FF15CC5247F123100328C96 /* MapHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapHandler.swift; sourceTree = "<group>"; };
 		AD56D9E086A8A91A8D719F93 /* libPods-PacMan CoronatrainerTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PacMan CoronatrainerTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -170,7 +175,8 @@
 		9F363E9A2453B4ED0023084D /* PacMan Coronatrainer */ = {
 			isa = PBXGroup;
 			children = (
-				04C9FA022486FC4500745E83 /* GoogleService-Info.plist */,
+				9FC2834424BBB8B80091405A /* Pac-Maps.entitlements */,
+				9F95C48D24B6B47E009DE735 /* SettingsTableViewController.swift */,
 				9F363E9B2453B4EE0023084D /* AppDelegate.swift */,
 				9F363ECB2453CE990023084D /* SceneDelegate.swift */,
 				9F363ED2245414D70023084D /* ViewController.swift */,
@@ -183,6 +189,7 @@
 				9F363EA42453B4F50023084D /* Assets.xcassets */,
 				9F363EA62453B4F50023084D /* LaunchScreen.storyboard */,
 				9F363EA92453B4F50023084D /* Info.plist */,
+				9FC2834224BBB5F20091405A /* GoogleService-Info.plist */,
 				9F363ED02454090F0023084D /* CustomAnnotation.swift */,
 				9F363ED62454C8480023084D /* User.swift */,
 				B08821A3247F1A5400CABF4D /* NewUser.swift */,
@@ -444,6 +451,7 @@
 				9F363ED5245419150023084D /* LeaderboardViewController.swift in Sources */,
 				B08821A4247F1A5400CABF4D /* NewUser.swift in Sources */,
 				B08821A2247F070700CABF4D /* FirebaseDatabaseHandler.swift in Sources */,
+				9F95C48E24B6B47E009DE735 /* SettingsTableViewController.swift in Sources */,
 				9F363E9C2453B4EE0023084D /* AppDelegate.swift in Sources */,
 				9F363ECC2453CE990023084D /* SceneDelegate.swift in Sources */,
 				04A05DFA24B0FA6200996E19 /* ShowQRCodeViewController.swift in Sources */,
@@ -627,6 +635,8 @@
 			baseConfigurationReference = F5BA87FC3C1754AFFDE95190 /* Pods-PacMan Coronatrainer.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "PacMan Coronatrainer/Pac-Maps.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ANNU8439FD;
 				INFOPLIST_FILE = "PacMan Coronatrainer/Info.plist";
@@ -635,8 +645,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mihir.PacMan-Coronatrainer";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ipaycheck.PacMan-Coronatrainer";
 				PRODUCT_NAME = "Pac-Maps";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -647,6 +658,8 @@
 			baseConfigurationReference = C7EE3042A5D792F28DCA0808 /* Pods-PacMan Coronatrainer.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "PacMan Coronatrainer/Pac-Maps.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ANNU8439FD;
 				INFOPLIST_FILE = "PacMan Coronatrainer/Info.plist";
@@ -655,8 +668,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mihir.PacMan-Coronatrainer";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ipaycheck.PacMan-Coronatrainer";
 				PRODUCT_NAME = "Pac-Maps";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

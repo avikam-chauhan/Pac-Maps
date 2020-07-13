@@ -1,3 +1,10 @@
+////
+////  BluetoothHandler.swift
+////  PacMan Coronatrainer
+////
+////  Created by Mihir Chauhan on 5/27/20.
+////  Copyright © 2020 Avikam Chauhan. All rights reserved.
+////
 //
 //  BluetoothHandler.swift
 //  BLEDataTransfer
