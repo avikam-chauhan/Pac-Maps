@@ -22,6 +22,17 @@ class LeaderboardViewController: UIViewController, UITableViewDataSource, UITabl
         }
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "segueID-2" {
+            if let indexPath = self.tableView.indexPathForSelectedRow {
+                let controller = segue.destination as! FamilyMemberDetailsViewController
+                controller.selectedUUID = users[indexPath.row].UUID
+            }
+            
+            // perform custom segue operation.
+        }
+    }
+    
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
@@ -60,6 +71,9 @@ class LeaderboardViewController: UIViewController, UITableViewDataSource, UITabl
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
     
     
     

@@ -16,6 +16,8 @@ class FamilyMembersTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.navigationController?.navigationBar.barTintColor = UIColor.systemBackground
+        
         tableView.tableFooterView = UIView(frame: CGRect.zero)
         
         FirebaseInterface.getAllFamilyMembers(forUUID: UIDevice.current.identifierForVendor!.uuidString) { (familyMembers) in

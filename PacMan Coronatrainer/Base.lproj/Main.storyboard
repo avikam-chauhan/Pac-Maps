@@ -255,11 +255,11 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <color key="sectionIndexBackgroundColor" systemColor="systemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="leaderboardCell" textLabel="5BC-if-pBy" detailTextLabel="ce7-sG-Hd2" rowHeight="60" style="IBUITableViewCellStyleValue1" id="ftl-zw-xrQ">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="leaderboardCell" textLabel="5BC-if-pBy" detailTextLabel="ce7-sG-Hd2" rowHeight="60" style="IBUITableViewCellStyleValue1" id="ftl-zw-xrQ">
                                         <rect key="frame" x="0.0" y="28" width="414" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ftl-zw-xrQ" id="7nz-lR-TcD">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="60"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="383" height="60"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5BC-if-pBy">
@@ -269,7 +269,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ce7-sG-Hd2">
-                                                    <rect key="frame" x="341" y="17" width="53" height="27.5"/>
+                                                    <rect key="frame" x="322" y="17" width="53" height="27.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="20"/>
                                                     <nil key="highlightedColor"/>
@@ -277,6 +277,9 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                        <connections>
+                                            <segue destination="8GB-G8-zeU" kind="showDetail" identifier="segueID-2" id="6bn-vf-tmj"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <sections/>
@@ -618,7 +621,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KUI-UB-2OR">
-                                <rect key="frame" x="54" y="96" width="306" height="32"/>
+                                <rect key="frame" x="54" y="40" width="306" height="32"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="306" id="xUz-Uv-nRM"/>
                                 </constraints>
@@ -633,10 +636,10 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="OzZ-PE-LUB">
-                                <rect key="frame" x="74.5" y="169" width="265" height="266.5"/>
+                                <rect key="frame" x="74.5" y="113" width="265" height="266.5"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yBh-pR-GRa">
-                                <rect key="frame" x="142" y="462.5" width="130" height="24"/>
+                                <rect key="frame" x="142" y="406.5" width="130" height="24"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Rank: Platinum">
                                         <attributes>
@@ -647,7 +650,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j3q-d6-bB4">
-                                <rect key="frame" x="160" y="506.5" width="94" height="21"/>
+                                <rect key="frame" x="160" y="450.5" width="94" height="21"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Score: 5500">
                                         <attributes>
@@ -755,6 +758,9 @@
             <point key="canvasLocation" x="3703" y="1590"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="6bn-vf-tmj"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="gear" catalog="system" width="128" height="119"/>
         <image name="location" catalog="system" width="128" height="115"/>
