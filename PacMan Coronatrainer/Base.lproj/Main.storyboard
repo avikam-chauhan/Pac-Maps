@@ -390,6 +390,9 @@
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                                    <connections>
+                                                        <action selector="editingChanged:" destination="SxK-el-mCk" eventType="editingChanged" id="Iny-Uo-SJu"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -535,6 +538,7 @@
                         </connections>
                     </tableView>
                     <connections>
+                        <outlet property="segmentedControl" destination="mky-FJ-D8M" id="3PA-gJ-ifw"/>
                         <outlet property="textfield" destination="4TN-6r-2ja" id="qDW-CG-Jw5"/>
                     </connections>
                 </tableViewController>

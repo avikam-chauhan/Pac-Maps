@@ -36,12 +36,24 @@ class FirebaseInterface {
         ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).child("username").setValue(username)
     }
     
+    public static func getUsername() -> String {
+        return ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).value(forKey: "username") as? String ?? ""
+    }
+    
     public static func updateLocation(currentLocation coordinate: CLLocationCoordinate2D) {
         ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).child("location").setValue(["latitude": coordinate.latitude, "longitude": coordinate.longitude])
     }
     
     public static func updateScore(score: Int) {
         ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).child("score").setValue(score)
+    }
+    
+    public static func updatePositiveResult(value: Bool) {
+        ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).child("positiveResult").setValue(value)
+    }
+    
+    public static func getPositiveResult() -> Bool {
+        return ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).value(forKey: "username") as? Bool ?? false
     }
     
     static var contactedUsersDictionary = [[String: Any]]()
@@ -325,6 +337,26 @@ class FirebaseInterface {
             }
         }
     }
+    
+    public static func getUsername(forUUID uuid: UUID, handler: @escaping (String) -> ()) {
+        ref.child("users").child(uuid.uuidString).child("username").observeSingleEvent(of: .value) { (snapshot) in
+            if let username = snapshot.value as? String {
+                handler(username)
+            } else {
+                handler("")
+            }
+        }
+    }
+    
+    public static func getPositiveResult(forUUID uuid: UUID, handler: @escaping (Bool) -> ()) {
+           ref.child("users").child(uuid.uuidString).child("positiveResult").observeSingleEvent(of: .value) { (snapshot) in
+               if let posRes = snapshot.value as? Bool {
+                   handler(posRes)
+               } else {
+                   handler(false)
+               }
+           }
+       }
     
     public static var isAFamilyMember: Bool = false
     

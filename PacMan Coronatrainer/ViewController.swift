@@ -248,6 +248,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         routeLabel.text = " 0 miles — 0 • "
     }
     
+    func random(digits:Int) -> String {
+        var number = String()
+        for _ in 1...digits {
+           number += "\(Int.random(in: 1...9))"
+        }
+        return number
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -259,7 +267,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
         self.navigationController?.navigationBar.tintColor = UIColor.white
         
-        let launchedBefore = UserDefaults.standard.bool(forKey: "ugr9q9g0j0rjgqoj")
+        let launchedBefore = UserDefaults.standard.bool(forKey: "gdsagsdgasdfsadf")
         if !launchedBefore {
             let alert = UIAlertController(title: "Welcome", message: "Please enter your username!", preferredStyle: UIAlertController.Style.alert)
             alert.addTextField(configurationHandler: nil)
@@ -271,8 +279,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             DispatchQueue.main.async {
                 self.present(alert, animated: true, completion: nil)
             }
-            
-            UserDefaults.standard.set(true, forKey: "ugr9q9g0j0rjgqoj")
+            FirebaseInterface.updateUsername(username: "USER_\(random(digits: 4))\(random(digits: 3))\(random(digits: 3))")
+            FirebaseInterface.updatePositiveResult(value: false)
+            UserDefaults.standard.set(true, forKey: "gdsagsdgasdfsadf")
         }
         
         locationManager.delegate = self

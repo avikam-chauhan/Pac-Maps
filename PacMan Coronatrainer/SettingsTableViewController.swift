@@ -11,9 +11,24 @@ import UIKit
 class SettingsTableViewController: UITableViewController {
 
     @IBOutlet weak var textfield: UITextField!
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        FirebaseInterface.getUsername(forUUID: UIDevice.current.identifierForVendor!) { (name) in
+            self.textfield.text = name
+        }
+        
+        FirebaseInterface.getPositiveResult(forUUID: UIDevice.current.identifierForVendor!) { (result) in
+            if result {
+                self.segmentedControl.selectedSegmentIndex = 0
+                self.segmentedControl.selectedSegmentTintColor = UIColor.systemRed
+            } else {
+                self.segmentedControl.selectedSegmentIndex = 1
+                self.segmentedControl.selectedSegmentTintColor = UIColor.systemGreen
+            }
+        }
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -35,6 +50,11 @@ class SettingsTableViewController: UITableViewController {
         return 1
     }
 
+
+    @IBAction func editingChanged(_ sender: UITextField) {
+        FirebaseInterface.updateUsername(username: sender.text ?? "")
+    }
+    
     @IBAction func valueChanged(_ sender: UISegmentedControl) {
         if sender.selectedSegmentIndex == 0 {
             sender.selectedSegmentTintColor = UIColor.systemRed
@@ -42,6 +62,7 @@ class SettingsTableViewController: UITableViewController {
             alert.addAction(UIAlertAction(title: "Ok, mark me as positive.", style: UIAlertAction.Style.default, handler: { (UIAlertAction) in
                 sender.selectedSegmentIndex = 0
                 sender.selectedSegmentTintColor = UIColor.systemRed
+                FirebaseInterface.updatePositiveResult(value: true)
             }))
             alert.addAction(UIAlertAction(title: "Cancel, mark me as negative.", style: UIAlertAction.Style.cancel, handler: { (UIAlertAction) in
                 sender.selectedSegmentIndex = 1
@@ -54,6 +75,7 @@ class SettingsTableViewController: UITableViewController {
             alert.addAction(UIAlertAction(title: "Ok, mark me as negative.", style: UIAlertAction.Style.default, handler: { (UIAlertAction) in
                 sender.selectedSegmentIndex = 1
                 sender.selectedSegmentTintColor = UIColor.systemGreen
+                FirebaseInterface.updatePositiveResult(value: false)
             }))
             alert.addAction(UIAlertAction(title: "Cancel, mark me as positive.", style: UIAlertAction.Style.cancel, handler: { (UIAlertAction) in
                 sender.selectedSegmentIndex = 0
