@@ -16,9 +16,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate, UNUser
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        let settings: UIUserNotificationSettings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil) //Update to UNNotificationSettings
-        application.registerUserNotificationSettings(settings)
-        application.registerForRemoteNotifications()
         FirebaseApp.configure()
         
         if #available(iOS 10.0, *) {
@@ -64,11 +61,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate, UNUser
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
     
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
-        let dict = userInfo["aps"] as! NSDictionary
-        let message = dict["alert"]
-        Notification.firebaseMessageToLocalNotification(message: message as! String)
-    }
+//    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
+//        let dict = userInfo["aps"] as! NSDictionary
+//        let message = dict["alert"]
+//        Notification.firebaseMessageToLocalNotification(message: message as! String)
+//    }
 
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
         print("Firebase registration token: \(fcmToken)")

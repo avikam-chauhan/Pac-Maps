@@ -259,7 +259,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
         self.navigationController?.navigationBar.tintColor = UIColor.white
         
-        let launchedBefore = UserDefaults.standard.bool(forKey: "89aaa7987")
+        let launchedBefore = UserDefaults.standard.bool(forKey: "ugr9q9g0j0rjgqoj")
         if !launchedBefore {
             let alert = UIAlertController(title: "Welcome", message: "Please enter your username!", preferredStyle: UIAlertController.Style.alert)
             alert.addTextField(configurationHandler: nil)
@@ -272,7 +272,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 self.present(alert, animated: true, completion: nil)
             }
             
-            UserDefaults.standard.set(true, forKey: "89aaa7987")
+            UserDefaults.standard.set(true, forKey: "ugr9q9g0j0rjgqoj")
         }
         
         locationManager.delegate = self
