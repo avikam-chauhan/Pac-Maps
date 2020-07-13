@@ -82,11 +82,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     }
     
     
-//    @objc func subtract1() {
-//        if vibrate {
-//            points = points - 1
-//        }
-//    }
+    //    @objc func subtract1() {
+    //        if vibrate {
+    //            points = points - 1
+    //        }
+    //    }
     
     @objc func subtract50() {
         if vibrate {
@@ -94,11 +94,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         }
     }
     
-//    @objc func add1() {
-//        if !vibrate {
-//            points = points + 1
-//        }
-//    }
+    //    @objc func add1() {
+    //        if !vibrate {
+    //            points = points + 1
+    //        }
+    //    }
     
     
     func locationManager(_ manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], in region: CLBeaconRegion) {
@@ -112,40 +112,40 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             UIView.animate(withDuration: 0.5, animations: {
                 if minProximity == CLProximity.unknown {
                     self.navigationItem.title = "SAFE"
-//                    self.safetyLabel.text = "SAFE"
+                    //                    self.safetyLabel.text = "SAFE"
                     self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
-//                    self.topView.backgroundColor = UIColor.systemGreen
+                    //                    self.topView.backgroundColor = UIColor.systemGreen
                     UINavigationBar.appearance().barTintColor = UIColor.systemGreen
                     self.vibrate = false
-                    self.removePointsTimer.invalidate()
+                    self.removePointsTimer?.invalidate()
                 } else if minProximity == CLProximity.immediate {
                     self.navigationItem.title = "TOO CLOSE"
-//                    self.safetyLabel.text = "TOO CLOSE"
+                    //                    self.safetyLabel.text = "TOO CLOSE"
                     self.navigationController?.navigationBar.barTintColor = UIColor.systemRed
-//                    self.topView.backgroundColor = UIColor.systemRed
+                    //                    self.topView.backgroundColor = UIColor.systemRed
                     UINavigationBar.appearance().barTintColor = UIColor.systemRed
                     self.vibrate = true
                     self.vibrateTimer(time: 0.1)
-                                        
-                    self.removePointsTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(ViewController.subtract1), userInfo: nil, repeats: true)
-                    self.removePointsTimer.fire()
+                    
+                    //                    self.removePointsTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(ViewController.subtract1), userInfo: nil, repeats: true)
+                    //                    self.removePointsTimer?.fire()
                 } else if minProximity == CLProximity.near {
                     self.navigationItem.title = "NEAR"
-//                    self.safetyLabel.text = "NEAR"
+                    //                    self.safetyLabel.text = "NEAR"
                     self.navigationController?.navigationBar.barTintColor = UIColor.systemOrange
-//                    self.topView.backgroundColor = UIColor.systemOrange
+                    //                    self.topView.backgroundColor = UIColor.systemOrange
                     self.bottomView.backgroundColor = UIColor.systemOrange
                     self.vibrate = true
                     self.vibrateTimer(time: 1)
-
-                    self.removePointsTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(ViewController.subtract1), userInfo: nil, repeats: true)
-                    self.removePointsTimer.fire()
+                    
+                    //                    self.removePointsTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(ViewController.subtract1), userInfo: nil, repeats: true)
+                    //                    self.removePointsTimer.fire()
                 } else if minProximity == CLProximity.far {
                     self.safetyLabel.text = "CAUTION"
                     self.topView.backgroundColor = UIColor.systemYellow
                     self.bottomView.backgroundColor = UIColor.systemYellow
                     self.vibrate = false
-                    self.removePointsTimer.invalidate()
+                    //                    self.removePointsTimer.invalidate()
                 }
             })
         }
@@ -160,7 +160,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         }
         get {
             
-            return FirebaseInterface.getScore(database: FirebaseInterface.dict)
+            return FirebaseInterface.getScore(database: FirebaseInterface.dict) ?? 0
         }
     }
     
@@ -255,23 +255,23 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         warning_alert.addAction(UIAlertAction(title: "I understand", style: UIAlertAction.Style.cancel
             , handler: nil))
         self.present(warning_alert, animated: true, completion: nil)
-            
+        
         self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
         self.navigationController?.navigationBar.tintColor = UIColor.white
-                
+        
         let launchedBefore = UserDefaults.standard.bool(forKey: "89aaa7987")
         if !launchedBefore {
             let alert = UIAlertController(title: "Welcome", message: "Please enter your username!", preferredStyle: UIAlertController.Style.alert)
             alert.addTextField(configurationHandler: nil)
             alert.addAction(UIAlertAction(title: "Let's play!", style: UIAlertAction.Style.default, handler: { (UIAlertAction) in
-//                FirebaseInterface.createUser()
+                //                FirebaseInterface.createUser()
                 FirebaseInterface.updateUsername(username: (alert.textFields?.first?.text!)!)
                 FirebaseInterface.updateScore(score: 0)
             }))
             DispatchQueue.main.async {
                 self.present(alert, animated: true, completion: nil)
             }
-        
+            
             UserDefaults.standard.set(true, forKey: "89aaa7987")
         }
         
@@ -325,13 +325,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 }
             }
         }
-
-
-
+        
+        
+        
         //MARK: Init iBeacon and Bluetooth
         firebaseInterface = FirebaseInterface()
         FirebaseInterface.firebaseInterfaceDelegate = self
-                
+        
         bluetoothHandler = BluetoothHandler()
         bluetoothHandler.bluetoothHandlerDelegate = self
         bluetoothHandler.startSendReceivingBluetoothData()
@@ -359,7 +359,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             firebaseInterface.restorePoints(forUUID: UUID(uuidString: UIDevice.current.identifierForVendor!.uuidString)!, withContactUUID: uuid)
             familyMemberUUIDs.append(uuid.uuidString)
             print("fmuuids: \(familyMemberUUIDs)")
-
+            
         }
     }
     
@@ -386,53 +386,53 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     }
     
     func didUpdateBluetooth(distance: CLProximity) {
-        UIView.animate(withDuration: 1) {
-            switch distance {
-            case .immediate:
-                self.topView.backgroundColor = .systemRed
-                self.safetyLabel.text = "DANGER"
-                self.bottomView.backgroundColor = .systemRed
-                self.recentDistance = .immediate
+        //        var minProximity = CLProximity.far
+        //        if beacons.count > 0 {
+        //            for beacon in beacons {
+        //                if beacon.proximity.rawValue < minProximity.rawValue {
+        //                    minProximity = beacon.proximity
+        //                }
+        //            }
+        UIView.animate(withDuration: 0.5, animations: {
+            if distance == CLProximity.unknown {
+                self.navigationItem.title = "SAFE"
+                //                    self.safetyLabel.text = "SAFE"
+                self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
+                //                    self.topView.backgroundColor = UIColor.systemGreen
+                UINavigationBar.appearance().barTintColor = UIColor.systemGreen
+                self.vibrate = false
+                //                    self.removePointsTimer.invalidate()
+            } else if distance == CLProximity.immediate {
+                self.navigationItem.title = "TOO CLOSE"
+                //                    self.safetyLabel.text = "TOO CLOSE"
+                self.navigationController?.navigationBar.barTintColor = UIColor.systemRed
+                //                    self.topView.backgroundColor = UIColor.systemRed
+                UINavigationBar.appearance().barTintColor = UIColor.systemRed
                 self.vibrate = true
                 self.vibrateTimer(time: 0.1)
                 
-                guard self.removePointsTimer == nil else { return }
-                self.removePointsTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ViewController.subtract50), userInfo: nil, repeats: true)
-                self.removePointsTimer?.fire()
-            case .near:
-                self.topView.backgroundColor = .systemYellow
-                self.safetyLabel.text = "CAUTION"
-                self.bottomView.backgroundColor = .systemYellow
-                self.recentDistance = .near
+                //                    self.removePointsTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(ViewController.subtract1), userInfo: nil, repeats: true)
+                //                    self.removePointsTimer.fire()
+            } else if distance == CLProximity.near {
+                self.navigationItem.title = "NEAR"
+                //                    self.safetyLabel.text = "NEAR"
+                self.navigationController?.navigationBar.barTintColor = UIColor.systemOrange
+                //                    self.topView.backgroundColor = UIColor.systemOrange
+                self.bottomView.backgroundColor = UIColor.systemOrange
                 self.vibrate = true
-                self.vibrateTimer(time: 1.0)
+                self.vibrateTimer(time: 1)
                 
-                guard self.removePointsTimer == nil else { return }
-                self.removePointsTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ViewController.subtract50), userInfo: nil, repeats: true)
-                self.removePointsTimer?.fire()
-            case .far:
-                self.topView.backgroundColor = .systemGreen
-                self.safetyLabel.text = "SAFE"
-                self.bottomView.backgroundColor = .systemGreen
-                self.recentDistance = .far
+                //                    self.removePointsTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(ViewController.subtract1), userInfo: nil, repeats: true)
+                //                    self.removePointsTimer .fire()
+            } else if distance == CLProximity.far {
+                self.safetyLabel.text = "CAUTION"
+                self.topView.backgroundColor = UIColor.systemYellow
+                self.bottomView.backgroundColor = UIColor.systemYellow
                 self.vibrate = false
-                
-                guard self.removePointsTimer == nil else { return }
-                self.removePointsTimer?.invalidate()
-                self.removePointsTimer = nil
-            case .unknown:
-                self.topView.backgroundColor = .systemGreen
-                self.safetyLabel.text = "SAFE"
-                self.bottomView.backgroundColor = .systemGreen
-                self.vibrate = false
-                
-                guard self.removePointsTimer == nil else { return }
-                self.removePointsTimer?.invalidate()
-                self.removePointsTimer = nil
-            //                self.recentDistance = .unknown
-            default: return
+                //                    self.removePointsTimer.invalidate()
             }
-        }
+        })
+//        }
     }
     
     func didUpdateBluetooth(timeInContact: Int) {
@@ -471,14 +471,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     @objc func tap(sender: UITapGestureRecognizer) {
         if listeningForMapTap {
-
+            
             distances.removeAll()
             listeningForMapTap = false
             addButton.tintColor = UIColor.white
             let coordinate = mapView.convert(sender.location(in: sender.view), toCoordinateFrom: sender.view)
             let annotation = MKPointAnnotation()
             annotation.coordinate = coordinate
-//            mapView.addAnnotation(annotation)
+            //            mapView.addAnnotation(annotation)
             
             waypoints.append(coordinate)
             //            showFlag(coordinate: coordinate)
@@ -506,8 +506,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 
                 for route in unwrappedResponse.routes {
                     self.mapView.addOverlay(route.polyline)
-//                    self.mapView.addOverlay(ForegroundOverlay(line: route.polyline), level: .aboveRoads)
-//                    self.mapView.addOverlay(BackgroundOverlay(line: route.polyline), level: .aboveRoads)
+                    //                    self.mapView.addOverlay(ForegroundOverlay(line: route.polyline), level: .aboveRoads)
+                    //                    self.mapView.addOverlay(BackgroundOverlay(line: route.polyline), level: .aboveRoads)
                     self.totalDistance += route.distance
                     self.distances.append(route.distance)
                 }
@@ -529,14 +529,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                             alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
                             self.present(alert, animated: true, completion: nil)
                         }
-//                        self.waypoints.remove(at: x+1)
+                        //                        self.waypoints.remove(at: x+1)
                         return
                     }
                     
                     for route in unwrappedResponse.routes {
                         self.mapView.addOverlay(route.polyline)
-//                        self.mapView.addOverlay(ForegroundOverlay(line: route.polyline), level: .aboveRoads)
-//                        self.mapView.addOverlay(BackgroundOverlay(line: route.polyline), level: .aboveRoads)
+                        //                        self.mapView.addOverlay(ForegroundOverlay(line: route.polyline), level: .aboveRoads)
+                        //                        self.mapView.addOverlay(BackgroundOverlay(line: route.polyline), level: .aboveRoads)
                         self.totalDistance += route.distance
                         self.distances.append(route.distance)
                     }
@@ -553,45 +553,45 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     }
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-//        print(overlay is ForegroundOverlay)
-//        if overlay is ForegroundOverlay {
+        //        print(overlay is ForegroundOverlay)
+        //        if overlay is ForegroundOverlay {
         let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
         renderer.strokeColor = UIColor.yellow
         renderer.lineWidth = 8
-//        renderer.lineDashPattern = [0, 20]
+        //        renderer.lineDashPattern = [0, 20]
         return renderer
-//        } else {
-//            let renderer = MKPolylineRenderer(polyline: (overlay as! BackgroundOverlay).polyline as! MKPolyline)
-//            renderer.strokeColor = UIColor.green
-//            renderer.lineWidth = 15
-//            return renderer
-//        }
+        //        } else {
+        //            let renderer = MKPolylineRenderer(polyline: (overlay as! BackgroundOverlay).polyline as! MKPolyline)
+        //            renderer.strokeColor = UIColor.green
+        //            renderer.lineWidth = 15
+        //            return renderer
+        //        }
     }
     
     
-//    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-//        var renderer: MKPolygonRenderer? = nil
-//        if let overlay = overlay as? MKPolygon {
-//            renderer = MKPolygonRenderer(polygon: overlay)
-//        }
-//
-//        renderer?.fillColor = UIColor.cyan.withAlphaComponent(0.2)
-//        renderer?.strokeColor = UIColor.blue.withAlphaComponent(0.7)
-//        renderer?.lineWidth = 3
-//
-//        return renderer!
-//    }
-//
-//    func mapView(_ mapView: MKMapView, viewFor overlay: MKOverlay) -> MKOverlayView {
-//        let overlayView = MKPolygonRenderer(polygon: overlay as! MKPolygon)
-//
-//        overlayView.fillColor = UIColor.cyan.withAlphaComponent(0.2)
-//        overlayView.strokeColor = UIColor.blue.withAlphaComponent(0.7)
-//
-//        return overlayView as MKOverlayRenderer
-//
-//    }
-        
+    //    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+    //        var renderer: MKPolygonRenderer? = nil
+    //        if let overlay = overlay as? MKPolygon {
+    //            renderer = MKPolygonRenderer(polygon: overlay)
+    //        }
+    //
+    //        renderer?.fillColor = UIColor.cyan.withAlphaComponent(0.2)
+    //        renderer?.strokeColor = UIColor.blue.withAlphaComponent(0.7)
+    //        renderer?.lineWidth = 3
+    //
+    //        return renderer!
+    //    }
+    //
+    //    func mapView(_ mapView: MKMapView, viewFor overlay: MKOverlay) -> MKOverlayView {
+    //        let overlayView = MKPolygonRenderer(polygon: overlay as! MKPolygon)
+    //
+    //        overlayView.fillColor = UIColor.cyan.withAlphaComponent(0.2)
+    //        overlayView.strokeColor = UIColor.blue.withAlphaComponent(0.7)
+    //
+    //        return overlayView as MKOverlayRenderer
+    //
+    //    }
+    
     
     @IBOutlet weak var addSelectLabel: UILabel!
     
@@ -643,49 +643,49 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
         
         
-//        if self.waypoints.count > 0 {
-//            mapView.removeOverlays(mapView.overlays)
-//
-//            totalDistance = 0.0
-//
-//            let request = MKDirections.Request()
-//            request.source = MKMapItem(placemark: MKPlacemark(coordinate: currentLocation!.coordinate, addressDictionary: nil))
-//            request.destination = MKMapItem(placemark: MKPlacemark(coordinate: waypoints[0], addressDictionary: nil))
-//            request.requestsAlternateRoutes = false
-//            request.transportType = .walking
-//
-//            let directions = MKDirections(request: request)
-//
-//            directions.calculate { [unowned self] response, error in
-//                guard let unwrappedResponse = response else { return }
-//
-//                for route in unwrappedResponse.routes {
-//                    self.mapView.addOverlay(route.polyline)
-//                    self.totalDistance += route.distance
-//                    self.distances.append(route.distance)
-//                }
-//            }
-//
-//            for x in 0..<waypoints.count-1 {
-//                let request = MKDirections.Request()
-//                request.source = MKMapItem(placemark: MKPlacemark(coordinate: waypoints[x], addressDictionary: nil))
-//                request.destination = MKMapItem(placemark: MKPlacemark(coordinate: waypoints[x+1], addressDictionary: nil))
-//                request.requestsAlternateRoutes = false
-//                request.transportType = .walking
-//
-//                let directions = MKDirections(request: request)
-//
-//                directions.calculate { [unowned self] response, error in
-//                    guard let unwrappedResponse = response else { return }
-//
-//                    for route in unwrappedResponse.routes {
-//                        self.mapView.addOverlay(route.polyline)
-//                        self.totalDistance += route.distance
-//                        self.distances.append(route.distance)
-//                    }
-//                }
-//            }
-//        }
+        //        if self.waypoints.count > 0 {
+        //            mapView.removeOverlays(mapView.overlays)
+        //
+        //            totalDistance = 0.0
+        //
+        //            let request = MKDirections.Request()
+        //            request.source = MKMapItem(placemark: MKPlacemark(coordinate: currentLocation!.coordinate, addressDictionary: nil))
+        //            request.destination = MKMapItem(placemark: MKPlacemark(coordinate: waypoints[0], addressDictionary: nil))
+        //            request.requestsAlternateRoutes = false
+        //            request.transportType = .walking
+        //
+        //            let directions = MKDirections(request: request)
+        //
+        //            directions.calculate { [unowned self] response, error in
+        //                guard let unwrappedResponse = response else { return }
+        //
+        //                for route in unwrappedResponse.routes {
+        //                    self.mapView.addOverlay(route.polyline)
+        //                    self.totalDistance += route.distance
+        //                    self.distances.append(route.distance)
+        //                }
+        //            }
+        //
+        //            for x in 0..<waypoints.count-1 {
+        //                let request = MKDirections.Request()
+        //                request.source = MKMapItem(placemark: MKPlacemark(coordinate: waypoints[x], addressDictionary: nil))
+        //                request.destination = MKMapItem(placemark: MKPlacemark(coordinate: waypoints[x+1], addressDictionary: nil))
+        //                request.requestsAlternateRoutes = false
+        //                request.transportType = .walking
+        //
+        //                let directions = MKDirections(request: request)
+        //
+        //                directions.calculate { [unowned self] response, error in
+        //                    guard let unwrappedResponse = response else { return }
+        //
+        //                    for route in unwrappedResponse.routes {
+        //                        self.mapView.addOverlay(route.polyline)
+        //                        self.totalDistance += route.distance
+        //                        self.distances.append(route.distance)
+        //                    }
+        //                }
+        //            }
+        //        }
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {

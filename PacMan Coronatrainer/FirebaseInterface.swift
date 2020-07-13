@@ -17,7 +17,7 @@ class FirebaseInterface {
     static var username: String?
     static var location: CLLocationCoordinate2D?
 //    static var scor re: Int?
-    static var dict = [String: Any]()
+//    static var dict = [String: Any]()
     public static var firebaseInterfaceDelegate: FirebaseInterfaceDelegate?
     
     //        ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).setValue(["username":username ?? UIDevice.current.identifierForVendor!.uuidString, "location":["latitude": location?.latitude ?? 0, "longitude": location?.longitude ?? 0], "score":score ?? 0, "minorKey": minorKey ?? 0, "familyMembers": familyMembers])
@@ -389,7 +389,7 @@ class FirebaseInterface {
     public static func getUserDatabase(handler: @escaping (NSDictionary, Int) -> ()) {
         ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).observe(DataEventType.value, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String : Any] {
-                self.dict = dictionary
+                self.dict = dictionary as NSDictionary
                 let score = dictionary["score"] as! Int
                 handler(dictionary as NSDictionary, score)
             }
