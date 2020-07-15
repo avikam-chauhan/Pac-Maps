@@ -268,6 +268,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
         let launchedBefore = UserDefaults.standard.bool(forKey: "gdsagsdgasdfsadf")
         if !launchedBefore {
+            
             let alert = UIAlertController(title: "Welcome", message: "Please enter your username!", preferredStyle: UIAlertController.Style.alert)
             alert.addTextField(configurationHandler: nil)
             alert.addAction(UIAlertAction(title: "Let's play!", style: UIAlertAction.Style.default, handler: { (UIAlertAction) in
@@ -281,6 +282,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             FirebaseInterface.updateUsername(username: "USER_\(random(digits: 4))\(random(digits: 3))\(random(digits: 3))")
             FirebaseInterface.updatePositiveResult(value: false)
             UserDefaults.standard.set(true, forKey: "gdsagsdgasdfsadf")
+            
+            self.performSegue(withIdentifier: "tutorialSegue", sender: self)
         }
         
         locationManager.delegate = self
