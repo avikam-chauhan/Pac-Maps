@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0434864624BFC52D00BC1F85 /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0434864524BFC52D00BC1F85 /* TutorialViewController.swift */; };
 		0448FE3524B7E1F500244F14 /* FamilyMembersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0448FE3424B7E1F500244F14 /* FamilyMembersTableViewController.swift */; };
 		0448FE3724B7FCE700244F14 /* FamilyMemberDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0448FE3624B7FCE700244F14 /* FamilyMemberDetailsViewController.swift */; };
 		04A05DFA24B0FA6200996E19 /* ShowQRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A05DF924B0FA6200996E19 /* ShowQRCodeViewController.swift */; };
@@ -62,6 +63,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0434864524BFC52D00BC1F85 /* TutorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
 		0448FE3424B7E1F500244F14 /* FamilyMembersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyMembersTableViewController.swift; sourceTree = "<group>"; };
 		0448FE3624B7FCE700244F14 /* FamilyMemberDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyMemberDetailsViewController.swift; sourceTree = "<group>"; };
 		04A05DF924B0FA6200996E19 /* ShowQRCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowQRCodeViewController.swift; sourceTree = "<group>"; };
@@ -212,6 +214,7 @@
 				04A05DFB24B112E800996E19 /* ScanQRCodeViewController.swift */,
 				04A1136E24BE38B100FFBA51 /* PacMapsWelcomePage.xib */,
 				04A1137224BE3C3800FFBA51 /* PacMapsTutorialPages.xib */,
+				0434864524BFC52D00BC1F85 /* TutorialViewController.swift */,
 			);
 			path = "PacMan Coronatrainer";
 			sourceTree = "<group>";
@@ -463,6 +466,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				04A1137124BE3B6A00FFBA51 /* PacMapsTutorialView.swift in Sources */,
+				0434864624BFC52D00BC1F85 /* TutorialViewController.swift in Sources */,
 				9F363ED3245414D70023084D /* ViewController.swift in Sources */,
 				0448FE3724B7FCE700244F14 /* FamilyMemberDetailsViewController.swift in Sources */,
 				9F363ED12454090F0023084D /* CustomAnnotation.swift in Sources */,
