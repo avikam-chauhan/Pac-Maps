@@ -16,6 +16,7 @@ import Firebase
 class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, BluetoothHandlerDelegate, FirebaseInterfaceDelegate {
     
     
+    @IBOutlet weak var tutorialScrollView: UIScrollView!
     
     var bluetoothHandler: BluetoothHandler!
     var firebaseInterface: FirebaseInterface!
