@@ -30,7 +30,7 @@ class TutorialViewController: UIViewController {
     
     func loadTutorialPages() {
         for (index, tutorial) in tutorialArray.enumerated() {
-            if let tutorialView = Bundle.main.loadNibNamed("Tutorial", owner: nil, options: nil)?.first as? PacMapsTutorialView {
+            if let tutorialView = Bundle.main.loadNibNamed("PacMapsTutorialPages", owner: nil, options: nil)?.first as? PacMapsTutorialView {
                 tutorialView.imageView.image = UIImage(named: tutorial["image"]!)
                 tutorialView.titleLabel.text = tutorial["title"]
                 tutorialView.titleLabel.text = tutorial["detail"]

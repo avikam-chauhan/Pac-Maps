@@ -662,14 +662,14 @@
 				CODE_SIGN_ENTITLEMENTS = "PacMan Coronatrainer/Pac-Maps.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B2278J6LL2;
+				DEVELOPMENT_TEAM = ANNU8439FD;
 				INFOPLIST_FILE = "PacMan Coronatrainer/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ipaycheck.PacMan-Coronatrainer";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.mihir.PacMan-Coronatrainer";
 				PRODUCT_NAME = "Pac-Maps";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -685,14 +685,14 @@
 				CODE_SIGN_ENTITLEMENTS = "PacMan Coronatrainer/Pac-Maps.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = B2278J6LL2;
+				DEVELOPMENT_TEAM = ANNU8439FD;
 				INFOPLIST_FILE = "PacMan Coronatrainer/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ipaycheck.PacMan-Coronatrainer";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.mihir.PacMan-Coronatrainer";
 				PRODUCT_NAME = "Pac-Maps";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;

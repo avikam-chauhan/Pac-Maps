@@ -258,10 +258,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let warning_alert = UIAlertController(title: "Warning", message: "Pac-Maps is a mobile game designed to help keep people safe and healthy during the COVID-19 pandemic. You may receive notifications that alert you if you came in contact with someone who is/was positive for COVID-19. Your privacy is important to us, and none of your personal information will be shared with other users or companies. The information in this app may not be 100% up to date at all times. For the latest guidelines and information, please visit www.cdc.gov/coronavirus. We are not responsible for any complications or issues due to inaccurate information. Please exercise caution and common sense when you are in public, and help keep yourself and others around you safe and healthy. Stay safe, and have fun!", preferredStyle: UIAlertController.Style.alert)
-        warning_alert.addAction(UIAlertAction(title: "I understand", style: UIAlertAction.Style.cancel
-            , handler: nil))
-        self.present(warning_alert, animated: true, completion: nil)
+//        let warning_alert = UIAlertController(title: "Warning", message: "Pac-Maps is a mobile game designed to help keep people safe and healthy during the COVID-19 pandemic. You may receive notifications that alert you if you came in contact with someone who is/was positive for COVID-19. Your privacy is important to us, and none of your personal information will be shared with other users or companies. The information in this app may not be 100% up to date at all times. For the latest guidelines and information, please visit www.cdc.gov/coronavirus. We are not responsible for any complications or issues due to inaccurate information. Please exercise caution and common sense when you are in public, and help keep yourself and others around you safe and healthy. Stay safe, and have fun!", preferredStyle: UIAlertController.Style.alert)
+//        warning_alert.addAction(UIAlertAction(title: "I understand", style: UIAlertAction.Style.cancel
+//            , handler: nil))
+//        self.present(warning_alert, animated: true, completion: nil)
         
         self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
         self.navigationController?.navigationBar.tintColor = UIColor.white
@@ -283,9 +283,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             FirebaseInterface.updatePositiveResult(value: false)
             UserDefaults.standard.set(true, forKey: "gdsagsdgasdfsadf")
             
-            self.performSegue(withIdentifier: "tutorialSegue", sender: self)
         }
-        
+                
         locationManager.delegate = self
         locationManager.requestAlwaysAuthorization()
         locationManager.startUpdatingLocation();
@@ -339,6 +338,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
         
         
+        
+        
         //MARK: Init iBeacon and Bluetooth
         firebaseInterface = FirebaseInterface()
         FirebaseInterface.firebaseInterfaceDelegate = self
@@ -346,6 +347,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         bluetoothHandler = BluetoothHandler()
         bluetoothHandler.bluetoothHandlerDelegate = self
         bluetoothHandler.startSendReceivingBluetoothData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        performSegue(withIdentifier: "tutorialSegue", sender: self)
     }
     
     //MARK: check this

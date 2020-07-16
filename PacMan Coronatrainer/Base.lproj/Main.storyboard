@@ -205,6 +205,7 @@
                         <segue destination="76E-nL-qtL" kind="popoverPresentation" identifier="toLeaderboard" popoverAnchorView="0Rv-KS-IEi" id="IZp-9i-8cL">
                             <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                         </segue>
+                        <segue destination="WRZ-oW-Cal" kind="show" identifier="tutorialSegue" id="mnJ-VW-ImF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -329,7 +330,6 @@
                     </toolbar>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="Bc9-Od-0gD"/>
-                        <segue destination="WRZ-oW-Cal" kind="show" identifier="tutorialSegue" id="36W-Od-uat"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f4A-g1-wCF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -341,11 +341,11 @@
             <objects>
                 <viewController id="WRZ-oW-Cal" customClass="TutorialViewController" customModule="Pac_Maps" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="OVq-Wt-Fs6">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="99A-Qs-r5N">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <viewLayoutGuide key="contentLayoutGuide" id="qeQ-MB-09Y"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="5TF-Tg-n7M"/>
                             </scrollView>
@@ -360,13 +360,14 @@
                         <viewLayoutGuide key="safeArea" id="SpD-9q-DaX"/>
                     </view>
                     <navigationItem key="navigationItem" id="Y7f-0D-2mn"/>
+                    <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="tutorialScrollView" destination="99A-Qs-r5N" id="OrD-oX-jYh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EXz-3s-Kqv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-510" y="933"/>
+            <point key="canvasLocation" x="708.69565217391312" y="862.5"/>
         </scene>
         <!--Settings-->
         <scene sceneID="peQ-kH-Ey0">
