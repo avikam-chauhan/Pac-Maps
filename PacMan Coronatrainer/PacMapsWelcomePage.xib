@@ -19,23 +19,23 @@
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WTj-4e-Ld5">
                     <rect key="frame" x="113" y="231" width="188" height="45"/>
                     <fontDescription key="fontDescription" type="system" pointSize="37"/>
-                    <color key="textColor" red="0.9558564446383957" green="1" blue="0.16692965036157215" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="textColor" red="0.98268300289999999" green="0.83420109750000004" blue="0.0050961803639999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PacMaps!" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KAI-2r-3ND">
-                    <rect key="frame" x="128.5" y="532" width="157" height="45"/>
+                    <rect key="frame" x="128" y="532" width="157" height="45"/>
                     <fontDescription key="fontDescription" type="system" pointSize="37"/>
-                    <color key="textColor" red="0.9558564446383957" green="1" blue="0.16692965036157215" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="textColor" red="0.98268300289999999" green="0.83420109750000004" blue="0.0050961803639999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Have fun during the pandemic while keeping in mind safety!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jxU-dI-wuY">
                     <rect key="frame" x="48" y="591" width="318" height="75"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" red="0.9558564446383957" green="1" blue="0.16692965036157215" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="textColor" red="0.98268300289999999" green="0.83420109750000004" blue="0.0050961803639999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <color key="backgroundColor" red="0.10802024851839598" green="0.35993140321029793" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" red="0.96434515710000002" green="0.31136727330000002" blue="0.3833098412" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="WTj-4e-Ld5" firstAttribute="centerX" secondItem="jYW-dq-Yo6" secondAttribute="centerX" id="2qK-q7-dxD"/>
                 <constraint firstItem="WTj-4e-Ld5" firstAttribute="top" secondItem="jYW-dq-Yo6" secondAttribute="top" constant="187" id="55k-rd-m95"/>

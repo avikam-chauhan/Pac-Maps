@@ -18,26 +18,30 @@ class TutorialViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
 
         tutorialArray = [tutorialPage1, tutorialPage2, tutorialPage3]
         tutorialScrollView.isPagingEnabled = true
-        tutorialScrollView.contentSize = CGSize(width: self.view.bounds.width * CGFloat(tutorialArray.count), height: tutorialScrollView.bounds.height)
+        tutorialScrollView.contentSize = CGSize(width: self.view.bounds.width * CGFloat(tutorialArray.count), height: self.view.bounds.height)
         tutorialScrollView.showsHorizontalScrollIndicator = false
-        
+        tutorialScrollView.showsVerticalScrollIndicator = false
+
         loadTutorialPages()
         // Do any additional setup after loading the view.
     }
     
     func loadTutorialPages() {
         for (index, tutorial) in tutorialArray.enumerated() {
-            if let tutorialView = Bundle.main.loadNibNamed("PacMapsTutorialPages", owner: nil, options: nil)?.first as? PacMapsTutorialView {
+            if let tutorialView = Bundle.main.loadNibNamed("PacMapsTutorialPages", owner: self, options: nil)?.first as? PacMapsTutorialView {
                 tutorialView.imageView.image = UIImage(named: tutorial["image"]!)
                 tutorialView.titleLabel.text = tutorial["title"]
-                tutorialView.titleLabel.text = tutorial["detail"]
+                tutorialView.detailLabel.text = tutorial["detail"]
                 
-                tutorialScrollView.addSubview(tutorialView)
                 tutorialView.frame.size.width = self.view.bounds.size.width
                 tutorialView.frame.origin.x = CGFloat(index) * self.view.bounds.size.width
+                tutorialScrollView.addSubview(tutorialView)
+
             }
         }
     }
