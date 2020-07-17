@@ -754,7 +754,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BEy-bh-Ft7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-699" y="867"/>
+            <point key="canvasLocation" x="-654" y="863"/>
         </scene>
         <!--Page View Controller-->
         <scene sceneID="bbh-bv-aYQ">
@@ -825,7 +825,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="BPy-91-glD" firstAttribute="trailing" secondItem="80u-iP-TnY" secondAttribute="trailing" id="f8x-EK-WGC"/>
                             <constraint firstItem="80u-iP-TnY" firstAttribute="top" secondItem="edU-Os-i1T" secondAttribute="top" id="kJE-6K-KH4"/>
