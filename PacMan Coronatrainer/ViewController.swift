@@ -262,9 +262,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
 //        warning_alert.addAction(UIAlertAction(title: "I understand", style: UIAlertAction.Style.cancel
 //            , handler: nil))
 //        self.present(warning_alert, animated: true, completion: nil)
-        
-        self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
-        self.navigationController?.navigationBar.tintColor = UIColor.white
+//
+//        self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
+//        self.navigationController?.navigationBar.tintColor = UIColor.white
         
         let launchedBefore = UserDefaults.standard.bool(forKey: "gdsagsdgasdfsadf")
         if !launchedBefore {
@@ -350,7 +350,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        performSegue(withIdentifier: "tutorialSegue", sender: self)
+        self.performSegue(withIdentifier: "toTutorial", sender: self)
     }
     
     //MARK: check this
