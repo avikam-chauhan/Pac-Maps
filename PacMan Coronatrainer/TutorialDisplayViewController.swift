@@ -13,7 +13,12 @@ class TutorialDisplayViewController: UIViewController {
     
     let dataSource = ["1", "2", "3", "4"]
     var currentViewControllerIndex = 0
+    let colorDataSource = ["Blue", "Aquamarine", "Yellow", "Orange"]
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.setNavigationBarHidden(true, animated: false)
@@ -59,6 +64,10 @@ class TutorialDisplayViewController: UIViewController {
         
         dataViewController.index = index
         dataViewController.displayText = dataSource[index]
+        let backgroundColor = colorDataSource[index] == "Blue" ? #colorLiteral(red: 0.09153518826, green: 0.2464473248, blue: 0.3731117845, alpha: 1) : colorDataSource[index] == "Aquamarine" ? #colorLiteral(red: 0.1841040552, green: 0.616987884, blue: 0.5613076091, alpha: 1) : colorDataSource[index] == "Yellow" ? #colorLiteral(red: 0.9129590392, green: 0.767173171, blue: 0.4142659903, alpha: 1) : colorDataSource[index] == "Orange" ? #colorLiteral(red: 0.9576900601, green: 0.6367803216, blue: 0.3825422525, alpha: 1) : #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        
+        dataViewController.view.backgroundColor = backgroundColor
+        
         
         return dataViewController
     }
