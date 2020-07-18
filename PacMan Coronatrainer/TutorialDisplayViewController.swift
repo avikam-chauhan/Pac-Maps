@@ -11,9 +11,10 @@ import UIKit
 class TutorialDisplayViewController: UIViewController {
     @IBOutlet weak var displayView: UIView!
     
-    let dataSource = ["1", "2", "3", "4"]
+    let dataSource = ["Make a route", "Run around", "Get points", "Stay away from others"]
     var currentViewControllerIndex = 0
     let colorDataSource = ["Blue", "Aquamarine", "Yellow", "Orange"]
+    let pageControl = UIPageControl(frame: CGRect(x: 0,y: UIScreen.main.bounds.maxY - 50,width: UIScreen.main.bounds.width,height: 50))
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -22,6 +23,14 @@ class TutorialDisplayViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.setNavigationBarHidden(true, animated: false)
+        self.view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0)
+        
+        
+        pageControl.numberOfPages = dataSource.count
+        pageControl.currentPage = 0
+        pageControl.tintColor = UIColor.black
+        self.view.addSubview(pageControl)
+        
         configurePageViewController()
     }
     
@@ -67,19 +76,12 @@ class TutorialDisplayViewController: UIViewController {
         let backgroundColor = colorDataSource[index] == "Blue" ? #colorLiteral(red: 0.09153518826, green: 0.2464473248, blue: 0.3731117845, alpha: 1) : colorDataSource[index] == "Aquamarine" ? #colorLiteral(red: 0.1841040552, green: 0.616987884, blue: 0.5613076091, alpha: 1) : colorDataSource[index] == "Yellow" ? #colorLiteral(red: 0.9129590392, green: 0.767173171, blue: 0.4142659903, alpha: 1) : colorDataSource[index] == "Orange" ? #colorLiteral(red: 0.9576900601, green: 0.6367803216, blue: 0.3825422525, alpha: 1) : #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         
         dataViewController.view.backgroundColor = backgroundColor
-        self.view.backgroundColor = backgroundColor
                 
         return dataViewController
     }
 }
 
 extension TutorialDisplayViewController: UIPageViewControllerDelegate, UIPageViewControllerDataSource {
-    func presentationIndex(for pageViewController: UIPageViewController) -> Int {
-        return currentViewControllerIndex
-    }
-    func presentationCount(for pageViewController: UIPageViewController) -> Int {
-        return dataSource.count
-    }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         let dataViewController = viewController as? TutorialPageViewController
@@ -89,6 +91,9 @@ extension TutorialDisplayViewController: UIPageViewControllerDelegate, UIPageVie
         }
         
         currentViewControllerIndex = currentIndex
+        print("before \(currentViewControllerIndex)")
+        self.pageControl.currentPage = currentViewControllerIndex
+
         
         if currentIndex == 0 {
             return nil
@@ -114,6 +119,9 @@ extension TutorialDisplayViewController: UIPageViewControllerDelegate, UIPageVie
         currentIndex += 1
         
         currentViewControllerIndex = currentIndex
+        print("after \(currentViewControllerIndex)")
+        self.pageControl.currentPage = currentViewControllerIndex - 1
+
         
         return detailViewControllerAt(index: currentIndex)
     }
