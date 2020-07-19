@@ -8,30 +8,44 @@
 
 import UIKit
 
-class TutorialDisplayViewController: UIViewController {
+class TutorialDisplayViewController: UIViewController, UIPageViewControllerDelegate, UIPageViewControllerDataSource {
     @IBOutlet weak var displayView: UIView!
+    @IBOutlet weak var getStartedButtonOutlet: UIButton!
+    @IBAction func getStartedButton(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
+    }
     
-    let dataSource = ["Make a route", "Run around", "Get points", "Stay away from others"]
+    let dataSource = ["Welcome To Pac-Maps!", "Make a route", "Exercise and Gain Points", "Compete with Friends", "Stay away from others", "Contact Tracing", "Update COVID-19 Results", "Add Family Members"]
     var currentViewControllerIndex = 0
-    let colorDataSource = ["Blue", "Aquamarine", "Yellow", "Orange"]
-    let pageControl = UIPageControl(frame: CGRect(x: 0,y: UIScreen.main.bounds.maxY - 50,width: UIScreen.main.bounds.width,height: 50))
+    let pageControl = UIPageControl(frame: CGRect(x: 0,y: UIScreen.main.bounds.maxY - 150,width: UIScreen.main.bounds.width,height: 150))
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.setNavigationBarHidden(true, animated: false)
-        self.view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0)
         
-        
+        getStartedButtonOutlet.layer.zPosition = 1
+        getStartedButtonOutlet.isHidden = true
+        getStartedButtonOutlet.isEnabled = true
+        self.view.backgroundColor = #colorLiteral(red: 0.09153518826, green: 0.2464473248, blue: 0.3731117845, alpha: 1)
+        configurePageViewController()
         pageControl.numberOfPages = dataSource.count
         pageControl.currentPage = 0
         pageControl.tintColor = UIColor.black
+        pageControl.isUserInteractionEnabled = false
         self.view.addSubview(pageControl)
         
-        configurePageViewController()
+        if let gestureRecognizers = self.pageControl.gestureRecognizers as? [UIGestureRecognizer] {
+            for gestureRecognizer in gestureRecognizers	 {
+                if gestureRecognizer is UITapGestureRecognizer {
+                    gestureRecognizer.isEnabled = false
+                }
+            }
+        }
+
     }
     
     func configurePageViewController() {
@@ -62,7 +76,13 @@ class TutorialDisplayViewController: UIViewController {
     }
     
     func detailViewControllerAt(index: Int) -> TutorialPageViewController? {
-        
+        if currentViewControllerIndex == 8 {
+            UIView.transition(with: getStartedButtonOutlet, duration: 0.4,
+                              options: .transitionCrossDissolve,
+                              animations: {
+                                self.getStartedButtonOutlet.isHidden = false
+            })
+        }
         if index >= dataSource.count || dataSource.count == 0 {
             return nil
         }
@@ -73,15 +93,14 @@ class TutorialDisplayViewController: UIViewController {
         
         dataViewController.index = index
         dataViewController.displayText = dataSource[index]
-        let backgroundColor = colorDataSource[index] == "Blue" ? #colorLiteral(red: 0.09153518826, green: 0.2464473248, blue: 0.3731117845, alpha: 1) : colorDataSource[index] == "Aquamarine" ? #colorLiteral(red: 0.1841040552, green: 0.616987884, blue: 0.5613076091, alpha: 1) : colorDataSource[index] == "Yellow" ? #colorLiteral(red: 0.9129590392, green: 0.767173171, blue: 0.4142659903, alpha: 1) : colorDataSource[index] == "Orange" ? #colorLiteral(red: 0.9576900601, green: 0.6367803216, blue: 0.3825422525, alpha: 1) : #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        let backgroundColor = index == 0 ? #colorLiteral(red: 0.7806749683, green: 0.4807832242, blue: 0.1013923447, alpha: 1) : index == 1 ? #colorLiteral(red: 0.1388415396, green: 0.4637764692, blue: 0.5640690923, alpha: 1) : index == 2 ? #colorLiteral(red: 0.02455679327, green: 0.1435554624, blue: 0.2232916653, alpha: 1) : index == 3 ? #colorLiteral(red: 0.7556511739, green: 0.2484094252, blue: 0.3051345811, alpha: 1) : index == 4 ? #colorLiteral(red: 0, green: 0.5628422499, blue: 0.3188166618, alpha: 1) : index == 5 ? #colorLiteral(red: 0.5808190107, green: 0.0884276256, blue: 0.3186392188, alpha: 1) : index == 6 ? #colorLiteral(red: 0.5787474513, green: 0.3215198815, blue: 0, alpha: 1) : index == 7 ? #colorLiteral(red: 0.1755147576, green: 0.1388972402, blue: 0.2225093246, alpha: 1) : #colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1)
         
         dataViewController.view.backgroundColor = backgroundColor
-                
+        self.view.backgroundColor = index - 2 <= 0 ? #colorLiteral(red: 0.7806749683, green: 0.4807832242, blue: 0.1013923447, alpha: 1) : #colorLiteral(red: 0.1755147576, green: 0.1388972402, blue: 0.2225093246, alpha: 1)
+        
+        
         return dataViewController
     }
-}
-
-extension TutorialDisplayViewController: UIPageViewControllerDelegate, UIPageViewControllerDataSource {
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         let dataViewController = viewController as? TutorialPageViewController
@@ -91,9 +110,9 @@ extension TutorialDisplayViewController: UIPageViewControllerDelegate, UIPageVie
         }
         
         currentViewControllerIndex = currentIndex
-        print("before \(currentViewControllerIndex)")
         self.pageControl.currentPage = currentViewControllerIndex
-
+        pageControl.updateCurrentPageDisplay()
+        
         
         if currentIndex == 0 {
             return nil
@@ -119,9 +138,9 @@ extension TutorialDisplayViewController: UIPageViewControllerDelegate, UIPageVie
         currentIndex += 1
         
         currentViewControllerIndex = currentIndex
-        print("after \(currentViewControllerIndex)")
         self.pageControl.currentPage = currentViewControllerIndex - 1
-
+        pageControl.updateCurrentPageDisplay()
+        
         
         return detailViewControllerAt(index: currentIndex)
     }
