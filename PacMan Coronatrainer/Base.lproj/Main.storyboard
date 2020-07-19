@@ -813,7 +813,7 @@
             </objects>
             <point key="canvasLocation" x="3703" y="1590"/>
         </scene>
-        <!--Tutorial Display View Controller-->
+        <!--Pac-Maps Tutorial-->
         <scene sceneID="LV3-EQ-aMC">
             <objects>
                 <viewController id="Wi8-ka-F5N" customClass="TutorialDisplayViewController" customModule="Pac_Maps" customModuleProvider="target" sceneMemberID="viewController">
@@ -852,7 +852,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="BPy-91-glD"/>
                     </view>
-                    <navigationItem key="navigationItem" id="Nus-2h-eCu"/>
+                    <navigationItem key="navigationItem" title="Pac-Maps Tutorial" id="lhK-2z-iYx">
+                        <barButtonItem key="backBarButtonItem" title="Exit" id="auj-64-DJU"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="displayView" destination="80u-iP-TnY" id="8p6-EU-Lzv"/>
                         <outlet property="getStartedButtonOutlet" destination="lTJ-ir-ltV" id="mla-bh-OjQ"/>
