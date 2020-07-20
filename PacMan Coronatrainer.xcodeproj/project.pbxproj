@@ -13,8 +13,6 @@
 		0448FE3724B7FCE700244F14 /* FamilyMemberDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0448FE3624B7FCE700244F14 /* FamilyMemberDetailsViewController.swift */; };
 		04A05DFA24B0FA6200996E19 /* ShowQRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A05DF924B0FA6200996E19 /* ShowQRCodeViewController.swift */; };
 		04A05DFC24B112E800996E19 /* ScanQRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A05DFB24B112E800996E19 /* ScanQRCodeViewController.swift */; };
-		04A1136F24BE38B200FFBA51 /* PacMapsWelcomePage.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04A1136E24BE38B100FFBA51 /* PacMapsWelcomePage.xib */; };
-		04A1137124BE3B6A00FFBA51 /* PacMapsTutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A1137024BE3B6A00FFBA51 /* PacMapsTutorialView.swift */; };
 		04A381C8249C2866000A9616 /* BluetoothHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A381C7249C2866000A9616 /* BluetoothHandler.swift */; };
 		04C9FA0524870A7F00745E83 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C9FA0424870A7F00745E83 /* Notification.swift */; };
 		7979CB7469525F13375B9EF6 /* libPods-PacMan CoronatrainerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AD56D9E086A8A91A8D719F93 /* libPods-PacMan CoronatrainerTests.a */; };
@@ -69,8 +67,6 @@
 		0448FE3624B7FCE700244F14 /* FamilyMemberDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyMemberDetailsViewController.swift; sourceTree = "<group>"; };
 		04A05DF924B0FA6200996E19 /* ShowQRCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowQRCodeViewController.swift; sourceTree = "<group>"; };
 		04A05DFB24B112E800996E19 /* ScanQRCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanQRCodeViewController.swift; sourceTree = "<group>"; };
-		04A1136E24BE38B100FFBA51 /* PacMapsWelcomePage.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PacMapsWelcomePage.xib; sourceTree = "<group>"; };
-		04A1137024BE3B6A00FFBA51 /* PacMapsTutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PacMapsTutorialView.swift; sourceTree = "<group>"; };
 		04A381C7249C2866000A9616 /* BluetoothHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothHandler.swift; sourceTree = "<group>"; };
 		04C9FA022486FC4500745E83 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		04C9FA0424870A7F00745E83 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
@@ -194,8 +190,6 @@
 				04C9FA0424870A7F00745E83 /* Notification.swift */,
 				9F363ED4245419150023084D /* LeaderboardViewController.swift */,
 				9F363EA12453B4EE0023084D /* Main.storyboard */,
-				0434864724C0045D00BC1F85 /* TutorialPageViewController.swift */,
-				04A1137024BE3B6A00FFBA51 /* PacMapsTutorialView.swift */,
 				9F363EA42453B4F50023084D /* Assets.xcassets */,
 				9F363EA62453B4F50023084D /* LaunchScreen.storyboard */,
 				9FC2834924BD0E790091405A /* GoogleService-Info.plist */,
@@ -213,7 +207,7 @@
 				B08821A1247F070700CABF4D /* FirebaseDatabaseHandler.swift */,
 				04A05DF924B0FA6200996E19 /* ShowQRCodeViewController.swift */,
 				04A05DFB24B112E800996E19 /* ScanQRCodeViewController.swift */,
-				04A1136E24BE38B100FFBA51 /* PacMapsWelcomePage.xib */,
+				0434864724C0045D00BC1F85 /* TutorialPageViewController.swift */,
 				0434864924C005FB00BC1F85 /* TutorialDisplayViewController.swift */,
 			);
 			path = "PacMan Coronatrainer";
@@ -368,7 +362,6 @@
 				9F363EA82453B4F50023084D /* LaunchScreen.storyboard in Resources */,
 				9F363EA52453B4F50023084D /* Assets.xcassets in Resources */,
 				9F1083732455244E0024AE5B /* maps2.gpx in Resources */,
-				04A1136F24BE38B200FFBA51 /* PacMapsWelcomePage.xib in Resources */,
 				9F363EA32453B4EE0023084D /* Main.storyboard in Resources */,
 				9FC2834A24BD0E790091405A /* GoogleService-Info.plist in Resources */,
 			);
@@ -464,7 +457,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04A1137124BE3B6A00FFBA51 /* PacMapsTutorialView.swift in Sources */,
 				0434864A24C005FB00BC1F85 /* TutorialDisplayViewController.swift in Sources */,
 				9F363ED3245414D70023084D /* ViewController.swift in Sources */,
 				0434864824C0045D00BC1F85 /* TutorialPageViewController.swift in Sources */,

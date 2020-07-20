@@ -15,7 +15,7 @@ class TutorialDisplayViewController: UIViewController, UIPageViewControllerDeleg
         dismiss(animated: true, completion: nil)
     }
     
-    let dataSource = ["Welcome To Pac-Maps!", "Make a route", "Exercise and Gain Points", "Compete with Friends", "Stay away from others", "Contact Tracing", "Update COVID-19 Results", "Add Family Members", "Swiping down"]
+    let dataSource = ["Welcome To Pac-Maps!", "Make a route", "Exercise and Gain Points", "Compete with Friends", "Stay away from others", "Contact Tracing", "Update COVID-19 Results", "Add Family Members", "Swiping down", "Stay Safe!"]
     var currentViewControllerIndex = 0
     let pageControl = UIPageControl(frame: CGRect(x: 0,y: UIScreen.main.bounds.maxY - 150,width: UIScreen.main.bounds.width,height: 150))
     
@@ -76,7 +76,7 @@ class TutorialDisplayViewController: UIViewController, UIPageViewControllerDeleg
     }
     
     func detailViewControllerAt(index: Int) -> TutorialPageViewController? {
-        if currentViewControllerIndex == 9 {
+        if currentViewControllerIndex == 10 {
             UIView.transition(with: getStartedButtonOutlet, duration: 0.4,
                               options: .transitionCrossDissolve,
                               animations: {
@@ -93,7 +93,7 @@ class TutorialDisplayViewController: UIViewController, UIPageViewControllerDeleg
         
         dataViewController.index = index
         dataViewController.displayText = dataSource[index]
-        let backgroundColor = index == 0 ? #colorLiteral(red: 0.7806749683, green: 0.4807832242, blue: 0.1013923447, alpha: 1) : index == 1 ? #colorLiteral(red: 0.1388415396, green: 0.4637764692, blue: 0.5640690923, alpha: 1) : index == 2 ? #colorLiteral(red: 0.02455679327, green: 0.1435554624, blue: 0.2232916653, alpha: 1) : index == 3 ? #colorLiteral(red: 0.7556511739, green: 0.2484094252, blue: 0.3051345811, alpha: 1) : index == 4 ? #colorLiteral(red: 0, green: 0.5628422499, blue: 0.3188166618, alpha: 1) : index == 5 ? #colorLiteral(red: 0.5808190107, green: 0.0884276256, blue: 0.3186392188, alpha: 1) : index == 6 ? #colorLiteral(red: 0.5787474513, green: 0.3215198815, blue: 0, alpha: 1) : index == 7 ? #colorLiteral(red: 0.1755147576, green: 0.1388972402, blue: 0.2225093246, alpha: 1) : #colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1)
+        let backgroundColor = index == 0 ? #colorLiteral(red: 0.7806749683, green: 0.4807832242, blue: 0.1013923447, alpha: 1) : index == 1 ? #colorLiteral(red: 0.1388415396, green: 0.4637764692, blue: 0.5640690923, alpha: 1) : index == 2 ? #colorLiteral(red: 0.02455679327, green: 0.1435554624, blue: 0.2232916653, alpha: 1) : index == 3 ? #colorLiteral(red: 0.7556511739, green: 0.2484094252, blue: 0.3051345811, alpha: 1) : index == 4 ? #colorLiteral(red: 0, green: 0.5628422499, blue: 0.3188166618, alpha: 1) : index == 5 ? #colorLiteral(red: 0.5808190107, green: 0.0884276256, blue: 0.3186392188, alpha: 1) : index == 6 ? #colorLiteral(red: 0.5787474513, green: 0.3215198815, blue: 0, alpha: 1) : index == 7 ? #colorLiteral(red: 0.1755147576, green: 0.1388972402, blue: 0.2225093246, alpha: 1) : index == 8 ? #colorLiteral(red: 0.3569092012, green: 0.1325056174, blue: 0.6159184645, alpha: 1) : #colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1)
         
         dataViewController.view.backgroundColor = backgroundColor
         self.view.backgroundColor = index - 2 <= 0 ? #colorLiteral(red: 0.7806749683, green: 0.4807832242, blue: 0.1013923447, alpha: 1) : #colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1)
