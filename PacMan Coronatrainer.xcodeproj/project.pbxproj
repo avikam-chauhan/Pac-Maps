@@ -30,6 +30,8 @@
 		9F363ED5245419150023084D /* LeaderboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F363ED4245419150023084D /* LeaderboardViewController.swift */; };
 		9F363ED72454C8490023084D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F363ED62454C8480023084D /* User.swift */; };
 		9F363EDB2454D0510023084D /* FirebaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F363EDA2454D0500023084D /* FirebaseInterface.swift */; };
+		9F5D117424C6962E00D2EF55 /* TutorialDisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F5D117324C6962E00D2EF55 /* TutorialDisplayViewController.swift */; };
+		9F5D117624C6966C00D2EF55 /* TutorialPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F5D117524C6966C00D2EF55 /* TutorialPageViewController.swift */; };
 		9F95C48E24B6B47E009DE735 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F95C48D24B6B47E009DE735 /* SettingsTableViewController.swift */; };
 		9FC2834A24BD0E790091405A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9FC2834924BD0E790091405A /* GoogleService-Info.plist */; };
 		9FF15CC4247F0C5400328C96 /* LocationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF15CC3247F0C5400328C96 /* LocationHandler.swift */; };
@@ -92,6 +94,8 @@
 		9F363ED4245419150023084D /* LeaderboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardViewController.swift; sourceTree = "<group>"; };
 		9F363ED62454C8480023084D /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		9F363EDA2454D0500023084D /* FirebaseInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseInterface.swift; sourceTree = "<group>"; };
+		9F5D117324C6962E00D2EF55 /* TutorialDisplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialDisplayViewController.swift; sourceTree = "<group>"; };
+		9F5D117524C6966C00D2EF55 /* TutorialPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialPageViewController.swift; sourceTree = "<group>"; };
 		9F95C48D24B6B47E009DE735 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		9FC2834424BBB8B80091405A /* Pac-Maps.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Pac-Maps.entitlements"; sourceTree = "<group>"; };
 		9FC2834924BD0E790091405A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -178,6 +182,8 @@
 				9FC2834424BBB8B80091405A /* Pac-Maps.entitlements */,
 				9F95C48D24B6B47E009DE735 /* SettingsTableViewController.swift */,
 				9F363E9B2453B4EE0023084D /* AppDelegate.swift */,
+				9F5D117324C6962E00D2EF55 /* TutorialDisplayViewController.swift */,
+				9F5D117524C6966C00D2EF55 /* TutorialPageViewController.swift */,
 				9F363ECB2453CE990023084D /* SceneDelegate.swift */,
 				9F363ED2245414D70023084D /* ViewController.swift */,
 				0448FE3624B7FCE700244F14 /* FamilyMemberDetailsViewController.swift */,
@@ -453,6 +459,8 @@
 			files = (
 				9F363ED3245414D70023084D /* ViewController.swift in Sources */,
 				0448FE3724B7FCE700244F14 /* FamilyMemberDetailsViewController.swift in Sources */,
+				9F5D117624C6966C00D2EF55 /* TutorialPageViewController.swift in Sources */,
+				9F5D117424C6962E00D2EF55 /* TutorialDisplayViewController.swift in Sources */,
 				9F363ED12454090F0023084D /* CustomAnnotation.swift in Sources */,
 				9F363ED72454C8490023084D /* User.swift in Sources */,
 				0448FE3524B7E1F500244F14 /* FamilyMembersTableViewController.swift in Sources */,

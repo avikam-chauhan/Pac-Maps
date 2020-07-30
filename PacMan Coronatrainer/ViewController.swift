@@ -15,8 +15,10 @@ import Firebase
 
 class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, BluetoothHandlerDelegate, FirebaseInterfaceDelegate {
     
-    
-    
+    func showTutorial() {
+        self.performSegue(withIdentifier: "toTutorial", sender: self)
+    }
+        
     var bluetoothHandler: BluetoothHandler!
     var firebaseInterface: FirebaseInterface!
     var ref: DatabaseReference!
@@ -30,54 +32,64 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     var pacManAnnotation: CustomAnnotation!
     var ghostAnnotation: [CustomAnnotation] = []
+    var flagAnnotation: [CustomAnnotation] = []
     var pinAnnotationView: MKPinAnnotationView!
     
     
-    func showGhost(coordinate: CLLocationCoordinate2D) {
-        var annotation = CustomAnnotation()
-        annotation.pinCustomImageName = "ghost-red"
-        annotation.coordinate = coordinate
-        ghostAnnotation.append(annotation)
-        
-        var pinAnnotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "ghost")
-        mapView.addAnnotation(pinAnnotationView.annotation!)
-    }
+//    func showGhost(coordinate: CLLocationCoordinate2D) {
+//        var annotation = CustomAnnotation()
+//        annotation.pinCustomImageName = "ghost-red"
+//        annotation.coordinate = coordinate
+//        ghostAnnotation.append(annotation)
+//
+//        var pinAnnotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "ghost")
+//        mapView.addAnnotation(pinAnnotationView.annotation!)
+//    }
+//
+//    func showFlag(coordinate: CLLocationCoordinate2D) {
+//
+//        var annotation = MKPointAnnotation()
+//        annotation.coordinate = coordinate
+//        var pinAnnotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "pin")
+//        self.mapView.addAnnotation(pinAnnotationView.annotation!)
+//
+////        var annotation = CustomAnnotation()
+////        annotation.pinCustomImageName = "flag"
+////        annotation.coordinate = coordinate
+////        flagAnnotation.append(annotation)
+////
+////        var pinAnnotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "flag")
+////        mapView.addAnnotation(pinAnnotationView.annotation!)
+//    }
+//
+//    func updatePacManLocation(newCoordinate: CLLocationCoordinate2D) {
+//        pacManAnnotation.coordinate = newCoordinate
+//    }
     
-    func showFlag(coordinate: CLLocationCoordinate2D) {
-        var annotation = CustomAnnotation()
-        annotation.pinCustomImageName = "flag"
-        annotation.coordinate = coordinate
-        ghostAnnotation.append(annotation)
-        
-        var pinAnnotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "flag")
-        mapView.addAnnotation(pinAnnotationView.annotation!)
-    }
-    
-    func showPacMan(coordinate: CLLocationCoordinate2D) {
-        pacManAnnotation = CustomAnnotation()
-        pacManAnnotation.pinCustomImageName = "pac-man"
-        pacManAnnotation.coordinate = coordinate
-        
-        pinAnnotationView = MKPinAnnotationView(annotation: pacManAnnotation, reuseIdentifier: "pac-man")
-        mapView.addAnnotation(pinAnnotationView.annotation!)
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        for waypoint in self.waypoints {
+            if CLLocation(latitude: waypoint.latitude, longitude: waypoint.longitude).distance(from: CLLocation(latitude: view.annotation?.coordinate.latitude ?? 0, longitude: view.annotation?.coordinate.longitude ?? 0)) == 0 {
+                print(waypoint)
+            }
+        }
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        let reuseIdentifier = "ghost"
+        let reuseIdentifier = (annotation as? CustomAnnotation)?.pinCustomImageName ?? "flag" // "ghost"
         var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseIdentifier)
-        
+
         if annotationView == nil {
             annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseIdentifier)
             annotationView?.canShowCallout = true
         } else {
             annotationView?.annotation = annotation
         }
-        
+
         if let customPointAnnotation = annotation as? CustomAnnotation {
             annotationView?.image = UIImage(named: customPointAnnotation.pinCustomImageName)
         }
         annotationView?.transform = CGAffineTransform(scaleX: 0.005, y: 0.005)
-        
+
         return annotationView
     }
     
@@ -88,12 +100,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     //        }
     //    }
     
-    @objc func subtract50() {
-        if vibrate {
-            points = points - 50
-        }
-    }
-    
+//    @objc func subtract50() {
+//        if vibrate {
+//            points = points - 50
+//        }
+//    }
+//
     //    @objc func add1() {
     //        if !vibrate {
     //            points = points + 1
@@ -110,49 +122,40 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 }
             }
             UIView.animate(withDuration: 0.5, animations: {
-                if minProximity == CLProximity.unknown {
-                    self.navigationItem.title = "SAFE"
-                    //                    self.safetyLabel.text = "SAFE"
-                    self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
-                    //                    self.topView.backgroundColor = UIColor.systemGreen
-                    UINavigationBar.appearance().barTintColor = UIColor.systemGreen
-                    self.vibrate = false
-                    self.removePointsTimer?.invalidate()
-                } else if minProximity == CLProximity.immediate {
-                    self.navigationItem.title = "TOO CLOSE"
-                    //                    self.safetyLabel.text = "TOO CLOSE"
-                    self.navigationController?.navigationBar.barTintColor = UIColor.systemRed
-                    //                    self.topView.backgroundColor = UIColor.systemRed
-                    UINavigationBar.appearance().barTintColor = UIColor.systemRed
-                    self.vibrate = true
-                    self.vibrateTimer(time: 0.1)
-                    
-                    //                    self.removePointsTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(ViewController.subtract1), userInfo: nil, repeats: true)
-                    //                    self.removePointsTimer?.fire()
-                } else if minProximity == CLProximity.near {
-                    self.navigationItem.title = "NEAR"
-                    //                    self.safetyLabel.text = "NEAR"
-                    self.navigationController?.navigationBar.barTintColor = UIColor.systemOrange
-                    //                    self.topView.backgroundColor = UIColor.systemOrange
-                    self.bottomView.backgroundColor = UIColor.systemOrange
-                    self.vibrate = true
-                    self.vibrateTimer(time: 1)
-                    
-                    //                    self.removePointsTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(ViewController.subtract1), userInfo: nil, repeats: true)
-                    //                    self.removePointsTimer.fire()
-                } else if minProximity == CLProximity.far {
-                    self.safetyLabel.text = "CAUTION"
-                    self.topView.backgroundColor = UIColor.systemYellow
-                    self.bottomView.backgroundColor = UIColor.systemYellow
-                    self.vibrate = false
-                    //                    self.removePointsTimer.invalidate()
+                switch(minProximity) {
+                    case .unknown:
+                        self.navigationItem.title = "SAFE"
+                        self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
+                        self.bottomView.backgroundColor = UIColor.systemGreen
+                        self.vibrate = false
+                        self.removePointsTimer?.invalidate()
+                    case .immediate:
+                        self.navigationItem.title = "TOO CLOSE"
+                        self.navigationController?.navigationBar.barTintColor = UIColor.systemRed
+                        self.vibrate = true
+                        self.vibrateTimer(time: 0.1)
+                    case .near:
+                        self.navigationItem.title = "NEAR"
+                        self.navigationController?.navigationBar.barTintColor = UIColor.systemOrange
+                        self.bottomView.backgroundColor = UIColor.systemOrange
+                        self.vibrate = true
+                        self.vibrateTimer(time: 1)
+                    case .far:
+                        self.navigationItem.title = "CAUTION"
+                        self.navigationController?.navigationBar.barTintColor = UIColor.systemYellow
+                        self.bottomView.backgroundColor = UIColor.systemYellow
+                        self.vibrate = false
+                    @unknown default:
+                        self.navigationItem.title = "SAFE"
+                        self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
+                        self.bottomView.backgroundColor = UIColor.systemGreen
+                        self.vibrate = false
+                        self.removePointsTimer?.invalidate()
                 }
             })
         }
     }
-    
-    //MARK: points setting
-    
+       
     var points: Int {
         set {
             pointsLabel.text = "\(newValue) •"
@@ -164,14 +167,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         }
     }
     
-    @IBOutlet weak var topView: UIView!
-    @IBOutlet weak var safetyLabel: UILabel!
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var pointsLabel: UILabel!
     @IBOutlet weak var rankingLabel: UILabel!
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var routeLabel: UILabel!
-    @IBOutlet weak var addButton: UIButton!
     
     var currentLocation: CLLocation?
     var previousLocation: CLLocation?
@@ -256,13 +256,23 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         return number
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        let delegate = UIApplication.shared.delegate as! AppDelegate
+        if !delegate.didSegue {
+            delegate.didSegue = true
+            self.showTutorial()
+        }
+        self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
+        self.navigationController?.navigationBar.tintColor = UIColor.white
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let warning_alert = UIAlertController(title: "Warning", message: "Pac-Maps is a mobile game designed to help keep people safe and healthy during the COVID-19 pandemic. You may receive notifications that alert you if you came in contact with someone who is/was positive for COVID-19. Your privacy is important to us, and none of your personal information will be shared with other users or companies. The information in this app may not be 100% up to date at all times. For the latest guidelines and information, please visit www.cdc.gov/coronavirus. We are not responsible for any complications or issues due to inaccurate information. Please exercise caution and common sense when you are in public, and help keep yourself and others around you safe and healthy. Stay safe, and have fun!", preferredStyle: UIAlertController.Style.alert)
-        warning_alert.addAction(UIAlertAction(title: "I understand", style: UIAlertAction.Style.cancel
-            , handler: nil))
-        self.present(warning_alert, animated: true, completion: nil)
+//        let warning_alert = UIAlertController(title: "Warning", message: "Pac-Maps is a mobile game designed to help keep people safe and healthy during the COVID-19 pandemic. You may receive notifications that alert you if you came in contact with someone who is/was positive for COVID-19. Your privacy is important to us, and none of your personal information will be shared with other users or companies. The information in this app may not be 100% up to date at all times. For the latest guidelines and information, please visit www.cdc.gov/coronavirus. We are not responsible for any complications or issues due to inaccurate information. Please exercise caution and common sense when you are in public, and help keep yourself and others around you safe and healthy. Stay safe, and have fun!", preferredStyle: UIAlertController.Style.alert)
+//        warning_alert.addAction(UIAlertAction(title: "I understand", style: UIAlertAction.Style.cancel
+//            , handler: nil))
+//        self.present(warning_alert, animated: true, completion: nil)
         
         self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
         self.navigationController?.navigationBar.tintColor = UIColor.white
@@ -284,6 +294,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             UserDefaults.standard.set(true, forKey: "gdsagsdgasdfsadf")
         }
         
+        self.pacManAnnotation = CustomAnnotation()
+        self.pacManAnnotation.pinCustomImageName = "pac-man"
+        
+        pinAnnotationView = MKPinAnnotationView(annotation: self.pacManAnnotation, reuseIdentifier: "pac-man")
+        self.mapView.addAnnotation(pinAnnotationView.annotation!)
+        
         locationManager.delegate = self
         locationManager.requestAlwaysAuthorization()
         locationManager.startUpdatingLocation();
@@ -291,7 +307,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
         self.mapView.setUserTrackingMode(.followWithHeading, animated: true)
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tap))
+        let tapGesture = UILongPressGestureRecognizer(target: self, action: #selector(tap))
         mapView.addGestureRecognizer(tapGesture)
         mapView.delegate = self
         
@@ -409,6 +425,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
                 //                    self.topView.backgroundColor = UIColor.systemGreen
                 UINavigationBar.appearance().barTintColor = UIColor.systemGreen
+                self.bottomView.backgroundColor = UIColor.systemGreen
                 self.vibrate = false
                 //                    self.removePointsTimer.invalidate()
             } else if distance == CLProximity.immediate {
@@ -417,6 +434,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 self.navigationController?.navigationBar.barTintColor = UIColor.systemRed
                 //                    self.topView.backgroundColor = UIColor.systemRed
                 UINavigationBar.appearance().barTintColor = UIColor.systemRed
+                self.bottomView.backgroundColor = UIColor.systemRed
                 self.vibrate = true
                 self.vibrateTimer(time: 0.1)
                 
@@ -434,8 +452,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 //                    self.removePointsTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(ViewController.subtract1), userInfo: nil, repeats: true)
                 //                    self.removePointsTimer .fire()
             } else if distance == CLProximity.far {
-                self.safetyLabel.text = "CAUTION"
-                self.topView.backgroundColor = UIColor.systemYellow
+                self.navigationItem.title = "CAUTION"
+                self.navigationController?.navigationBar.barTintColor = UIColor.systemYellow
                 self.bottomView.backgroundColor = UIColor.systemYellow
                 self.vibrate = false
                 //                    self.removePointsTimer.invalidate()
@@ -479,6 +497,112 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     
     @objc func tap(sender: UITapGestureRecognizer) {
+        if true {
+            let generator = UIImpactFeedbackGenerator(style: .heavy)
+            generator.impactOccurred()
+            
+            distances.removeAll()
+//            addButton.tintColor = UIColor.white
+            let coordinate = mapView.convert(sender.location(in: sender.view), toCoordinateFrom: sender.view)
+            
+            
+            
+//            showFlag(coordinate: coordinate)
+            
+            
+            
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = coordinate
+            //            mapView.addAnnotation(annotation)
+            
+            waypoints.append(coordinate)
+            //            showFlag(coordinate: coordinate)
+            
+            totalDistance = 0.0
+            
+            let request = MKDirections.Request()
+            request.source = MKMapItem(placemark: MKPlacemark(coordinate: currentLocation!.coordinate, addressDictionary: nil))
+            request.destination = MKMapItem(placemark: MKPlacemark(coordinate: waypoints[0], addressDictionary: nil))
+            request.requestsAlternateRoutes = false
+            request.transportType = .walking
+            
+            let directions = MKDirections(request: request)
+            
+            directions.calculate { [unowned self] response, error in
+                guard let unwrappedResponse = response else {
+                    DispatchQueue.main.async {
+                        let alert = UIAlertController(title: "Walking Directions Not Available", message: "Walking directions are not available for this location.", preferredStyle: UIAlertController.Style.alert)
+                        alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                    self.waypoints.remove(at: 0)
+                    return
+                }
+                
+                for route in unwrappedResponse.routes {
+                    self.mapView.addOverlay(route.polyline)
+                    
+                    var newPoints = route.polyline.coordinates
+                    let polylineCoordinates = route.polyline.coordinates
+                    
+                    for i in 1..<polylineCoordinates.count {
+                        var loc1 = CLLocation(latitude: polylineCoordinates[i - 1].latitude, longitude: polylineCoordinates[i - 1].longitude)
+                        var loc2 = CLLocation(latitude: polylineCoordinates[i].latitude, longitude: polylineCoordinates[i].longitude)
+                        print(loc1.distance(from: loc2))
+                        if loc1.distance(from: loc2) > 30 {
+                            newPoints.insert(CLLocationCoordinate2D(latitude: (loc1.coordinate.latitude + loc2.coordinate.latitude) / 2, longitude: (loc1.coordinate.longitude + loc2.coordinate.longitude) / 2), at: i)
+                            print("INSERT: ", loc1, loc2, newPoints[i - 1])
+                        } else if loc1.distance(from: loc2) < 10 {
+                            newPoints.remove(at: i)
+                        }
+//                        self.showGhost(coordinate: coordinate)
+                    }
+                    for point in newPoints {
+//                        self.showGhost(coordinate: point)
+//                        self.annotations.append(annotation)
+                    }
+                    //                    self.mapView.addOverlay(ForegroundOverlay(line: route.polyline), level: .aboveRoads)
+                    //                    self.mapView.addOverlay(BackgroundOverlay(line: route.polyline), level: .aboveRoads)
+                    self.totalDistance += route.distance
+                    self.distances.append(route.distance)
+                }
+            }
+            
+            for x in 0..<waypoints.count-1 {
+                let request = MKDirections.Request()
+                request.source = MKMapItem(placemark: MKPlacemark(coordinate: waypoints[x], addressDictionary: nil))
+                request.destination = MKMapItem(placemark: MKPlacemark(coordinate: waypoints[x+1], addressDictionary: nil))
+                request.requestsAlternateRoutes = false
+                request.transportType = .walking
+                
+                let directions = MKDirections(request: request)
+                
+                directions.calculate { [unowned self] response, error in
+                    guard let unwrappedResponse = response else {
+                        DispatchQueue.main.async {
+                            let alert = UIAlertController(title: "Walking Directions Not Available", message: "Walking directions are not available for this location.", preferredStyle: UIAlertController.Style.alert)
+                            alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+                            self.present(alert, animated: true, completion: nil)
+                        }
+                        //                        self.waypoints.remove(at: x+1)
+                        return
+                    }
+                    
+                    for route in unwrappedResponse.routes {
+                        self.mapView.addOverlay(route.polyline)
+                        
+                        //                        self.mapView.addOverlay(ForegroundOverlay(line: route.polyline), level: .aboveRoads)
+                        //                        self.mapView.addOverlay(BackgroundOverlay(line: route.polyline), level: .aboveRoads)
+                        self.totalDistance += route.distance
+                        self.distances.append(route.distance)
+                    }
+                    print(self.distances)
+                }
+            }
+            
+        }
+    }
+    /*
         if listeningForMapTap {
             
             distances.removeAll()
@@ -554,6 +678,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             }
         }
     }
+    */
     
     @IBAction func returnToCenter(_ sender: Any) {
         DispatchQueue.main.asyncAfter(deadline: .now()) {
@@ -564,11 +689,19 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         //        print(overlay is ForegroundOverlay)
         //        if overlay is ForegroundOverlay {
-        let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
-        renderer.strokeColor = UIColor.yellow
-        renderer.lineWidth = 8
-        //        renderer.lineDashPattern = [0, 20]
-        return renderer
+        if let line = overlay as? MKPolyline {
+            let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
+            renderer.strokeColor = UIColor.yellow
+            renderer.lineWidth = 8
+            //        renderer.lineDashPattern = [0, 20]
+            return renderer
+        } else {
+            let rend = MKCircleRenderer(overlay: overlay)
+            rend.strokeColor = UIColor.systemRed
+            rend.lineWidth = 10
+            rend.fillColor = UIColor.orange
+            return rend
+        }
         //        } else {
         //            let renderer = MKPolylineRenderer(polyline: (overlay as! BackgroundOverlay).polyline as! MKPolyline)
         //            renderer.strokeColor = UIColor.green
@@ -602,19 +735,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     //    }
     
     
-    @IBOutlet weak var addSelectLabel: UILabel!
-    
-    @IBAction func addButtonPressed(_ sender: Any) {
-        if listeningForMapTap {
-            listeningForMapTap = false
-            addButton.tintColor = UIColor.white
-        } else {
-            listeningForMapTap = true
-            addButton.tintColor = UIColor.lightGray
-        }
-        
-    }
-    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         //        if currentHeading == nil {
         //            mapView.centerToLocation(locations.first!)
@@ -638,11 +758,23 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         //            var delta = previousLocation!.distance(from: currentLocation!)
         //            points += Int(50 * delta / 1609.34)
         //        }
-        self.mapView.removeAnnotations(mapView.annotations)
-        showPacMan(coordinate: self.currentLocation!.coordinate)
+//        self.mapView.removeAnnotations(mapView.annotations)
+        if let coordinate = self.currentLocation?.coordinate {
+            self.pacManAnnotation.coordinate = coordinate
+        }
         for user in self.users {
             if user.UUID != UIDevice.current.identifierForVendor!.uuidString {
-                self.showGhost(coordinate: user.location!)
+                if let index = self.ghostAnnotation.firstIndex(where: {(annotation) -> Bool in annotation.UUID == user.UUID }) {
+                    self.ghostAnnotation[index].coordinate = CLLocationCoordinate2D(latitude: user.location!.latitude, longitude: user.location!.longitude)
+                } else {
+                    var annotation = CustomAnnotation()
+                    annotation.pinCustomImageName = "ghost-red"
+                    annotation.coordinate = CLLocationCoordinate2D(latitude: user.location!.latitude, longitude: user.location!.longitude)
+                    ghostAnnotation.append(annotation)
+            
+                    var pinAnnotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "ghost")
+                    mapView.addAnnotation(pinAnnotationView.annotation!)
+                }
             }
         }
         FirebaseInterface.updateLocation(currentLocation: currentLocation!.coordinate)
@@ -698,7 +830,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-        //        mapView.setCamera(MKMapCamera(lookingAtCenter: currentLocation!.coordinate, fromDistance: 500, pitch: 0, heading: newHeading.trueHeading), animated: true)
         currentHeading = newHeading
     }
     
@@ -726,3 +857,10 @@ extension Double {
     }
 }
 
+extension MKMultiPoint {
+    var coordinates: [CLLocationCoordinate2D] {
+        var coords = [CLLocationCoordinate2D](repeating: kCLLocationCoordinate2DInvalid, count: pointCount)
+        getCoordinates(&coords, range: NSRange(location: 0, length: pointCount))
+        return coords
+    }
+}

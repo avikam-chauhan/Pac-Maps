@@ -46,11 +46,17 @@ class SettingsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        if section == 0 { return 2 }
+        if section == 0 { return 3 }
         return 1
     }
 
-
+    @IBAction func tutorialPressed(_ sender: Any) {
+        weak var pvc: UIViewController! = self.presentingViewController?.children[0]
+        self.dismiss(animated: true) {
+            pvc.performSegue(withIdentifier: "toTutorial", sender: self)
+        }
+    }
+    
     @IBAction func editingChanged(_ sender: UITextField) {
         FirebaseInterface.updateUsername(username: sender.text ?? "")
     }

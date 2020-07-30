@@ -11,5 +11,8 @@ import UIKit
 import MapKit
 
 class CustomAnnotation: MKPointAnnotation {
+    
     var pinCustomImageName: String!
+    var UUID: String?
+    
 }
