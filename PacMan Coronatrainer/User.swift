@@ -9,7 +9,8 @@
 import Foundation
 import CoreLocation
 
-class User{
+class User {
+    
     var UUID = ""
     var score = 0
     var location: CLLocationCoordinate2D?

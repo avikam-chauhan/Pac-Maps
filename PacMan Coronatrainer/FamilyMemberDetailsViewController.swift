@@ -17,7 +17,6 @@ class FamilyMemberDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(selectedUUID)
         FirebaseInterface.getFamilyMemberName(fromUUID: selectedUUID!) { (username) in
             self.usernameLabel.text = username
         }
