@@ -799,13 +799,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 let alert = UIAlertController(title: "Warning", message: "You are about to remove the last waypoint. Are you sure you want to do this?", preferredStyle: UIAlertController.Style.alert)
                 alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
                 alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { (action) in
-                    for i in 0..<2 {
-                        DispatchQueue.main.async {
+                    DispatchQueue.main.async {
+                        for _ in 0..<2 {
                             if self.routes.count > 0 {
                                 self.routes.removeLast()
                                 self.mapView.removeOverlays(self.mapView.overlays)
+                                self.totalDistance = 0
                                 for route in self.routes {
                                     self.mapView.addOverlay(route.route.polyline)
+                                    self.totalDistance += route.route.distance
                                 }
                             }
                         }
