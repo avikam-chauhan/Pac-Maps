@@ -17,48 +17,48 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     // MARK: CoreLocation
     
-    func locationManager(_ manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], in region: CLBeaconRegion) {
-        var minProximity = CLProximity.far
-        if beacons.count > 0 {
-            for beacon in beacons {
-                if beacon.proximity.rawValue < minProximity.rawValue {
-                    minProximity = beacon.proximity
-                }
-            }
-            UIView.animate(withDuration: 0.5, animations: {
-                switch(minProximity) {
-                case .unknown:
-                    self.navigationItem.title = "SAFE"
-                    self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
-                    self.bottomView.backgroundColor = UIColor.systemGreen
-                    self.vibrate = false
-                    self.removePointsTimer?.invalidate()
-                case .immediate:
-                    self.navigationItem.title = "TOO CLOSE"
-                    self.navigationController?.navigationBar.barTintColor = UIColor.systemRed
-                    self.vibrate = true
-                    self.vibrateTimer(time: 0.1)
-                case .near:
-                    self.navigationItem.title = "NEAR"
-                    self.navigationController?.navigationBar.barTintColor = UIColor.systemOrange
-                    self.bottomView.backgroundColor = UIColor.systemOrange
-                    self.vibrate = true
-                    self.vibrateTimer(time: 1)
-                case .far:
-                    self.navigationItem.title = "CAUTION"
-                    self.navigationController?.navigationBar.barTintColor = UIColor.systemYellow
-                    self.bottomView.backgroundColor = UIColor.systemYellow
-                    self.vibrate = false
-                @unknown default:
-                    self.navigationItem.title = "SAFE"
-                    self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
-                    self.bottomView.backgroundColor = UIColor.systemGreen
-                    self.vibrate = false
-                    self.removePointsTimer?.invalidate()
-                }
-            })
-        }
-    }
+//    func locationManager(_ manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], in region: CLBeaconRegion) {
+//        var minProximity = CLProximity.far
+//        if beacons.count > 0 {
+//            for beacon in beacons {
+//                if beacon.proximity.rawValue < minProximity.rawValue {
+//                    minProximity = beacon.proximity
+//                }
+//            }
+//            UIView.animate(withDuration: 0.5, animations: {
+//                switch(minProximity) {
+//                case .unknown:
+//                    self.navigationItem.title = "SAFE"
+//                    self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
+//                    self.bottomView.backgroundColor = UIColor.systemGreen
+//                    self.vibrate = false
+//                    self.removePointsTimer?.invalidate()
+//                case .immediate:
+//                    self.navigationItem.title = "TOO CLOSE"
+//                    self.navigationController?.navigationBar.barTintColor = UIColor.systemRed
+//                    self.vibrate = true
+//                    self.vibrateTimer(time: 0.1)
+//                case .near:
+//                    self.navigationItem.title = "NEAR"
+//                    self.navigationController?.navigationBar.barTintColor = UIColor.systemOrange
+//                    self.bottomView.backgroundColor = UIColor.systemOrange
+//                    self.vibrate = true
+//                    self.vibrateTimer(time: 1)
+//                case .far:
+//                    self.navigationItem.title = "CAUTION"
+//                    self.navigationController?.navigationBar.barTintColor = UIColor.systemYellow
+//                    self.bottomView.backgroundColor = UIColor.systemYellow
+//                    self.vibrate = false
+//                @unknown default:
+//                    self.navigationItem.title = "SAFE"
+//                    self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
+//                    self.bottomView.backgroundColor = UIColor.systemGreen
+//                    self.vibrate = false
+//                    self.removePointsTimer?.invalidate()
+//                }
+//            })
+//        }
+//    }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         //        if currentHeading == nil {
@@ -621,48 +621,82 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         //                    minProximity = beacon.proximity
         //                }
         //            }
+        
         UIView.animate(withDuration: 0.5, animations: {
-            if distance == CLProximity.unknown {
+            switch(distance) {
+            case .unknown:
                 self.navigationItem.title = "SAFE"
-                //                    self.safetyLabel.text = "SAFE"
                 self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
-                //                    self.topView.backgroundColor = UIColor.systemGreen
-                UINavigationBar.appearance().barTintColor = UIColor.systemGreen
                 self.bottomView.backgroundColor = UIColor.systemGreen
                 self.vibrate = false
-                //                    self.removePointsTimer.invalidate()
-            } else if distance == CLProximity.immediate {
+                self.removePointsTimer?.invalidate()
+            case .immediate:
                 self.navigationItem.title = "TOO CLOSE"
-                //                    self.safetyLabel.text = "TOO CLOSE"
                 self.navigationController?.navigationBar.barTintColor = UIColor.systemRed
-                //                    self.topView.backgroundColor = UIColor.systemRed
-                UINavigationBar.appearance().barTintColor = UIColor.systemRed
                 self.bottomView.backgroundColor = UIColor.systemRed
                 self.vibrate = true
                 self.vibrateTimer(time: 0.1)
-                
-                //                    self.removePointsTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(ViewController.subtract1), userInfo: nil, repeats: true)
-                //                    self.removePointsTimer.fire()
-            } else if distance == CLProximity.near {
+            case .near:
                 self.navigationItem.title = "NEAR"
-                //                    self.safetyLabel.text = "NEAR"
                 self.navigationController?.navigationBar.barTintColor = UIColor.systemOrange
-                //                    self.topView.backgroundColor = UIColor.systemOrange
                 self.bottomView.backgroundColor = UIColor.systemOrange
                 self.vibrate = true
                 self.vibrateTimer(time: 1)
-                
-                //                    self.removePointsTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(ViewController.subtract1), userInfo: nil, repeats: true)
-                //                    self.removePointsTimer .fire()
-            } else if distance == CLProximity.far {
+            case .far:
                 self.navigationItem.title = "CAUTION"
                 self.navigationController?.navigationBar.barTintColor = UIColor.systemYellow
                 self.bottomView.backgroundColor = UIColor.systemYellow
                 self.vibrate = false
-                //                    self.removePointsTimer.invalidate()
+            @unknown default:
+                self.navigationItem.title = "SAFE"
+                self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
+                self.bottomView.backgroundColor = UIColor.systemGreen
+                self.vibrate = false
+                self.removePointsTimer?.invalidate()
             }
         })
-        //        }
+//        UIView.animate(withDuration: 0.5, animations: {
+//            if distance == CLProximity.unknown {
+//                self.navigationItem.title = "SAFE"
+//                //                    self.safetyLabel.text = "SAFE"
+//                self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
+//                //                    self.topView.backgroundColor = UIColor.systemGreen
+//                UINavigationBar.appearance().barTintColor = UIColor.systemGreen
+//                self.bottomView.backgroundColor = UIColor.systemGreen
+//                self.vibrate = false
+//                //                    self.removePointsTimer.invalidate()
+//            } else if distance == CLProximity.immediate {
+//                self.navigationItem.title = "TOO CLOSE"
+//                //                    self.safetyLabel.text = "TOO CLOSE"
+//                self.navigationController?.navigationBar.barTintColor = UIColor.systemRed
+//                //                    self.topView.backgroundColor = UIColor.systemRed
+//                UINavigationBar.appearance().barTintColor = UIColor.systemRed
+//                self.bottomView.backgroundColor = UIColor.systemRed
+//                self.vibrate = true
+//                self.vibrateTimer(time: 0.1)
+//
+//                //                    self.removePointsTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(ViewController.subtract1), userInfo: nil, repeats: true)
+//                //                    self.removePointsTimer.fire()
+//            } else if distance == CLProximity.near {
+//                self.navigationItem.title = "NEAR"
+//                //                    self.safetyLabel.text = "NEAR"
+//                self.navigationController?.navigationBar.barTintColor = UIColor.systemOrange
+//                //                    self.topView.backgroundColor = UIColor.systemOrange
+//                self.bottomView.backgroundColor = UIColor.systemOrange
+//                self.vibrate = true
+//                self.vibrateTimer(time: 1)
+//
+//                //                    self.removePointsTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(ViewController.subtract1), userInfo: nil, repeats: true)
+//                //                    self.removePointsTimer .fire()
+//            } else if distance == CLProximity.far {
+//                self.navigationItem.title = "CAUTION"
+//                self.navigationController?.navigationBar.barTintColor = UIColor.systemYellow
+//                self.bottomView.backgroundColor = UIColor.systemYellow
+//                self.vibrate = false
+//                //                    self.removePointsTimer.invalidate()
+//            }
+//        })
+//        //        }
     }
     
     func didUpdateBluetooth(timeInContact: Int) {

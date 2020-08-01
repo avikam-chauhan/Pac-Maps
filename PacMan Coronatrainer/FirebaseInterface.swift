@@ -422,7 +422,7 @@ class FirebaseInterface {
         ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).observe(DataEventType.value, with: { (snapshot) in
             if let dictionary = snapshot.value as? [String : Any] {
                 self.dict = dictionary as NSDictionary
-                let score = dictionary["score"] as! Int
+                let score = dictionary["score"] as? Int ?? 0
                 handler(dictionary as NSDictionary, score)
             }
         })
