@@ -623,6 +623,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         //            }
         
         UIView.animate(withDuration: 0.5, animations: {
+            self.recentDistance = distance
             switch(distance) {
             case .unknown:
                 self.navigationItem.title = "SAFE"
@@ -782,12 +783,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
              case .immediate:
                  FirebaseInterface.addContacteduserUUID(UUID: otherUserUUID!, Distance: "Immediate")
                  isWaitingForRecentDistanceToBeSet = false
-                 recentDistance = .unknown
+//                 recentDistance = .unknown
                  contactedUserUUID = ""
              case .near:
                  FirebaseInterface.addContacteduserUUID(UUID: otherUserUUID!, Distance: "Near")
                  isWaitingForRecentDistanceToBeSet = false
-                 recentDistance = .unknown
+//                 recentDistance = .unknown
                  contactedUserUUID = ""
              case .far: print("Recent distance is far"); return
              case .unknown:

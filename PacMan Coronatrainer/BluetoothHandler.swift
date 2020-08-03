@@ -42,7 +42,7 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     
     public func startSendReceivingBluetoothData() {
         currentTime = NSDate().timeIntervalSince1970 * 1000
-        //print("BLE:    Initializing function called")
+        print("BLE:    Initializing function called")
         centralManager = CBCentralManager(delegate: self, queue: nil)
         peripheralManager = CBPeripheralManager(delegate: self, queue: nil)
     }
@@ -52,7 +52,7 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         if (central.state == .poweredOn) {
-            //print("BLE:    Scanining for Peripherals")
+            print("BLE:    Scanining for Peripherals")
             scan()
             //Here we scan for the devices with a UUID that is specific to our app, which filters out other BLE devices.
             bluetoothHandlerDelegate?.didUpdateBluetooth(distance: CLProximity.unknown)
@@ -63,7 +63,7 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     
     func scan() {
         self.centralManager?.scanForPeripherals(withServices: [CBUUID(string: BLE_UUID)], options: [CBCentralManagerScanOptionAllowDuplicatesKey: NSNumber(value: true)])
-        //print("BLE:    Scanning has started")
+        print("BLE:    Scanning has started")
     }
     
     var runningArrayOfRSSI: [Double] = []
@@ -80,6 +80,7 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
 //                    canRemoveFromAllContactedUsers += 1
 //                }
             } else {
+                self.runningArrayOfRSSI.append(RSSI.doubleValue)
 //                canRemoveFromAllContactedUsers = 0
                 if(currentTime + 2000 <= NSDate().timeIntervalSince1970 * 1000) {
                     currentTime = NSDate().timeIntervalSince1970 * 1000
@@ -158,12 +159,12 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     
     
     func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
-        //print("BLE:    Failed to connect with \(peripheral). (\(error?.localizedDescription ?? "error")")
+        print("BLE:    Failed to connect with \(peripheral). (\(error?.localizedDescription ?? "error")")
         cleanup()
     }
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
-        //print("BLE:    Connected to Peripheral")
+        print("BLE:    Connected to Peripheral")
         data.length = 0
         peripheral.delegate = self
         peripheral.discoverServices([CBUUID(string: BLE_UUID)])
@@ -171,7 +172,7 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         if error != nil {
-            //print("BLE:    Error discovering services \(error!.localizedDescription)")
+            print("BLE:    Error discovering services \(error!.localizedDescription)")
             cleanup()
             return
         }
@@ -183,7 +184,7 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         if error != nil {
-            //print("BLE:    Error discovering characteristics \(error!.localizedDescription)")
+            print("BLE:    Error discovering characteristics \(error!.localizedDescription)")
             cleanup()
             return
         }
@@ -197,7 +198,7 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         if error != nil {
-            //print("BLE:    Error discovering characteristics \(error!.localizedDescription)")
+            print("BLE:    Error discovering characteristics \(error!.localizedDescription)")
             return
         }
         
@@ -209,7 +210,7 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         
         if(stringFromData == "EOM") {
             
-            //print("BLE:    Data \(data ?? NSMutableData())")
+            print("BLE:    Data \(data ?? NSMutableData())")
             
             peripheral.setNotifyValue(false, for: characteristic)
             
@@ -220,7 +221,7 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
             data.append(value)
         }
         
-        //print("BLE:    Received Data: \(stringFromData ?? "")")
+        print("BLE:    Received Data: \(stringFromData ?? "")")
         timeSinceContact = Date()
         bluetoothHandlerDelegate?.didUpdateBluetooth(otherUserUUID: stringFromData ?? "")
         contactedPlayerUUID = UUID(uuidString: stringFromData ?? "")
@@ -230,7 +231,7 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateNotificationStateFor characteristic: CBCharacteristic, error: Error?) {
         if error != nil {
-            //print("BLE:    Error discovering characteristics \(error!.localizedDescription)")
+            print("BLE:    Error discovering characteristics \(error!.localizedDescription)")
         }
         
         if !characteristic.uuid.isEqual(CBUUID(string: BLE_UUID)) {
@@ -238,16 +239,16 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         }
         
         if characteristic.isNotifying {
-            //            //print("Notification began on \(characteristic)")
+            //            print("Notification began on \(characteristic)")
         } else {
-            //            //print("Notification has stopped on \(characteristic).  DISCONNECTING")
+            //            print("Notification has stopped on \(characteristic).  DISCONNECTING")
             centralManager.cancelPeripheralConnection(peripheral)
         }
         
     }
     
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
-        //print("BLE:    Peripheral Disconnected")
+        print("BLE:    Peripheral Disconnected")
         bluetoothHandlerDelegate?.didUpdateBluetooth(distance: CLProximity.unknown)
         discoveredPeripheral = nil
         scan()
@@ -304,7 +305,7 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     
     
     func peripheralManager(_ peripheral: CBPeripheralManager, central: CBCentral, didSubscribeTo characteristic: CBCharacteristic) {
-        //print("BLE:    Central subscribed to characteristic")
+        print("BLE:    Central subscribed to characteristic")
         
         sendDataIndex = 0
         
@@ -312,7 +313,7 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     }
     
     func peripheralManager(_ peripheral: CBPeripheralManager, central: CBCentral, didUnsubscribeFrom characteristic: CBCharacteristic) {
-        //        //print("Central unscribed from characteristic")
+        //        print("Central unscribed from characteristic")
     }
     
     func sendData() {
@@ -328,7 +329,7 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
             if didSend ?? false {
                 sendingEOM = false
                 
-                //print("BLE:    Sent: EOM")
+                print("BLE:    Sent: EOM")
             }
             
             return
@@ -352,7 +353,7 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
             }
             
             let stringFromData = String(data: chunk, encoding: .utf8)
-            //print("BLE:    Sent: \(stringFromData ?? "")")
+            print("BLE:    Sent: \(stringFromData ?? "")")
             
             sendDataIndex += amountToSend
             
@@ -362,7 +363,7 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
                 
                 if eomSent {
                     sendingEOM = false
-                    //print("BLE:    Sent EOM")
+                    print("BLE:    Sent EOM")
                 }
                 
                 return
@@ -378,7 +379,7 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     }
     
     func peripheral(_ peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
-        //print("BLE:    Peripheral Services Changed")
+        print("BLE:    Peripheral Services Changed")
         bluetoothHandlerDelegate?.didUpdateBluetooth(distance: CLProximity.unknown)
         if timeSinceContact != nil {
             contactedPlayerUUID = nil
