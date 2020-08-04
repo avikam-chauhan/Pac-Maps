@@ -474,6 +474,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             alert.addAction(UIAlertAction(title: "Let's play!", style: UIAlertAction.Style.default, handler: { (UIAlertAction) in
                 FirebaseInterface.updateUsername(username: (alert.textFields?.first?.text!)!)
                 FirebaseInterface.updateScore(score: 0)
+                self.showTutorial()
             }))
             DispatchQueue.main.async {
                 self.present(alert, animated: true, completion: nil)
