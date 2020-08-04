@@ -21,10 +21,10 @@ class Route {
     var coinLocations = [CLLocationCoordinate2D]() {
         didSet {
             for location in coinLocations {
-                var annotation = CustomAnnotation(annotationType: .flag, location: CLLocation(latitude: location.latitude, longitude: location.latitude), UUID: "flag")
+                let annotation = CustomAnnotation(annotationType: .flag, location: CLLocation(latitude: location.latitude, longitude: location.latitude), UUID: "flag")
                 coinAnnotations.append(annotation)
         
-                var pinAnnotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "flag")
+                let pinAnnotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "flag")
                 coinAnnotationViews.append(pinAnnotationView)                
             }
         }

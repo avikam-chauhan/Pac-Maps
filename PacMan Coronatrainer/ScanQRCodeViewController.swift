@@ -96,7 +96,7 @@ class ScanQRCodeViewController: UIViewController, AVCaptureMetadataOutputObjects
     }
 
     func found(uuid: UUID) {
-        print(uuid)
+        //print(uuid)
         self.uuid = uuid
         FirebaseInterface.getFamilyMembers { (familyMemberUUIDs) in
             var doesExist: Bool = false
@@ -136,7 +136,7 @@ class ScanQRCodeViewController: UIViewController, AVCaptureMetadataOutputObjects
 //        // Pass the selected object to the new view controller.
 //        if let dvc = segue.destination as? ViewController {
 //            if uuid != nil {
-//                print("addnewfamiylemme")
+//                //print("addnewfamiylemme")
 //                dvc.addNewFamilyMember(uuid: uuid!)
 //            }
 //        }

@@ -46,7 +46,7 @@ class LeaderboardViewController: UIViewController, UITableViewDataSource, UITabl
             self.users = users
         }
         
-        var refHandle = ref.observe(DataEventType.value, with: { (snapshot) in
+        _ = ref.observe(DataEventType.value, with: { (snapshot) in
             let postDict = snapshot.value as? NSDictionary
             self.users = self.parseUsers(dictionary: postDict!)
             self.tableView.reloadData()
@@ -84,11 +84,11 @@ class LeaderboardViewController: UIViewController, UITableViewDataSource, UITabl
             let value = snapshot.value as? NSDictionary
             for key in value!.allKeys {
                 
-                //            print(key)
+                //            //print(key)
                 if let userDictionary = value?.value(forKey: key as! String) as? NSDictionary {
                     let locationDictionary = userDictionary.value(forKey: "location") as? NSDictionary
-                    //            print(userDictionary!["score"]!)
-                    var tempUser = User(UUID: key as? String ?? "", score: userDictionary["score"] as? Int ?? 0, location: CLLocationCoordinate2D(latitude: CLLocationDegrees(locationDictionary?["latitude"] as? Double ?? 0), longitude: CLLocationDegrees(locationDictionary?["longitude"] as? Double ?? 0)), username: userDictionary["username"] as? String ?? "")
+                    //            //print(userDictionary!["score"]!)
+                    let tempUser = User(UUID: key as? String ?? "", score: userDictionary["score"] as? Int ?? 0, location: CLLocationCoordinate2D(latitude: CLLocationDegrees(locationDictionary?["latitude"] as? Double ?? 0), longitude: CLLocationDegrees(locationDictionary?["longitude"] as? Double ?? 0)), username: userDictionary["username"] as? String ?? "")
                     
                     outputArray.append(tempUser)
                 }
@@ -105,11 +105,11 @@ class LeaderboardViewController: UIViewController, UITableViewDataSource, UITabl
         //            let value = snapshot.value as? NSDictionary
         for key in userDictionary!.allKeys {
             
-            //            print(key)
+            //            //print(key)
             if let subDictionary = userDictionary!.value(forKey: key as! String) as? NSDictionary {
                 let locationDictionary = subDictionary.value(forKey: "location") as? NSDictionary
-                //            print(userDictionary!["score"]!)
-                var tempUser = User(UUID: key as? String ?? "", score: subDictionary["score"] as? Int ?? 0, location: CLLocationCoordinate2D(latitude: CLLocationDegrees(locationDictionary?["latitude"] as? Double ?? 0), longitude: CLLocationDegrees(locationDictionary?["longitude"] as? Double ?? 0)), username: subDictionary["username"] as? String ?? "")
+                //            //print(userDictionary!["score"]!)
+                let tempUser = User(UUID: key as? String ?? "", score: subDictionary["score"] as? Int ?? 0, location: CLLocationCoordinate2D(latitude: CLLocationDegrees(locationDictionary?["latitude"] as? Double ?? 0), longitude: CLLocationDegrees(locationDictionary?["longitude"] as? Double ?? 0)), username: subDictionary["username"] as? String ?? "")
                 
                 outputArray.append(tempUser)
             }

@@ -39,7 +39,7 @@ class TutorialDisplayViewController: UIViewController, UIPageViewControllerDeleg
         pageControl.isUserInteractionEnabled = false
         self.view.addSubview(pageControl)
         
-        if let gestureRecognizers = self.pageControl.gestureRecognizers as? [UIGestureRecognizer] {
+        if let gestureRecognizers = self.pageControl.gestureRecognizers {
             for gestureRecognizer in gestureRecognizers     {
                 if gestureRecognizer is UITapGestureRecognizer {
                     gestureRecognizer.isEnabled = false
@@ -64,7 +64,7 @@ class TutorialDisplayViewController: UIViewController, UIPageViewControllerDeleg
         
         displayView.addSubview(pageViewController.view)
         
-        let views: [String: Any] = ["pageView": pageViewController.view]
+        let views: [String: UIView] = ["pageView": pageViewController.view]
         
         displayView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[pageView]-0-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: nil, views: views))
         displayView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[pageView]-0-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: nil, views: views))

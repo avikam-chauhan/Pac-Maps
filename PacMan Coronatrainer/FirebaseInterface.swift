@@ -266,14 +266,15 @@ class FirebaseInterface {
             
             for contactedUserInfo in 0..<contactedUsersDictionary.count {
                 let a = contactedUsersDictionary[contactedUserInfo]
+                //print(a["uuid"]!)
                 if (a["uuid"] as? String)! == contactedUUID.uuidString {
-                    print("is a contacted user")
+                    //print("is a contacted user")
                     timeInContactWithFamilyMember += a["timeInContact"] as? Int ?? 0
                 }
             }
             
             FirebaseInterface.getScore(forUUID: uuid) { (currentScore) in
-                print("etsdfkasfsddsfdfasdf \(uuid.uuidString) + newScore \(currentScore + (timeInContactWithFamilyMember * 50))")
+                //print("etsdfkasfsddsfdfasdf \(uuid.uuidString) + newScore \(currentScore + (timeInContactWithFamilyMember * 50))")
                 FirebaseInterface.self.firebaseInterfaceDelegate?.didUpdate(points: currentScore + (timeInContactWithFamilyMember * 50), uuid: uuid.uuidString)
             }
             

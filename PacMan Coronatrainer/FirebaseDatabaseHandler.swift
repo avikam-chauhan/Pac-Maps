@@ -33,10 +33,10 @@
 //            let value = snapshot.value as? NSDictionary
 //            for key in value!.allKeys {
 //
-//                //            print(key)
+//                //            //print(key)
 //                if let userDictionary = value?.value(forKey: key as! String) as? NSDictionary {
 //                    let locationDictionary = userDictionary.value(forKey: "location") as? NSDictionary
-//                    //            print(userDictionary!["score"]!)
+//                    //            //print(userDictionary!["score"]!)
 //                    var tempUser = User(UUID: key as? String ?? "", score: userDictionary["score"] as? Int ?? 0, location: CLLocationCoordinate2D(latitude: CLLocationDegrees(locationDictionary!["latitude"] as? Double ?? 0), longitude: CLLocationDegrees(locationDictionary!["longitude"] as? Double ?? 0)), username: userDictionary["username"] as? String ?? "")
 //
 //                    outputArray.append(tempUser)
@@ -59,10 +59,10 @@
 //        //            let value = snapshot.value as? NSDictionary
 //        for key in userDictionary!.allKeys {
 //
-//            //            print(key)
+//            //            //print(key)
 //            if let subDictionary = userDictionary!.value(forKey: key as! String) as? NSDictionary {
 //                let locationDictionary = subDictionary.value(forKey: "location") as? NSDictionary
-//                //            print(userDictionary!["score"]!)
+//                //            //print(userDictionary!["score"]!)
 //                let tempUser = GenericUser(UUID: key as? String ?? "", score: subDictionary["score"] as? Int ?? 0, location: CLLocationCoordinate2D(latitude: CLLocationDegrees(locationDictionary!["latitude"] as? Double ?? 0), longitude: CLLocationDegrees(locationDictionary!["longitude"] as? Double ?? 0)), username: subDictionary["username"] as? String ?? "", localRadius: subDictionary["localRegionMiles"] as? Double ?? 0, positiveResult: subDictionary["positiveResult"] as? Bool ?? false)
 //
 //                playerLocations += [CLLocation(latitude: CLLocationDegrees(locationDictionary!["latitude"] as? Double ?? 0), longitude: CLLocationDegrees(locationDictionary!["longitude"] as? Double ?? 0))]
@@ -125,7 +125,7 @@
 //        ref.child("users").queryOrdered(byChild: "positiveResult").queryEqual(toValue: "true").observeSingleEvent(of: .value, with: { (DataSnapshot) in
 //
 //            if let dictionary = DataSnapshot.value as? NSDictionary {
-//                print(dictionary)
+//                //print(dictionary)
 //            }
 //
 //        })
