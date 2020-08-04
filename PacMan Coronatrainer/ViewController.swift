@@ -455,7 +455,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         let delegate = UIApplication.shared.delegate as! AppDelegate
         if !delegate.didSegue {
             delegate.didSegue = true
-            self.showTutorial()
+//            self.showTutorial()
         }
         self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
         self.navigationController?.navigationBar.tintColor = UIColor.white
