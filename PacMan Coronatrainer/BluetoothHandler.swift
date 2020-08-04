@@ -1,10 +1,3 @@
-////
-////  BluetoothHandler.swift
-////  PacMan Coronatrainer
-////
-////  Created by Mihir Chauhan on 5/27/20.
-////  Copyright © 2020 Avikam Chauhan. All rights reserved.
-////
 //
 //  BluetoothHandler.swift
 //  BLEDataTransfer
@@ -351,7 +344,7 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
                 return
             }
             
-            let stringFromData = String(data: chunk, encoding: .utf8)
+//            let stringFromData = String(data: chunk, encoding: .utf8)
             //print("BLE:    Sent: \(stringFromData ?? "")")
             
             sendDataIndex += amountToSend
