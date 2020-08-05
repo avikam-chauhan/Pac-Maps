@@ -44,18 +44,19 @@ class Route {
         var newPoints = route.polyline.coordinates
         let polylineCoordinates = route.polyline.coordinates
         
-        for var i in 1..<polylineCoordinates.count {
-            let loc1 = CLLocation(latitude: polylineCoordinates[i - 1].latitude, longitude: polylineCoordinates[i - 1].longitude)
-            let loc2 = CLLocation(latitude: polylineCoordinates[i].latitude, longitude: polylineCoordinates[i].longitude)
-            if loc1.distance(from: loc2) > 30 {
-                newPoints.insert(CLLocationCoordinate2D(latitude: (loc1.coordinate.latitude + loc2.coordinate.latitude) / 2, longitude: (loc1.coordinate.longitude + loc2.coordinate.longitude) / 2), at: i)
-                i -= 2
-            } else if loc1.distance(from: loc2) < 10 {
-                if i < newPoints.count {
-                    newPoints.remove(at: i)
-                }
-            }
-        }
+//        for var i in 1..<polylineCoordinates.count {
+//            let loc1 = CLLocation(latitude: polylineCoordinates[i - 1].latitude, longitude: polylineCoordinates[i - 1].longitude)
+//            let loc2 = CLLocation(latitude: polylineCoordinates[i].latitude, longitude: polylineCoordinates[i].longitude)
+//            if loc1.distance(from: loc2) > 30 {
+//                //MARK: FIX IT
+//                newPoints.insert(CLLocationCoordinate2D(latitude: (loc1.coordinate.latitude + loc2.coordinate.latitude) / 2, longitude: (loc1.coordinate.longitude + loc2.coordinate.longitude) / 2), at: i)
+//                i -= 2
+//            } else if loc1.distance(from: loc2) < 10 {
+//                if i < newPoints.count {
+//                    newPoints.remove(at: i)
+//                }
+//            }
+//        }
         
         self.coinLocations = newPoints
     }
