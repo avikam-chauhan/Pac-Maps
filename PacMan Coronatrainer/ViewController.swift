@@ -197,7 +197,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             }
         }
     }
-
+    
     //  MARK: CoreBluetooth and Proximity
     
     var bluetoothHandler: BluetoothHandler!
@@ -206,7 +206,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     var recentDistance: CLProximity = .unknown {
         didSet {
-            if isWaitingForRecentDistanceToBeSet {
+            if isWaitingForRecentDistanceToBeSet && (recentDistance == .immediate || recentDistance == .near) {
                 addContactedUserToFirebase(otherUserUUID: contactedUserUUID == "" ? nil : contactedUserUUID)
                 isWaitingForRecentDistanceToBeSet = false
             }
@@ -312,10 +312,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     var points: Int {
         set {
-            if newValue > 1000000 {
+            if newValue >= 1000000 {
                 let numToShow: Double = Double(newValue) / 1000000.0
                 pointsLabel.text = "\(numToShow.rounded(toPlaces: 2))M •"
-            } else if newValue > 1000 {
+            } else if newValue >= 1000 {
                 let numToShow: Double = Double(newValue) / 1000.0
                 pointsLabel.text = "\(numToShow.rounded(toPlaces: 2))K •"
             } else {
@@ -365,23 +365,23 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     func addContactedUserToFirebase(otherUserUUID: String?) {
         if otherUserUUID != nil {
             switch recentDistance {
-                case .immediate:
-                    FirebaseInterface.addContacteduserUUID(UUID: otherUserUUID!, Distance: "Immediate")
-                    isWaitingForRecentDistanceToBeSet = false
-                    contactedUserUUID = ""
-                case .near:
-                    FirebaseInterface.addContacteduserUUID(UUID: otherUserUUID!, Distance: "Near")
-                    isWaitingForRecentDistanceToBeSet = false
-                    contactedUserUUID = ""
-                case .far:
-                    //print("Recent distance is far")
-                    return
-                case .unknown:
-                    //print("Recent distance is unknwon");
-                    return
-                default:
-                    //print("RecentDistance Not set")
-                    return
+            case .immediate:
+                FirebaseInterface.addContacteduserUUID(UUID: otherUserUUID!, Distance: "Immediate")
+                isWaitingForRecentDistanceToBeSet = false
+                contactedUserUUID = ""
+            case .near:
+                FirebaseInterface.addContacteduserUUID(UUID: otherUserUUID!, Distance: "Near")
+                isWaitingForRecentDistanceToBeSet = false
+                contactedUserUUID = ""
+            case .far:
+                print("Recent distance is far")
+                return
+            case .unknown:
+                print("Recent distance is unknwon");
+                return
+            default:
+                print("RecentDistance Not set")
+                return
             }
         }
     }
@@ -442,11 +442,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     @IBAction func close(bySegue: UIStoryboardSegue) {
         let mvcUnwoundFrom = bySegue.source as? ScanQRCodeViewController
         if let uuid = (mvcUnwoundFrom?.uuid) {
-            firebaseInterface.restorePoints(forUUID: uuid, withContactUUID: UUID(uuidString: UIDevice.current.identifierForVendor!.uuidString)!)
-            firebaseInterface.restorePoints(forUUID: UUID(uuidString: UIDevice.current.identifierForVendor!.uuidString)!, withContactUUID: uuid)
+            firebaseInterface.restorePoints(forUUID: uuid, withContactUUID: UUID(uuidString: UIDevice.current.identifierForVendor!.uuidString)!) { (bool) in
+                FirebaseInterface.addFamilyMemberToPlayer(withUUID: uuid)
+            }
+            firebaseInterface.restorePoints(forUUID: UUID(uuidString: UIDevice.current.identifierForVendor!.uuidString)!, withContactUUID: uuid) { (bool) in
+                FirebaseInterface.addFamilyMember(uuid: uuid.uuidString)
+            }
             familyMemberUUIDs.append(uuid.uuidString)
-            FirebaseInterface.addFamilyMember(uuid: uuid.uuidString)
-            FirebaseInterface.addFamilyMemberToPlayer(withUUID: uuid)
             //print("fmuuids: \(familyMemberUUIDs)")
         }
     }
@@ -455,7 +457,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         let delegate = UIApplication.shared.delegate as! AppDelegate
         if !delegate.didSegue {
             delegate.didSegue = true
-//            self.showTutorial()
+            //            self.showTutorial()
         }
         self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
         self.navigationController?.navigationBar.tintColor = UIColor.white
@@ -463,7 +465,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
- 
+        
         self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
         self.navigationController?.navigationBar.tintColor = UIColor.white
         
@@ -481,6 +483,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             }
             FirebaseInterface.updateUsername(username: "USER_\(random(digits: 4))\(random(digits: 3))\(random(digits: 3))")
             FirebaseInterface.updatePositiveResult(value: false)
+            FirebaseInterface.createUser()
             UserDefaults.standard.set(true, forKey: "gdsagsdgasdfsadf")
         }
         

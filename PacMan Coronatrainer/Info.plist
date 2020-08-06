@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>We use Bluetooth peripherals to do contact tracing.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDocumentTypes</key>
@@ -50,6 +48,8 @@
 	</array>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>We use Bluetooth to detect people around you.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>We use Bluetooth peripherals to do contact tracing.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Camera is needed to detect QR codes</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>

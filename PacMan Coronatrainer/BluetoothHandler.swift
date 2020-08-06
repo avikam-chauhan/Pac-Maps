@@ -65,7 +65,6 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         if contactedPlayerUUID != nil {
-            FirebaseInterface.checkIfIsAFamilyMember(withUUID: contactedPlayerUUID)
             if FirebaseInterface.isAFamilyMember {
                 bluetoothHandlerDelegate?.didUpdateBluetooth(distance: CLProximity.unknown)
 //                if canRemoveFromAllContactedUsers < 2 {
@@ -217,6 +216,7 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         timeSinceContact = Date()
         bluetoothHandlerDelegate?.didUpdateBluetooth(otherUserUUID: stringFromData ?? "")
         contactedPlayerUUID = UUID(uuidString: stringFromData ?? "")
+        FirebaseInterface.checkIfIsAFamilyMember(withUUID: contactedPlayerUUID)
         centralManager.cancelPeripheralConnection(peripheral)
     }
     

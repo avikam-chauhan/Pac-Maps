@@ -16,7 +16,7 @@ class TutorialDisplayViewController: UIViewController, UIPageViewControllerDeleg
     }
     
     let dataSource = ["Welcome To Pac-Maps!", "Long Press to Add Waypoints", "Shake to Remove", "Compete with Friends", "Stay Away from Others", "Contact Tracing", "Update COVID-19 Results", "Add Family Members", "Swipe Down to Play!"]
-    let images = ["1", "2", "3", "4", "5", "6", "7", "1", "1"]
+    let images = ["1", "2", "2", "3", "4", "5", "6", "7", "1"]
     var currentViewControllerIndex = 0
     let pageControl = UIPageControl(frame: CGRect(x: 0, y: UIScreen.main.bounds.maxY - 175, width: UIScreen.main.bounds.width, height: 150))
     
