@@ -22,13 +22,7 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     var timeInContact: Double!
     var contactedPlayerUUID: UUID? = nil
     
-    var isLookingForFamilyMember = false
     
-    public func lookForFamilyMember(isLooking: Bool) {
-        isLookingForFamilyMember = isLooking
-    }
-    
-        
     //MARK: Send UUID over Bluetooth
     
     var currentTime: Double!
@@ -61,18 +55,18 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     
     var runningArrayOfRSSI: [Double] = []
     var counter: Int = 0
-//    var canRemoveFromAllContactedUsers: Int = 0
+    //    var canRemoveFromAllContactedUsers: Int = 0
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         if contactedPlayerUUID != nil {
             if FirebaseInterface.isAFamilyMember {
                 bluetoothHandlerDelegate?.didUpdateBluetooth(distance: CLProximity.unknown)
-//                if canRemoveFromAllContactedUsers < 2 {
-//                    canRemoveFromAllContactedUsers += 1
-//                }
+                //                if canRemoveFromAllContactedUsers < 2 {
+                //                    canRemoveFromAllContactedUsers += 1
+                //                }
             } else {
                 self.runningArrayOfRSSI.append(RSSI.doubleValue)
-//                canRemoveFromAllContactedUsers = 0
+                //                canRemoveFromAllContactedUsers = 0
                 if(currentTime + 2000 <= NSDate().timeIntervalSince1970 * 1000) {
                     currentTime = NSDate().timeIntervalSince1970 * 1000
                     var averageRSSI: Double = 0
@@ -107,7 +101,7 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         if RSSI.intValue > -15, RSSI.intValue < -35 {
             return
         }
-                
+        
         //MARK: Connection with Peripheral
         
         if discoveredPeripheral != peripheral {
@@ -118,34 +112,6 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     
     func rssiToFeet(rssi: Double) -> Double {
         return pow(10, ((-56-Double(rssi))/(10*2)))*3.2808
-        
-        
-        
-//        let txPower: Double = -59
-//        if(rssi == 0) {
-//            return -1
-//        }
-//
-//        let ratio = Double(rssi)*1.0/txPower
-//        if(ratio < 1.0) {
-//            return pow(ratio, 10)
-//        } else {
-//            let distance = (0.89976)*pow(ratio, 7.7095) + 0.111
-//            return distance
-//        }
-//
-//        if (rssi == 0) {
-//          return -1.0 // if we cannot determine accuracy, return -1.
-//        }
-//
-//        let ratio = Double(rssi)*1.0/txPower;
-//        if (ratio < 1.0) {
-//          return pow(ratio,10);
-//        }
-//        else {
-//          let accuracy =  (0.89976)*pow(ratio,7.7095) + 0.111;
-//          return accuracy;
-//        }
     }
     
     
@@ -344,7 +310,7 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
                 return
             }
             
-//            let stringFromData = String(data: chunk, encoding: .utf8)
+            //            let stringFromData = String(data: chunk, encoding: .utf8)
             print("BLE:    Sent: \(String(data: chunk, encoding: .utf8) ?? "")")
             
             sendDataIndex += amountToSend
@@ -373,12 +339,7 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     func peripheral(_ peripheral: CBPeripheral, didModifyServices invalidatedServices: [CBService]) {
         print("BLE:    Peripheral Services Changed")
         bluetoothHandlerDelegate?.didUpdateBluetooth(distance: CLProximity.unknown)
-        if timeSinceContact != nil {
-            contactedPlayerUUID = nil
-//            timeInContact = Date().distance(to: timeSinceContact!)
-//            bluetoothHandlerDelegate?.didUpdateBluetooth(timeInContact: abs(Int(timeInContact)))
-        }
-
+        contactedPlayerUUID = nil
     }
 }
 
