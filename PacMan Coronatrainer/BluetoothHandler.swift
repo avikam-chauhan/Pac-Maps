@@ -217,7 +217,7 @@ class BluetoothHandler: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         bluetoothHandlerDelegate?.didUpdateBluetooth(otherUserUUID: stringFromData ?? "")
         contactedPlayerUUID = UUID(uuidString: stringFromData ?? "")
         FirebaseInterface.checkIfIsAFamilyMember(withUUID: contactedPlayerUUID)
-        centralManager.cancelPeripheralConnection(peripheral)
+//        centralManager.cancelPeripheralConnection(peripheral)
     }
     
     

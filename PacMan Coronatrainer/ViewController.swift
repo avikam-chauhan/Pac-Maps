@@ -245,13 +245,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             switch(distance) {
             case .unknown:
                 self.navigationItem.title = "SAFE"
-                self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
                 self.bottomView.backgroundColor = UIColor.systemGreen
                 self.vibrate = false
                 self.removePointsTimer?.invalidate()
             case .immediate:
                 self.navigationItem.title = "TOO CLOSE"
-                self.navigationController?.navigationBar.barTintColor = UIColor.systemRed
                 self.bottomView.backgroundColor = UIColor.systemRed
                 self.vibrate = true
                 self.vibrateTimer(time: 0.1)
@@ -262,7 +260,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 
             case .near:
                 self.navigationItem.title = "NEAR"
-                self.navigationController?.navigationBar.barTintColor = UIColor.systemOrange
                 self.bottomView.backgroundColor = UIColor.systemOrange
                 self.vibrate = true
                 self.vibrateTimer(time: 1)
@@ -272,24 +269,30 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 self.removePointsTimer?.fire()
             case .far:
                 self.navigationItem.title = "CAUTION"
-                self.navigationController?.navigationBar.barTintColor = UIColor.systemYellow
                 self.bottomView.backgroundColor = UIColor.systemYellow
                 self.vibrate = false
                 
                 guard self.removePointsTimer == nil else { return }
                 self.removePointsTimer?.invalidate()
-                self.removePointsTimer = nil
+                
             @unknown default:
                 self.navigationItem.title = "SAFE"
-                self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
                 self.bottomView.backgroundColor = UIColor.systemGreen
                 self.vibrate = false
                 
                 guard self.removePointsTimer == nil else { return }
                 self.removePointsTimer?.invalidate()
-                self.removePointsTimer = nil
+                
             }
+            
+            
         })
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.navigationController?.navigationBar.barTintColor = distance == .unknown ? UIColor.systemGreen : distance == .far ? UIColor.systemYellow : distance == .near ? UIColor.systemOrange : distance == .immediate ? UIColor.systemRed : UIColor.systemGreen
+        }
+        
+
     }
     
     func didUpdateBluetooth(timeInContact: Int) {
