@@ -206,7 +206,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     var recentDistance: CLProximity = .unknown {
         didSet {
-            if isWaitingForRecentDistanceToBeSet {
+            if isWaitingForRecentDistanceToBeSet && (recentDistance == .immediate || recentDistance == .near) {
                 addContactedUserToFirebase(otherUserUUID: contactedUserUUID == "" ? nil : contactedUserUUID)
                 isWaitingForRecentDistanceToBeSet = false
             }
@@ -245,13 +245,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             switch(distance) {
             case .unknown:
                 self.navigationItem.title = "SAFE"
-                self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
                 self.bottomView.backgroundColor = UIColor.systemGreen
                 self.vibrate = false
                 self.removePointsTimer?.invalidate()
             case .immediate:
                 self.navigationItem.title = "TOO CLOSE"
-                self.navigationController?.navigationBar.barTintColor = UIColor.systemRed
                 self.bottomView.backgroundColor = UIColor.systemRed
                 self.vibrate = true
                 self.vibrateTimer(time: 0.1)
@@ -262,7 +260,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 
             case .near:
                 self.navigationItem.title = "NEAR"
-                self.navigationController?.navigationBar.barTintColor = UIColor.systemOrange
                 self.bottomView.backgroundColor = UIColor.systemOrange
                 self.vibrate = true
                 self.vibrateTimer(time: 1)
@@ -272,24 +269,24 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 self.removePointsTimer?.fire()
             case .far:
                 self.navigationItem.title = "CAUTION"
-                self.navigationController?.navigationBar.barTintColor = UIColor.systemYellow
                 self.bottomView.backgroundColor = UIColor.systemYellow
                 self.vibrate = false
                 
                 guard self.removePointsTimer == nil else { return }
                 self.removePointsTimer?.invalidate()
-                self.removePointsTimer = nil
             @unknown default:
                 self.navigationItem.title = "SAFE"
-                self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
                 self.bottomView.backgroundColor = UIColor.systemGreen
                 self.vibrate = false
                 
                 guard self.removePointsTimer == nil else { return }
                 self.removePointsTimer?.invalidate()
-                self.removePointsTimer = nil
             }
         })
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            self.navigationController?.navigationBar.barTintColor = distance == .unknown ? UIColor.systemGreen : distance == .far ? UIColor.systemYellow : distance == .near ? UIColor.systemOrange : distance == .immediate ? UIColor.systemRed : UIColor.systemGreen
+        }
     }
     
     func didUpdateBluetooth(timeInContact: Int) {
@@ -312,10 +309,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     var points: Int {
         set {
-            if newValue > 1000000 {
+            if newValue >= 1000000 {
                 let numToShow: Double = Double(newValue) / 1000000.0
                 pointsLabel.text = "\(numToShow.rounded(toPlaces: 2))M •"
-            } else if newValue > 1000 {
+            } else if newValue >= 1000 {
                 let numToShow: Double = Double(newValue) / 1000.0
                 pointsLabel.text = "\(numToShow.rounded(toPlaces: 2))K •"
             } else {
@@ -442,11 +439,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     @IBAction func close(bySegue: UIStoryboardSegue) {
         let mvcUnwoundFrom = bySegue.source as? ScanQRCodeViewController
         if let uuid = (mvcUnwoundFrom?.uuid) {
-            firebaseInterface.restorePoints(forUUID: uuid, withContactUUID: UUID(uuidString: UIDevice.current.identifierForVendor!.uuidString)!)
-            firebaseInterface.restorePoints(forUUID: UUID(uuidString: UIDevice.current.identifierForVendor!.uuidString)!, withContactUUID: uuid)
+            firebaseInterface.restorePoints(forUUID: uuid, withContactUUID: UUID(uuidString: UIDevice.current.identifierForVendor!.uuidString)!) { (bool) in
+                FirebaseInterface.addFamilyMemberToPlayer(withUUID: uuid)
+            }
+            firebaseInterface.restorePoints(forUUID: UUID(uuidString: UIDevice.current.identifierForVendor!.uuidString)!, withContactUUID: uuid) { (bool) in
+                 FirebaseInterface.addFamilyMember(uuid: uuid.uuidString)
+            }
             familyMemberUUIDs.append(uuid.uuidString)
-            FirebaseInterface.addFamilyMember(uuid: uuid.uuidString)
-            FirebaseInterface.addFamilyMemberToPlayer(withUUID: uuid)
             //print("fmuuids: \(familyMemberUUIDs)")
         }
     }
@@ -481,6 +480,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             }
             FirebaseInterface.updateUsername(username: "USER_\(random(digits: 4))\(random(digits: 3))\(random(digits: 3))")
             FirebaseInterface.updatePositiveResult(value: false)
+            FirebaseInterface.createUser()
             UserDefaults.standard.set(true, forKey: "gdsagsdgasdfsadf")
         }
         

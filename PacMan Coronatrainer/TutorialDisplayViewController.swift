@@ -15,8 +15,8 @@ class TutorialDisplayViewController: UIViewController, UIPageViewControllerDeleg
         dismiss(animated: true, completion: nil)
     }
     
-    let dataSource = ["Welcome To Pac-Maps!", "Long Press to Add Waypoints", "Shake to Remove", "Compete with Friends", "Stay Away from Others", "Contact Tracing", "Update COVID-19 Results", "Add Family Members", "Swipe Down to Play!"]
-    let images = ["1", "2", "3", "4", "5", "6", "7", "1", "1"]
+    let dataSource = ["Welcome To Pac-Maps!", "Long Press to Add Waypoints", "Shake to Remove", "Compete with Friends", "Stay Away from Others", "Update COVID-19 Results", "Contact Tracing", "Add Family Members", "Swipe Down to Play!"]
+    let images = ["1", "2", "8", "3", "4", "5", "9", "7", "1"]
     var currentViewControllerIndex = 0
     let pageControl = UIPageControl(frame: CGRect(x: 0, y: UIScreen.main.bounds.maxY - 175, width: UIScreen.main.bounds.width, height: 150))
     
@@ -38,6 +38,10 @@ class TutorialDisplayViewController: UIViewController, UIPageViewControllerDeleg
         pageControl.tintColor = UIColor.black
         pageControl.isUserInteractionEnabled = false
         self.view.addSubview(pageControl)
+        
+        if !UIDevice.current.hasNotch {
+            pageControl.layer.position.y = self.view.frame.height - 70
+        }
         
         if let gestureRecognizers = self.pageControl.gestureRecognizers {
             for gestureRecognizer in gestureRecognizers     {
@@ -145,5 +149,16 @@ class TutorialDisplayViewController: UIViewController, UIPageViewControllerDeleg
         
         
         return detailViewControllerAt(index: currentIndex)
+    }
+}
+
+extension UIDevice {
+    var hasNotch: Bool {
+        if #available(iOS 11.0, *) {
+            let bottom = UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
+            return bottom > 0
+        } else {
+            return false
+        }
     }
 }
