@@ -247,6 +247,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 self.navigationItem.title = "SAFE"
                 self.bottomView.backgroundColor = UIColor.systemGreen
                 self.vibrate = false
+                
+                guard self.removePointsTimer == nil else { return }
                 self.removePointsTimer?.invalidate()
             case .immediate:
                 self.navigationItem.title = "TOO CLOSE"
