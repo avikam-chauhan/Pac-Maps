@@ -39,7 +39,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
         if let endingLocation = self.routes.first?.endingLocation {
             var coordinateToRemove: CLLocationCoordinate2D?
-            if (currentLocation?.distance(from: endingLocation))! < 5.0 {
+            if (currentLocation?.distance(from: endingLocation))! < 15.0 {
                 self.points = self.points + Int(1000 * self.routes.first!.totalDistance / 1609.34)
                 coordinateToRemove = self.routes.first!.route.polyline.coordinate
                 self.routes.remove(at: 0)
@@ -103,6 +103,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         didSet {
             if totalDistance != 0.0 {
                 routeLabel.text = " \((totalDistance / 1609.34).rounded(toPlaces: 1)) miles — \(Int(1000 * totalDistance / 1609.34)) • "
+            } else {
+                routeLabel.text = " 0 miles — 0 • "
             }
         }
     }
@@ -148,56 +150,58 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     }
     
     @objc func tap(sender: UITapGestureRecognizer) {
-        let generator = UIImpactFeedbackGenerator(style: .heavy)
-        generator.impactOccurred()
-        
-        let coordinate = mapView.convert(sender.location(in: sender.view), toCoordinateFrom: sender.view)
-        let endingLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-        
-        var startingLocation = self.currentLocation
-        if self.routes.count > 0 {
-            startingLocation = self.routes.last!.endingLocation
-        }
-        
-        let request = MKDirections.Request()
-        request.source = MKMapItem(placemark: MKPlacemark(coordinate: startingLocation!.coordinate, addressDictionary: nil))
-        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: endingLocation.coordinate, addressDictionary: nil))
-        request.requestsAlternateRoutes = false
-        request.transportType = .walking
-        
-        let directions = MKDirections(request: request)
-        directions.calculate { [unowned self] response, error in
-            guard let unwrappedResponse = response else {
-                DispatchQueue.main.async {
-                    if let mke = error as? MKError {
-                        switch mke.errorCode {
-                        case Int(MKError.Code.loadingThrottled.rawValue):
-                            let alert = UIAlertController(title: "Please Try Again Later", message: "You have used too many routing requests in a short amount of time. Please wait for \((mke.errorUserInfo["MKErrorGEOErrorUserInfo"] as! NSDictionary)["timeUntilReset"]!) seconds.", preferredStyle: UIAlertController.Style.alert)
-                            alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
-                            self.present(alert, animated: true, completion: nil)
-                        default:
-                            let alert = UIAlertController(title: "Walking Directions Not Available", message: "Walking directions are not available for this location.\nError: \(error!.localizedDescription)", preferredStyle: UIAlertController.Style.alert)
-                            alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
-                            self.present(alert, animated: true, completion: nil)
-                        }
-                    }
-                }
-                return
+        if sender.state == .began {
+            let generator = UIImpactFeedbackGenerator(style: .heavy)
+            generator.impactOccurred()
+            
+            let coordinate = mapView.convert(sender.location(in: sender.view), toCoordinateFrom: sender.view)
+            let endingLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+            
+            var startingLocation = self.currentLocation
+            if self.routes.count > 0 {
+                startingLocation = self.routes.last!.endingLocation
             }
             
-            for route in unwrappedResponse.routes {
-                self.mapView.addOverlay(route.polyline)
-                //print(route.advisoryNotices, route.steps)
-                let route2 = Route(from: startingLocation!, to: endingLocation, with: route)
-                self.routes.append(route2)
-                for view in route2.coinAnnotationViews {
-                    self.mapView.addAnnotation(view.annotation!)
+            let request = MKDirections.Request()
+            request.source = MKMapItem(placemark: MKPlacemark(coordinate: startingLocation!.coordinate, addressDictionary: nil))
+            request.destination = MKMapItem(placemark: MKPlacemark(coordinate: endingLocation.coordinate, addressDictionary: nil))
+            request.requestsAlternateRoutes = false
+            request.transportType = .walking
+            
+            let directions = MKDirections(request: request)
+            directions.calculate { [unowned self] response, error in
+                guard let unwrappedResponse = response else {
+                    DispatchQueue.main.async {
+                        if let mke = error as? MKError {
+                            switch mke.errorCode {
+                            case Int(MKError.Code.loadingThrottled.rawValue):
+                                let alert = UIAlertController(title: "Please Try Again Later", message: "You have used too many routing requests in a short amount of time. Please wait for \((mke.errorUserInfo["MKErrorGEOErrorUserInfo"] as! NSDictionary)["timeUntilReset"]!) seconds.", preferredStyle: UIAlertController.Style.alert)
+                                alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+                                self.present(alert, animated: true, completion: nil)
+                            default:
+                                let alert = UIAlertController(title: "Walking Directions Not Available", message: "Walking directions are not available for this location.\nError: \(error!.localizedDescription)", preferredStyle: UIAlertController.Style.alert)
+                                alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+                                self.present(alert, animated: true, completion: nil)
+                            }
+                        }
+                    }
+                    return
                 }
-                self.totalDistance += route.distance
+                
+                for route in unwrappedResponse.routes {
+                    self.mapView.addOverlay(route.polyline)
+                    //print(route.advisoryNotices, route.steps)
+                    let route2 = Route(from: startingLocation!, to: endingLocation, with: route)
+                    self.routes.append(route2)
+                    for view in route2.coinAnnotationViews {
+                        self.mapView.addAnnotation(view.annotation!)
+                    }
+                    self.totalDistance += route.distance
+                }
             }
         }
     }
-
+    
     //  MARK: CoreBluetooth and Proximity
     
     var bluetoothHandler: BluetoothHandler!
@@ -362,23 +366,23 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     func addContactedUserToFirebase(otherUserUUID: String?) {
         if otherUserUUID != nil {
             switch recentDistance {
-                case .immediate:
-                    FirebaseInterface.addContacteduserUUID(UUID: otherUserUUID!, Distance: "Immediate")
-                    isWaitingForRecentDistanceToBeSet = false
-                    contactedUserUUID = ""
-                case .near:
-                    FirebaseInterface.addContacteduserUUID(UUID: otherUserUUID!, Distance: "Near")
-                    isWaitingForRecentDistanceToBeSet = false
-                    contactedUserUUID = ""
-                case .far:
-                    //print("Recent distance is far")
-                    return
-                case .unknown:
-                    //print("Recent distance is unknwon");
-                    return
-                default:
-                    //print("RecentDistance Not set")
-                    return
+            case .immediate:
+                FirebaseInterface.addContacteduserUUID(UUID: otherUserUUID!, Distance: "Immediate")
+                isWaitingForRecentDistanceToBeSet = false
+                contactedUserUUID = ""
+            case .near:
+                FirebaseInterface.addContacteduserUUID(UUID: otherUserUUID!, Distance: "Near")
+                isWaitingForRecentDistanceToBeSet = false
+                contactedUserUUID = ""
+            case .far:
+                //print("Recent distance is far")
+                return
+            case .unknown:
+                //print("Recent distance is unknwon");
+                return
+            default:
+                //print("RecentDistance Not set")
+                return
             }
         }
     }
@@ -418,15 +422,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
                 alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { (action) in
                     DispatchQueue.main.async {
-                        for _ in 0..<2 {
-                            if self.routes.count > 0 {
-                                self.routes.removeLast()
-                                self.mapView.removeOverlays(self.mapView.overlays)
-                                self.totalDistance = 0
-                                for route in self.routes {
-                                    self.mapView.addOverlay(route.route.polyline)
-                                    self.totalDistance += route.route.distance
-                                }
+                        if self.routes.count > 0 {
+                            self.routes.removeLast()
+                            self.mapView.removeOverlays(self.mapView.overlays)
+                            self.totalDistance = 0
+                            for route in self.routes {
+                                self.mapView.addOverlay(route.route.polyline)
+                                self.totalDistance += route.route.distance
                             }
                         }
                     }
@@ -443,7 +445,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 FirebaseInterface.addFamilyMemberToPlayer(withUUID: uuid)
             }
             firebaseInterface.restorePoints(forUUID: UUID(uuidString: UIDevice.current.identifierForVendor!.uuidString)!, withContactUUID: uuid) { (bool) in
-                 FirebaseInterface.addFamilyMember(uuid: uuid.uuidString)
+                FirebaseInterface.addFamilyMember(uuid: uuid.uuidString)
             }
             familyMemberUUIDs.append(uuid.uuidString)
             //print("fmuuids: \(familyMemberUUIDs)")
@@ -454,7 +456,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         let delegate = UIApplication.shared.delegate as! AppDelegate
         if !delegate.didSegue {
             delegate.didSegue = true
-//            self.showTutorial()
+            //            self.showTutorial()
         }
         self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
         self.navigationController?.navigationBar.tintColor = UIColor.white
@@ -462,7 +464,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
- 
+        
         self.navigationController?.navigationBar.barTintColor = UIColor.systemGreen
         self.navigationController?.navigationBar.tintColor = UIColor.white
         
