@@ -22,7 +22,7 @@ class FirebaseInterface {
     
     //        ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).setValue(["username":username ?? UIDevice.current.identifierForVendor!.uuidString, "location":["latitude": location?.latitude ?? 0, "longitude": location?.longitude ?? 0], "score":score ?? 0, "minorKey": minorKey ?? 0, "familyMembers": familyMembers])
     static func createUser() {
-        ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).setValue(["username":"", "location":["latitude": 0, "longitude": 0], "score": 0, "allContactedUsers":[ ["uuid":UIDevice.current.identifierForVendor!.uuidString, "timeStampMS":Date().timeIntervalSince1970*1000, "distance":"Near"]]])
+        ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).setValue(["username":"", "location":["latitude": 0, "longitude": 0], "score": 0])
     }
     static var score: Int?
     static var familyMembers: [Int] = []
@@ -362,7 +362,7 @@ class FirebaseInterface {
     public static var isAFamilyMember: Bool = false
     
     public static func checkIfIsAFamilyMember(withUUID uuid: UUID?) {
-        ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).child("familyMembers").observe(DataEventType.value, with: { (snapshot) in
+        ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).child("familyMembers").observeSingleEvent(of: .value, with: { (snapshot) in
             if let arrayOfContactedUsers = snapshot.value as? Array<String> {
                 if arrayOfContactedUsers.firstIndex(of: uuid!.uuidString) != nil {
                     self.isAFamilyMember = true
