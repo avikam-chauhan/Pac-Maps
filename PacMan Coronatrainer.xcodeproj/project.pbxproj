@@ -638,7 +638,7 @@
 				CODE_SIGN_ENTITLEMENTS = "PacMan Coronatrainer/Pac-Maps.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = B2278J6LL2;
 				INFOPLIST_FILE = "PacMan Coronatrainer/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -662,7 +662,7 @@
 				CODE_SIGN_ENTITLEMENTS = "PacMan Coronatrainer/Pac-Maps.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = B2278J6LL2;
 				INFOPLIST_FILE = "PacMan Coronatrainer/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
