@@ -14,9 +14,9 @@
             filePath = "PacMan Coronatrainer/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "244"
-            endingLineNumber = "244"
-            landmarkName = "didUpdateBluetooth(distance:)"
+            startingLineNumber = "284"
+            endingLineNumber = "284"
+            landmarkName = "vibrateTimer(time:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

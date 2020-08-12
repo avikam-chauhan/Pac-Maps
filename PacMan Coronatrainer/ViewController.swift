@@ -17,6 +17,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     // MARK: CoreLocation
     
+    var previousDistance: CLLocationDistance = 0
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         currentLocation = locations.first!
         if let coordinate = self.currentLocation?.coordinate {
@@ -39,39 +41,63 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
         if let endingLocation = self.routes.first?.endingLocation {
             var coordinateToRemove: CLLocationCoordinate2D?
-            if (currentLocation?.distance(from: endingLocation))! < 15.0 {
-                self.points = self.points + Int(1000 * self.routes.first!.totalDistance / 1609.34)
-                coordinateToRemove = self.routes.first!.route.polyline.coordinate
-                self.routes.remove(at: 0)
+            
+            if self.routes.first?.intermediatePointIndex == (self.routes.first!.coinLocations.count - 1) {
+                if (currentLocation?.distance(from: endingLocation))! < 15.0 {
+                    //                self.previousDistance = 0
+                    //                    self.points = self.points + Int(1000 * self.routes.first!.totalDistance / 1609.34)
+//                    let temp = (self.routes.first!.totalDistance / Double(self.routes.first!.coinLocations.count)) / 1609.34
+//                    self.points += 50
+                    coordinateToRemove = self.routes.first!.route.polyline.coordinate
+                    for overlay in self.mapView.overlays {
+                       if overlay.coordinate.latitude == self.routes.first?.route.polyline.coordinate.latitude && overlay.coordinate.longitude == self.routes.first?.route.polyline.coordinate.longitude {
+                           self.mapView.removeOverlay(overlay)
+                       }
+                    }
+                    self.routes.remove(at: 0)
+                    if self.routes.count == 0 {
+                        totalDistance = 0
+                        mapView.removeOverlays(mapView.overlays)
+                        routeLabel.text = " 0 miles — 0 • "
+                    }
+                }
+            } else if self.routes.first!.intermediatePointIndex < (self.routes.first?.coinLocations.count)! {
+                if ((currentLocation?.distance(from: CLLocation(latitude: (self.routes.first?.coinLocations[self.routes.first!.intermediatePointIndex].latitude)!, longitude: (self.routes.first?.coinLocations[self.routes.first!.intermediatePointIndex].longitude)!)))! < 15.0) {
+                    let temp = (self.routes.first!.totalDistance / Double(self.routes.first!.coinLocations.count)) / 1609.34
+                    self.points += Int(ceil(1000 * temp))
+                    self.routes.first?.intermediatePointIndex += 1
+                }
             }
             
             let endingLocation = self.routes.first?.endingLocation
             let startingLocation = self.currentLocation
             
-            let request = MKDirections.Request()
-            request.source = MKMapItem(placemark: MKPlacemark(coordinate: startingLocation!.coordinate, addressDictionary: nil))
-            request.destination = MKMapItem(placemark: MKPlacemark(coordinate: endingLocation!.coordinate, addressDictionary: nil))
-            request.requestsAlternateRoutes = false
-            request.transportType = .walking
-            
-            let directions = MKDirections(request: request)
-            directions.calculate { [unowned self] response, error in
-                guard let unwrappedResponse = response else {
-                    return
-                }
-                for route in unwrappedResponse.routes {
-                    for overlay in self.mapView.overlays {
-                        if overlay.coordinate.latitude == self.routes.first?.route.polyline.coordinate.latitude && overlay.coordinate.longitude == self.routes.first?.route.polyline.coordinate.longitude {
-                            self.mapView.removeOverlay(overlay)
-                        } else if let secondCoordinate = coordinateToRemove {
-                            if overlay.coordinate.latitude == secondCoordinate.latitude && overlay.coordinate.longitude == secondCoordinate.longitude {
+            if endingLocation != nil {
+                let request = MKDirections.Request()
+                request.source = MKMapItem(placemark: MKPlacemark(coordinate: startingLocation!.coordinate, addressDictionary: nil))
+                request.destination = MKMapItem(placemark: MKPlacemark(coordinate: endingLocation!.coordinate, addressDictionary: nil))
+                request.requestsAlternateRoutes = false
+                request.transportType = .walking
+                
+                let directions = MKDirections(request: request)
+                directions.calculate { [unowned self] response, error in
+                    guard let unwrappedResponse = response else {
+                        return
+                    }
+                    for route in unwrappedResponse.routes {
+                        for overlay in self.mapView.overlays {
+                            if overlay.coordinate.latitude == self.routes.first?.route.polyline.coordinate.latitude && overlay.coordinate.longitude == self.routes.first?.route.polyline.coordinate.longitude {
                                 self.mapView.removeOverlay(overlay)
+                            } else if let secondCoordinate = coordinateToRemove {
+                                if overlay.coordinate.latitude == secondCoordinate.latitude && overlay.coordinate.longitude == secondCoordinate.longitude {
+                                    self.mapView.removeOverlay(overlay)
+                                }
                             }
                         }
-                    }
-                    self.mapView.addOverlay(route.polyline)
-                    if self.routes.count > 0 {
-                        self.routes[0].route = route
+                        self.mapView.addOverlay(route.polyline)
+                        if self.routes.count > 0 {
+                            self.routes[0].route = route
+                        }
                     }
                 }
             }
@@ -89,7 +115,21 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     var flagAnnotation: [CustomAnnotation] = []
     var pinAnnotationView: MKPinAnnotationView!
     
-    var routes: [Route] = []
+    var routes: [Route] = [] // {
+    //        didSet {
+    //            if let firstRoute = routes.first {
+    //                if self.previousDistance == 0 {
+    //                    self.previousDistance = firstRoute.route.distance
+    //                } else {
+    //                    let difference = self.previousDistance - firstRoute.route.distance
+    //                    if difference > 0 {
+    //                        self.previousDistance = firstRoute.route.distance
+    //                        self.points = Int(ceil(Double(self.points) + 1000 * difference / 1609.34))
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    }
     
     var currentLocation: CLLocation?
     var previousLocation: CLLocation?

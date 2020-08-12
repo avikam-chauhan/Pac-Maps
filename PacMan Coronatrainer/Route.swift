@@ -15,6 +15,8 @@ class Route {
     var startingLocation = CLLocation()
     var endingLocation = CLLocation()
     
+    var intermediatePointIndex = 0
+    
     var route = MKRoute()
     var totalDistance = 0.0
     
