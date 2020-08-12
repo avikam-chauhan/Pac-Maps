@@ -11,23 +11,12 @@ import UIKit
 class SettingsTableViewController: UITableViewController {
 
     @IBOutlet weak var textfield: UITextField!
-    @IBOutlet weak var segmentedControl: UISegmentedControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         FirebaseInterface.getUsername(forUUID: UIDevice.current.identifierForVendor!) { (name) in
             self.textfield.text = name
-        }
-        
-        FirebaseInterface.getPositiveResult(forUUID: UIDevice.current.identifierForVendor!) { (result) in
-            if result {
-                self.segmentedControl.selectedSegmentIndex = 0
-                self.segmentedControl.selectedSegmentTintColor = UIColor.systemRed
-            } else {
-                self.segmentedControl.selectedSegmentIndex = 1
-                self.segmentedControl.selectedSegmentTintColor = UIColor.systemGreen
-            }
         }
 
         // Uncomment the following line to preserve selection between presentations
@@ -46,7 +35,7 @@ class SettingsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        if section == 0 { return 3 }
+        if section == 0 { return 2 }
         return 1
     }
 
@@ -59,36 +48,6 @@ class SettingsTableViewController: UITableViewController {
     
     @IBAction func editingChanged(_ sender: UITextField) {
         FirebaseInterface.updateUsername(username: sender.text ?? "")
-    }
-    
-    @IBAction func valueChanged(_ sender: UISegmentedControl) {
-        if sender.selectedSegmentIndex == 0 {
-            sender.selectedSegmentTintColor = UIColor.systemRed
-            let alert = UIAlertController(title: "Warning", message: "Marking yourself as positive for COVID-19 should only be done if you have verified with an official testing method. Please only mark yourself as positive if you are actually positive. If you falsely mark yourself as positive, people you have been in contact with recently will be advised to get tested for COVID-19. We will maintain your privacy and no personal details will be shared with anyone.", preferredStyle: UIAlertController.Style.alert)
-            alert.addAction(UIAlertAction(title: "Ok, mark me as positive.", style: UIAlertAction.Style.default, handler: { (UIAlertAction) in
-                sender.selectedSegmentIndex = 0
-                sender.selectedSegmentTintColor = UIColor.systemRed
-                FirebaseInterface.updatePositiveResult(value: true)
-            }))
-            alert.addAction(UIAlertAction(title: "Cancel, mark me as negative.", style: UIAlertAction.Style.cancel, handler: { (UIAlertAction) in
-                sender.selectedSegmentIndex = 1
-                sender.selectedSegmentTintColor = UIColor.systemGreen
-            }))
-            self.present(alert, animated: true, completion: nil)
-        } else if sender.selectedSegmentIndex == 1 {
-            sender.selectedSegmentTintColor = UIColor.systemGreen
-            let alert = UIAlertController(title: "Warning", message: "Marking yourself as negative for COVID-19 should only be done if you have verified with an official testing method. Please only mark yourself as negative if you are actually negative. If you falsely mark yourself as negative, our contract tracing methods would be able to alert other people to be tested. We will maintain your privacy and no personal details will be shared with anyone.", preferredStyle: UIAlertController.Style.alert)
-            alert.addAction(UIAlertAction(title: "Ok, mark me as negative.", style: UIAlertAction.Style.default, handler: { (UIAlertAction) in
-                sender.selectedSegmentIndex = 1
-                sender.selectedSegmentTintColor = UIColor.systemGreen
-                FirebaseInterface.updatePositiveResult(value: false)
-            }))
-            alert.addAction(UIAlertAction(title: "Cancel, mark me as positive.", style: UIAlertAction.Style.cancel, handler: { (UIAlertAction) in
-                sender.selectedSegmentIndex = 0
-                sender.selectedSegmentTintColor = UIColor.systemRed
-            }))
-            self.present(alert, animated: true, completion: nil)
-        }
     }
     
     /*
