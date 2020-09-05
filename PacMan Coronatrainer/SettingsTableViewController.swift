@@ -18,6 +18,8 @@ class SettingsTableViewController: UITableViewController {
         FirebaseInterface.getUsername(forUUID: UIDevice.current.identifierForVendor!) { (name) in
             self.textfield.text = name
         }
+        
+        tableView.tableFooterView = UIView(frame: CGRect.zero)
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -30,13 +32,12 @@ class SettingsTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 2
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        if section == 0 { return 2 }
-        return 1
+        return 2
     }
 
     @IBAction func tutorialPressed(_ sender: Any) {
