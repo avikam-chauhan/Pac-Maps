@@ -7,6 +7,11 @@
 		<key>PacMan Coronatrainer.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
+			<integer>19</integer>
+		</dict>
+		<key>TrailPlay.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
 	</dict>

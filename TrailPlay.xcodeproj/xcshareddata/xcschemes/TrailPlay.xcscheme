@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1160"
+   LastUpgradeVersion = "1200"
    version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -65,11 +65,20 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9F363E972453B4ED0023084D"
+            BuildableName = "TrailPlay.app"
+            BlueprintName = "PacMan Coronatrainer"
+            ReferencedContainer = "container:TrailPlay.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "9F363E972453B4ED0023084D"
             BuildableName = "Pac-Maps.app"
             BlueprintName = "PacMan Coronatrainer"
             ReferencedContainer = "container:PacMan Coronatrainer.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <LocationScenarioReference
          identifier = "com.apple.dt.IDEFoundation.CurrentLocationScenarioIdentifier"
          referenceType = "1">

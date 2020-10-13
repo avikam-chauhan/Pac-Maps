@@ -67,7 +67,7 @@
 		3D1FBF8D421047DE8E4BD672 /* Pods-PacMan Coronatrainer-PacMan CoronatrainerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PacMan Coronatrainer-PacMan CoronatrainerUITests.release.xcconfig"; path = "Target Support Files/Pods-PacMan Coronatrainer-PacMan CoronatrainerUITests/Pods-PacMan Coronatrainer-PacMan CoronatrainerUITests.release.xcconfig"; sourceTree = "<group>"; };
 		4D942D6DFC84C0AF7A1AAC46 /* libPods-PacMan Coronatrainer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PacMan Coronatrainer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E7B2CAEC618F9BB3588B27E /* Pods-PacMan Coronatrainer-PacMan CoronatrainerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PacMan Coronatrainer-PacMan CoronatrainerUITests.debug.xcconfig"; path = "Target Support Files/Pods-PacMan Coronatrainer-PacMan CoronatrainerUITests/Pods-PacMan Coronatrainer-PacMan CoronatrainerUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		9F363E982453B4ED0023084D /* Pac-Maps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pac-Maps.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9F363E982453B4ED0023084D /* TrailPlay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrailPlay.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F363E9B2453B4EE0023084D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9F363EA22453B4EE0023084D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9F363EA42453B4F50023084D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -91,7 +91,7 @@
 		9F8BFB4E24D4A7BA00BAFA7E /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		9F95C48D24B6B47E009DE735 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		9F9973F524D37366000AB3DF /* Route.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
-		9FC2834424BBB8B80091405A /* Pac-Maps.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Pac-Maps.entitlements"; sourceTree = "<group>"; };
+		9FC2834424BBB8B80091405A /* TrailPlay.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TrailPlay.entitlements; sourceTree = "<group>"; };
 		9FC2834924BD0E790091405A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9FF15CC3247F0C5400328C96 /* LocationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationHandler.swift; sourceTree = "<group>"; };
 		9FF15CC5247F123100328C96 /* MapHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapHandler.swift; sourceTree = "<group>"; };
@@ -149,9 +149,9 @@
 		9F363E8F2453B4ED0023084D = {
 			isa = PBXGroup;
 			children = (
-				9F363E9A2453B4ED0023084D /* PacMan Coronatrainer */,
-				9F363EB12453B4F50023084D /* PacMan CoronatrainerTests */,
-				9F363EBC2453B4F50023084D /* PacMan CoronatrainerUITests */,
+				9F363E9A2453B4ED0023084D /* TrailPlay */,
+				9F363EB12453B4F50023084D /* TrailPlayTests */,
+				9F363EBC2453B4F50023084D /* TrailPlayUITests */,
 				9F363E992453B4ED0023084D /* Products */,
 				9F363ECD2453DDD10023084D /* Frameworks */,
 				6C7D033050B8485E5F714F76 /* Pods */,
@@ -162,17 +162,17 @@
 		9F363E992453B4ED0023084D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9F363E982453B4ED0023084D /* Pac-Maps.app */,
+				9F363E982453B4ED0023084D /* TrailPlay.app */,
 				9F363EAE2453B4F50023084D /* PacMan CoronatrainerTests.xctest */,
 				9F363EB92453B4F50023084D /* PacMan CoronatrainerUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		9F363E9A2453B4ED0023084D /* PacMan Coronatrainer */ = {
+		9F363E9A2453B4ED0023084D /* TrailPlay */ = {
 			isa = PBXGroup;
 			children = (
-				9FC2834424BBB8B80091405A /* Pac-Maps.entitlements */,
+				9FC2834424BBB8B80091405A /* TrailPlay.entitlements */,
 				9F363E9B2453B4EE0023084D /* AppDelegate.swift */,
 				9F363ECB2453CE990023084D /* SceneDelegate.swift */,
 				9F363ED2245414D70023084D /* ViewController.swift */,
@@ -198,25 +198,25 @@
 				04A381C7249C2866000A9616 /* BluetoothHandler.swift */,
 				B08821A1247F070700CABF4D /* FirebaseDatabaseHandler.swift */,
 			);
-			path = "PacMan Coronatrainer";
+			path = TrailPlay;
 			sourceTree = "<group>";
 		};
-		9F363EB12453B4F50023084D /* PacMan CoronatrainerTests */ = {
+		9F363EB12453B4F50023084D /* TrailPlayTests */ = {
 			isa = PBXGroup;
 			children = (
 				9F363EB22453B4F50023084D /* PacMan_CoronatrainerTests.swift */,
 				9F363EB42453B4F50023084D /* Info.plist */,
 			);
-			path = "PacMan CoronatrainerTests";
+			path = TrailPlayTests;
 			sourceTree = "<group>";
 		};
-		9F363EBC2453B4F50023084D /* PacMan CoronatrainerUITests */ = {
+		9F363EBC2453B4F50023084D /* TrailPlayUITests */ = {
 			isa = PBXGroup;
 			children = (
 				9F363EBD2453B4F50023084D /* PacMan_CoronatrainerUITests.swift */,
 				9F363EBF2453B4F50023084D /* Info.plist */,
 			);
-			path = "PacMan CoronatrainerUITests";
+			path = TrailPlayUITests;
 			sourceTree = "<group>";
 		};
 		9F363ECD2453DDD10023084D /* Frameworks */ = {
@@ -257,7 +257,7 @@
 			);
 			name = "PacMan Coronatrainer";
 			productName = "PacMan Coronatrainer";
-			productReference = 9F363E982453B4ED0023084D /* Pac-Maps.app */;
+			productReference = 9F363E982453B4ED0023084D /* TrailPlay.app */;
 			productType = "com.apple.product-type.application";
 		};
 		9F363EAD2453B4F50023084D /* PacMan CoronatrainerTests */ = {
@@ -305,7 +305,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1140;
-				LastUpgradeCheck = 1140;
+				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "Avikam Chauhan";
 				TargetAttributes = {
 					9F363E972453B4ED0023084D = {
@@ -542,6 +542,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -602,6 +603,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -635,19 +637,20 @@
 			baseConfigurationReference = F5BA87FC3C1754AFFDE95190 /* Pods-PacMan Coronatrainer.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "PacMan Coronatrainer/Pac-Maps.entitlements";
+				CODE_SIGN_ENTITLEMENTS = TrailPlay/TrailPlay.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = B2278J6LL2;
-				INFOPLIST_FILE = "PacMan Coronatrainer/Info.plist";
+				INFOPLIST_FILE = TrailPlay/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ipaycheck.TrailPlay;
-				PRODUCT_NAME = "Pac-Maps";
+				PRODUCT_NAME = TrailPlay;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -659,19 +662,20 @@
 			baseConfigurationReference = C7EE3042A5D792F28DCA0808 /* Pods-PacMan Coronatrainer.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "PacMan Coronatrainer/Pac-Maps.entitlements";
+				CODE_SIGN_ENTITLEMENTS = TrailPlay/TrailPlay.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = B2278J6LL2;
-				INFOPLIST_FILE = "PacMan Coronatrainer/Info.plist";
+				INFOPLIST_FILE = TrailPlay/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ipaycheck.TrailPlay;
-				PRODUCT_NAME = "Pac-Maps";
+				PRODUCT_NAME = TrailPlay;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
