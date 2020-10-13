@@ -15,7 +15,7 @@ class TutorialDisplayViewController: UIViewController, UIPageViewControllerDeleg
         dismiss(animated: true, completion: nil)
     }
     
-    let dataSource = ["Welcome To TrailPlay!", "Long Press to Add Waypoints", "Shake to Remove", "Compete with Friends", "Stay Away from Ghosts", "Add Family Members", "Swipe Down to Play!"]
+    let dataSource = ["Welcome To TrailPlay!", "Long Press to Add Waypoints", "Shake to Remove", "Compete with Friends", "Stay Away from Ghosts", "Add Family Members", "Swipe Down to Get Started!"]
     let images = ["1", "2", "8", "3", "4", "7", "1"]
     var currentViewControllerIndex = 0
     let pageControl = UIPageControl(frame: CGRect(x: 0, y: UIScreen.main.bounds.maxY - 175, width: UIScreen.main.bounds.width, height: 150))
