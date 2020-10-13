@@ -1,6 +1,6 @@
 //
 //  BluetoothHandler.swift
-//  BLEDataTransfer
+//  TrailPlay
 //
 //  Created by Mihir Chauhan on 6/5/20.
 //  Copyright © 2020 Mihir Chauhan. All rights reserved.

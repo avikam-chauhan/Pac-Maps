@@ -1,6 +1,6 @@
 //
 //  MapHandler.swift
-//  PacMan Coronatrainer
+//  TrailPlay
 //
 //  Created by Avikam on 5/27/20.
 //  Copyright © 2020 Avikam Chauhan. All rights reserved.

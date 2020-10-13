@@ -1,9 +1,9 @@
 //
 //  SettingsTableViewController.swift
-//  PacMan Coronatrainer
+//  TrailPlay
 //
 //  Created by Avikam on 7/8/20.
-//  Copyright © 2020 Avikam Chauhan. All rights reserved.
+//  Copyright © 2020 Mihir Chauhan. All rights reserved.
 //
 
 import UIKit

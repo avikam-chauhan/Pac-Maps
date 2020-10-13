@@ -66,7 +66,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9F363E972453B4ED0023084D"
             BuildableName = "TrailPlay.app"
-            BlueprintName = "PacMan Coronatrainer"
+            BlueprintName = "TrailPlay"
             ReferencedContainer = "container:TrailPlay.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

@@ -1,9 +1,9 @@
 //
 //  TutorialPageViewController.swift
-//  PacMan Coronatrainer
+//  TrailPlay
 //
 //  Created by Mihir Chauhan on 7/15/20.
-//  Copyright © 2020 Avikam Chauhan. All rights reserved.
+//  Copyright © 2020 Mihir Chauhan. All rights reserved.
 //
 
 import UIKit

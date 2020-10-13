@@ -1,6 +1,6 @@
 //
 //  FirebaseInterface.swift
-//  iBeaconRadar
+//  TrailPlay
 //
 //  Created by Mihir Chauhan on 4/25/20.
 //  Copyright © 2020 Mihir Chauhan. All rights reserved.

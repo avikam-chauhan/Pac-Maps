@@ -34,7 +34,6 @@
 		9FC2834A24BD0E790091405A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9FC2834924BD0E790091405A /* GoogleService-Info.plist */; };
 		9FF15CC4247F0C5400328C96 /* LocationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF15CC3247F0C5400328C96 /* LocationHandler.swift */; };
 		9FF15CC6247F123100328C96 /* MapHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF15CC5247F123100328C96 /* MapHandler.swift */; };
-		B08821A2247F070700CABF4D /* FirebaseDatabaseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B08821A1247F070700CABF4D /* FirebaseDatabaseHandler.swift */; };
 		B44A863FF0769B53208F3E68 /* libPods-PacMan Coronatrainer-PacMan CoronatrainerUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B076C33D5297C1F9608BA61E /* libPods-PacMan Coronatrainer-PacMan CoronatrainerUITests.a */; };
 		E3CA15F14D0D6BD52CAF8862 /* libPods-PacMan Coronatrainer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D942D6DFC84C0AF7A1AAC46 /* libPods-PacMan Coronatrainer.a */; };
 /* End PBXBuildFile section */
@@ -73,10 +72,10 @@
 		9F363EA42453B4F50023084D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9F363EA72453B4F50023084D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9F363EA92453B4F50023084D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9F363EAE2453B4F50023084D /* PacMan CoronatrainerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "PacMan CoronatrainerTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9F363EAE2453B4F50023084D /* TrailPlayTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrailPlayTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F363EB22453B4F50023084D /* PacMan_CoronatrainerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PacMan_CoronatrainerTests.swift; sourceTree = "<group>"; };
 		9F363EB42453B4F50023084D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9F363EB92453B4F50023084D /* PacMan CoronatrainerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "PacMan CoronatrainerUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9F363EB92453B4F50023084D /* TrailPlayUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrailPlayUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F363EBD2453B4F50023084D /* PacMan_CoronatrainerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PacMan_CoronatrainerUITests.swift; sourceTree = "<group>"; };
 		9F363EBF2453B4F50023084D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9F363ECB2453CE990023084D /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -97,7 +96,6 @@
 		9FF15CC5247F123100328C96 /* MapHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapHandler.swift; sourceTree = "<group>"; };
 		AD56D9E086A8A91A8D719F93 /* libPods-PacMan CoronatrainerTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PacMan CoronatrainerTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B076C33D5297C1F9608BA61E /* libPods-PacMan Coronatrainer-PacMan CoronatrainerUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PacMan Coronatrainer-PacMan CoronatrainerUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B08821A1247F070700CABF4D /* FirebaseDatabaseHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseDatabaseHandler.swift; sourceTree = "<group>"; };
 		C7EE3042A5D792F28DCA0808 /* Pods-PacMan Coronatrainer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PacMan Coronatrainer.release.xcconfig"; path = "Target Support Files/Pods-PacMan Coronatrainer/Pods-PacMan Coronatrainer.release.xcconfig"; sourceTree = "<group>"; };
 		CD218F472B5E9C7217050826 /* Pods-PacMan CoronatrainerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PacMan CoronatrainerTests.debug.xcconfig"; path = "Target Support Files/Pods-PacMan CoronatrainerTests/Pods-PacMan CoronatrainerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		F5BA87FC3C1754AFFDE95190 /* Pods-PacMan Coronatrainer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PacMan Coronatrainer.debug.xcconfig"; path = "Target Support Files/Pods-PacMan Coronatrainer/Pods-PacMan Coronatrainer.debug.xcconfig"; sourceTree = "<group>"; };
@@ -163,8 +161,8 @@
 			isa = PBXGroup;
 			children = (
 				9F363E982453B4ED0023084D /* TrailPlay.app */,
-				9F363EAE2453B4F50023084D /* PacMan CoronatrainerTests.xctest */,
-				9F363EB92453B4F50023084D /* PacMan CoronatrainerUITests.xctest */,
+				9F363EAE2453B4F50023084D /* TrailPlayTests.xctest */,
+				9F363EB92453B4F50023084D /* TrailPlayUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -196,7 +194,6 @@
 				9FF15CC3247F0C5400328C96 /* LocationHandler.swift */,
 				9FF15CC5247F123100328C96 /* MapHandler.swift */,
 				04A381C7249C2866000A9616 /* BluetoothHandler.swift */,
-				B08821A1247F070700CABF4D /* FirebaseDatabaseHandler.swift */,
 			);
 			path = TrailPlay;
 			sourceTree = "<group>";
@@ -242,9 +239,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		9F363E972453B4ED0023084D /* PacMan Coronatrainer */ = {
+		9F363E972453B4ED0023084D /* TrailPlay */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9F363EC22453B4F50023084D /* Build configuration list for PBXNativeTarget "PacMan Coronatrainer" */;
+			buildConfigurationList = 9F363EC22453B4F50023084D /* Build configuration list for PBXNativeTarget "TrailPlay" */;
 			buildPhases = (
 				3FB898B6D6D1219D8179004F /* [CP] Check Pods Manifest.lock */,
 				9F363E942453B4ED0023084D /* Sources */,
@@ -255,14 +252,14 @@
 			);
 			dependencies = (
 			);
-			name = "PacMan Coronatrainer";
+			name = TrailPlay;
 			productName = "PacMan Coronatrainer";
 			productReference = 9F363E982453B4ED0023084D /* TrailPlay.app */;
 			productType = "com.apple.product-type.application";
 		};
-		9F363EAD2453B4F50023084D /* PacMan CoronatrainerTests */ = {
+		9F363EAD2453B4F50023084D /* TrailPlayTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9F363EC52453B4F50023084D /* Build configuration list for PBXNativeTarget "PacMan CoronatrainerTests" */;
+			buildConfigurationList = 9F363EC52453B4F50023084D /* Build configuration list for PBXNativeTarget "TrailPlayTests" */;
 			buildPhases = (
 				E9B8521B98DFEEBEBD83836A /* [CP] Check Pods Manifest.lock */,
 				9F363EAA2453B4F50023084D /* Sources */,
@@ -274,14 +271,14 @@
 			dependencies = (
 				9F363EB02453B4F50023084D /* PBXTargetDependency */,
 			);
-			name = "PacMan CoronatrainerTests";
+			name = TrailPlayTests;
 			productName = "PacMan CoronatrainerTests";
-			productReference = 9F363EAE2453B4F50023084D /* PacMan CoronatrainerTests.xctest */;
+			productReference = 9F363EAE2453B4F50023084D /* TrailPlayTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		9F363EB82453B4F50023084D /* PacMan CoronatrainerUITests */ = {
+		9F363EB82453B4F50023084D /* TrailPlayUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9F363EC82453B4F50023084D /* Build configuration list for PBXNativeTarget "PacMan CoronatrainerUITests" */;
+			buildConfigurationList = 9F363EC82453B4F50023084D /* Build configuration list for PBXNativeTarget "TrailPlayUITests" */;
 			buildPhases = (
 				B874DE1E558EC1AE28CA1466 /* [CP] Check Pods Manifest.lock */,
 				9F363EB52453B4F50023084D /* Sources */,
@@ -293,9 +290,9 @@
 			dependencies = (
 				9F363EBB2453B4F50023084D /* PBXTargetDependency */,
 			);
-			name = "PacMan CoronatrainerUITests";
+			name = TrailPlayUITests;
 			productName = "PacMan CoronatrainerUITests";
-			productReference = 9F363EB92453B4F50023084D /* PacMan CoronatrainerUITests.xctest */;
+			productReference = 9F363EB92453B4F50023084D /* TrailPlayUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -334,9 +331,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9F363E972453B4ED0023084D /* PacMan Coronatrainer */,
-				9F363EAD2453B4F50023084D /* PacMan CoronatrainerTests */,
-				9F363EB82453B4F50023084D /* PacMan CoronatrainerUITests */,
+				9F363E972453B4ED0023084D /* TrailPlay */,
+				9F363EAD2453B4F50023084D /* TrailPlayTests */,
+				9F363EB82453B4F50023084D /* TrailPlayUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -451,7 +448,6 @@
 				9F363ED72454C8490023084D /* User.swift in Sources */,
 				0448FE3524B7E1F500244F14 /* FamilyMembersTableViewController.swift in Sources */,
 				9F363ED5245419150023084D /* LeaderboardViewController.swift in Sources */,
-				B08821A2247F070700CABF4D /* FirebaseDatabaseHandler.swift in Sources */,
 				9F95C48E24B6B47E009DE735 /* SettingsTableViewController.swift in Sources */,
 				9F9973F624D37366000AB3DF /* Route.swift in Sources */,
 				9F363E9C2453B4EE0023084D /* AppDelegate.swift in Sources */,
@@ -486,12 +482,12 @@
 /* Begin PBXTargetDependency section */
 		9F363EB02453B4F50023084D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 9F363E972453B4ED0023084D /* PacMan Coronatrainer */;
+			target = 9F363E972453B4ED0023084D /* TrailPlay */;
 			targetProxy = 9F363EAF2453B4F50023084D /* PBXContainerItemProxy */;
 		};
 		9F363EBB2453B4F50023084D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 9F363E972453B4ED0023084D /* PacMan Coronatrainer */;
+			target = 9F363E972453B4ED0023084D /* TrailPlay */;
 			targetProxy = 9F363EBA2453B4F50023084D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -782,7 +778,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9F363EC22453B4F50023084D /* Build configuration list for PBXNativeTarget "PacMan Coronatrainer" */ = {
+		9F363EC22453B4F50023084D /* Build configuration list for PBXNativeTarget "TrailPlay" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9F363EC32453B4F50023084D /* Debug */,
@@ -791,7 +787,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9F363EC52453B4F50023084D /* Build configuration list for PBXNativeTarget "PacMan CoronatrainerTests" */ = {
+		9F363EC52453B4F50023084D /* Build configuration list for PBXNativeTarget "TrailPlayTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9F363EC62453B4F50023084D /* Debug */,
@@ -800,7 +796,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9F363EC82453B4F50023084D /* Build configuration list for PBXNativeTarget "PacMan CoronatrainerUITests" */ = {
+		9F363EC82453B4F50023084D /* Build configuration list for PBXNativeTarget "TrailPlayUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9F363EC92453B4F50023084D /* Debug */,
