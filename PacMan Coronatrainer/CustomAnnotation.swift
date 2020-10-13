@@ -26,9 +26,9 @@ class CustomAnnotation: MKPointAnnotation {
         if annotationType == .flag {
             pinCustomImageName = "flag"
         } else if annotationType == .pac_man {
-            pinCustomImageName = "pac_man"
+            pinCustomImageName = "player"
         } else if annotationType == .ghost_red {
-            pinCustomImageName = "ghost_red"
+            pinCustomImageName = "ghost"
         }
     }
     
