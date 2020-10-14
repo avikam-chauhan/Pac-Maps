@@ -515,9 +515,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             let alert = UIAlertController(title: "Welcome", message: "Please enter your username!", preferredStyle: UIAlertController.Style.alert)
             alert.addTextField(configurationHandler: nil)
             alert.addAction(UIAlertAction(title: "Let's play!", style: UIAlertAction.Style.default, handler: { (UIAlertAction) in
-                FirebaseInterface.updateUsername(username: (alert.textFields?.first?.text!)!)
-                FirebaseInterface.updateScore(score: 0)
-                self.showTutorial()
+                if((alert.textFields?.first?.text!)! == "") {
+                    self.showTutorial()
+                    FirebaseInterface.getUserCount { (count) in
+                        FirebaseInterface.updateUsername(username: "TrailPlayer" + String(count + 1))
+                        FirebaseInterface.updateScore(score: 0)
+                    }
+                } else {
+                    FirebaseInterface.updateUsername(username: (alert.textFields?.first?.text!)!)
+                    FirebaseInterface.updateScore(score: 0)
+                    self.showTutorial()
+                }
             }))
             DispatchQueue.main.async {
                 self.present(alert, animated: true, completion: nil)

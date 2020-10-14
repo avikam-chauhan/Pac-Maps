@@ -29,6 +29,13 @@ class FirebaseInterface {
     static var minorKey: Int?
     static var numberOfUsers: Int = 0
     
+    public static func getUserCount(handler: @escaping (Int) -> ()) {
+        ref.child("users").observeSingleEvent(of: .value) { (snapshot) in
+            handler(Int(snapshot.childrenCount))
+        }
+    }
+    
+    
         
 //        ref.child("users").child(UIDevice.current.identifierForVendor!.uuidString).setValue(["username":username ?? UIDevice.current.identifierForVendor!.uuidString, "location":["latitude": location?.latitude ?? 0, "longitude": location?.longitude ?? 0], "score":score ?? 0, "minorKey": minorKey ?? 0, "familyMembers": familyMembers])
     
